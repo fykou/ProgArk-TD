@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g25.td.entity.components;
+package no.ntnu.tdt4240.g25.td.model.entity.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector3;
