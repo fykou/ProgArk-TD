@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g25.td.entity.systems;
+package no.ntnu.tdt4240.g25.td.model.entity.systems;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
@@ -7,8 +7,8 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 
-import no.ntnu.tdt4240.g25.td.entity.components.PositionComponent;
-import no.ntnu.tdt4240.g25.td.entity.components.VelocityComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
 
 public class MovementSystem extends IntervalSystem {
     private final ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);

@@ -1,11 +1,11 @@
-package no.ntnu.tdt4240.g25.td.entity.systems;
+package no.ntnu.tdt4240.g25.td.model.entity.systems;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 
 import java.util.Comparator;
 
-import no.ntnu.tdt4240.g25.td.entity.components.PositionComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 
 public class ZComparator implements Comparator<Entity> {
     private ComponentMapper<PositionComponent> pm;

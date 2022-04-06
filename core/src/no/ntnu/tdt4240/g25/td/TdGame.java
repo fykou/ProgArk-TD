@@ -24,4 +24,8 @@ public class TdGame extends ApplicationAdapter {
 	public void dispose () {
 
 	}
+
+	public SpriteBatch getBatch() {
+		return batch;
+	}
 }
