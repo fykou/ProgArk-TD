@@ -9,8 +9,8 @@ public class TransformComponent implements Component, Poolable {
     public Vector3 position;
     public float rotation;
 
-    public TransformComponent() {
-        position = new Vector3();
+    public TransformComponent(float x, float y) {
+        position = new Vector3(x, y, 0);
         rotation = 0;
     }
 

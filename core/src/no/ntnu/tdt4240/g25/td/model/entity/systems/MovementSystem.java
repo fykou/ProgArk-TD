@@ -33,8 +33,13 @@ public class MovementSystem extends IntervalSystem {
             float delta = getInterval();
             position.position.x += velocity.velocity.x * delta;
             position.position.y += velocity.velocity.y * delta;
-            // change rotation to match velocity direction, where (1,1) is up and right
-            position.rotation = (float) Math.atan2(velocity.velocity.y, velocity.velocity.x);
+            // change rotation to the angle in degrees counter clockwise matching the velocity vector.
+
+            position.rotation = velocity.velocity.angleDeg();
+
+            // this is wrong, because the velocity is not in the direction of the rotation. The sprite is pointing 90 degrees to the left compared
+            // to the velocity vector. Fix this
+
         }
     }
 }

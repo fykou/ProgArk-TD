@@ -25,13 +25,23 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         this.parent = parent;
         this.engine = new PooledEngine();
+        this.world = new World(engine);
         setupEngine(engine, game.getBatch());
     }
 
     protected void setupEngine(PooledEngine engine, SpriteBatch batch) {
         engine.addSystem(new MovementSystem(1f/60));
         engine.addSystem(new RenderSystem(batch));
+
+        /*Entity test = new Entity();
+        test.add(new TransformComponent(200, 200));
+        Sprite sprite = new TextureAtlas(Gdx.files.internal("turrets/turret_01_mk1.atlas")).createSprite("turret_01_mk1");
+        sprite.rotate90(true);
+        test.add(new SpriteComponent(sprite));
+        test.add(new VelocityComponent(1, 1));
+        engine.addEntity(test);*/
     }
+
 
     @Override
     public void show() {
@@ -41,6 +51,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         super.render(delta);
+        world.update(delta);
     }
 
     @Override
