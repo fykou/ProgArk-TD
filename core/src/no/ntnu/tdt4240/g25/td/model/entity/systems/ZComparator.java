@@ -5,13 +5,13 @@ import com.badlogic.ashley.core.Entity;
 
 import java.util.Comparator;
 
-import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.TransformComponent;
 
 public class ZComparator implements Comparator<Entity> {
-    private ComponentMapper<PositionComponent> pm;
+    private ComponentMapper<TransformComponent> pm;
 
     public ZComparator() {
-        pm = ComponentMapper.getFor(PositionComponent.class);
+        pm = ComponentMapper.getFor(TransformComponent.class);
     }
 
     /**
@@ -22,8 +22,8 @@ public class ZComparator implements Comparator<Entity> {
      */
     @Override
     public int compare(Entity t1, Entity t2) {
-        PositionComponent p1 = pm.get(t1);
-        PositionComponent p2 = pm.get(t2);
+        TransformComponent p1 = pm.get(t1);
+        TransformComponent p2 = pm.get(t2);
         return (int) (p1.position.z - p2.position.z);
     }
 }

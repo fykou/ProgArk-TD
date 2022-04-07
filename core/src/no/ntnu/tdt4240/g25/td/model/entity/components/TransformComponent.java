@@ -4,12 +4,12 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
-public class PositionComponent implements Component, Poolable {
+public class TransformComponent implements Component, Poolable {
 
     public Vector3 position;
     public float rotation;
 
-    public PositionComponent() {
+    public TransformComponent() {
         position = new Vector3();
         rotation = 0;
     }

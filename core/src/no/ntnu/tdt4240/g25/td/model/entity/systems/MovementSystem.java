@@ -7,11 +7,11 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 
-import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.TransformComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
 
 public class MovementSystem extends IntervalSystem {
-    private final ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
+    private final ComponentMapper<TransformComponent> tm = ComponentMapper.getFor(TransformComponent.class);
     private final ComponentMapper<VelocityComponent> vm = ComponentMapper.getFor(VelocityComponent.class);
     ImmutableArray<Entity> entities;
 
@@ -21,13 +21,13 @@ public class MovementSystem extends IntervalSystem {
 
     @Override
     public void addedToEngine(final Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).get());
+        entities = engine.getEntitiesFor(Family.all(TransformComponent.class, VelocityComponent.class).get());
     }
 
     @Override
     protected void updateInterval() {
         for (final Entity entity : entities) {
-            final PositionComponent position = pm.get(entity);
+            final TransformComponent position = tm.get(entity);
             final VelocityComponent velocity = vm.get(entity);
 
             float delta = getInterval();
