@@ -9,7 +9,12 @@ public class VelocityComponent implements Component, Poolable {
     public VelocityComponent() {
         velocity.setZero();
     }
-
+    public VelocityComponent(float x, float y) {
+        velocity.set(x, y);
+    }
+    public VelocityComponent(Vector2 v) {
+        velocity.set(v);
+    }
     @Override
     public void reset() {
         velocity.setZero();
