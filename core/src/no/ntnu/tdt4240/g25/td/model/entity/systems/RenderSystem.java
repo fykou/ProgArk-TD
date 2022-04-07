@@ -10,13 +10,13 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Comparator;
 
-import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.TransformComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.SpriteComponent;
 
 public class RenderSystem extends SortedIteratingSystem {
 
     private final ComponentMapper<SpriteComponent> spriteMapper;
-    private final ComponentMapper<PositionComponent> positionMapper;
+    private final ComponentMapper<TransformComponent> positionMapper;
 
 
     private final SpriteBatch batch;
@@ -25,13 +25,13 @@ public class RenderSystem extends SortedIteratingSystem {
     private final Comparator<Entity> comparator;
 
     public RenderSystem(SpriteBatch batch) {
-        super(Family.all(SpriteComponent.class, PositionComponent.class).get(), new ZComparator());
+        super(Family.all(SpriteComponent.class, TransformComponent.class).get(), new ZComparator());
         this.batch = batch;
         comparator = new ZComparator();
         cam = new OrthographicCamera();
         renderQueue = new Array<>();
         spriteMapper = ComponentMapper.getFor(SpriteComponent.class);
-        positionMapper = ComponentMapper.getFor(PositionComponent.class);
+        positionMapper = ComponentMapper.getFor(TransformComponent.class);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class RenderSystem extends SortedIteratingSystem {
         batch.begin();
         for (Entity e : new Array.ArrayIterator<>(renderQueue)) {
             SpriteComponent sprite = spriteMapper.get(e);
-            PositionComponent position = positionMapper.get(e);
+            TransformComponent position = positionMapper.get(e);
             if (sprite.region == null) {
                 continue;
             }
