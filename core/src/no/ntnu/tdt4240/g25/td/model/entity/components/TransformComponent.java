@@ -1,23 +1,31 @@
 package no.ntnu.tdt4240.g25.td.model.entity.components;
 
-import com.badlogic.ashley.core.Component;
+import com.artemis.Component;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Pool.Poolable;
 
-public class TransformComponent implements Component, Poolable {
+public class TransformComponent extends Component {
 
-    public Vector3 position;
+    public float x;
+    public float y;
+    public float z;
     public float rotation;
 
     public TransformComponent(float x, float y) {
-        position = new Vector3(x, y, 0);
-        rotation = 0;
+        this.x = x;
+        this.y = y;
+        this.z = 0;
+        this.rotation = 0;
     }
 
-    @Override
-    public void reset() {
-        position.setZero();
-        rotation = 0;
+    public TransformComponent() {
+        this(0, 0, 0, 0);
+    }
+
+    public TransformComponent(float x, float y, float z, float rotation) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.rotation = rotation;
     }
 }
 

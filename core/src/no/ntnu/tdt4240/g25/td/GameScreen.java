@@ -1,11 +1,14 @@
 package no.ntnu.tdt4240.g25.td;
 
-import com.badlogic.ashley.core.PooledEngine;
+import com.artemis.World;
+import com.artemis.WorldConfiguration;
+import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import no.ntnu.tdt4240.g25.td.model.World;
+import no.ntnu.tdt4240.g25.td.model.GameWorld;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.AnimationSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.RenderSystem;
 
@@ -16,30 +19,23 @@ public class GameScreen extends ScreenAdapter {
 
     private TdGame game;
     private Screen parent;
+    private GameWorld gameWorld;
     private World world;
-    private PooledEngine engine;
-
-
 
     public GameScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
-        this.engine = new PooledEngine();
-        this.world = new World(engine);
-        setupEngine(engine, game.getBatch());
+        setupWorld(game.getBatch());
+        this.gameWorld = new GameWorld(world, game.getAssetManager());
     }
 
-    protected void setupEngine(PooledEngine engine, SpriteBatch batch) {
-        engine.addSystem(new MovementSystem(1f/60));
-        engine.addSystem(new RenderSystem(batch));
-
-        /*Entity test = new Entity();
-        test.add(new TransformComponent(200, 200));
-        Sprite sprite = new TextureAtlas(Gdx.files.internal("turrets/turret_01_mk1.atlas")).createSprite("turret_01_mk1");
-        sprite.rotate90(true);
-        test.add(new SpriteComponent(sprite));
-        test.add(new VelocityComponent(1, 1));
-        engine.addEntity(test);*/
+    protected void setupWorld(SpriteBatch batch) {
+        WorldConfiguration config = new WorldConfigurationBuilder()
+                .with(new MovementSystem(1f/60))
+                .with(new RenderSystem(batch))
+                .with(new AnimationSystem())
+                .build();
+        this.world = new World(config);
     }
 
 
@@ -51,7 +47,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         super.render(delta);
-        world.update(delta);
+        gameWorld.update(delta);
     }
 
     @Override
