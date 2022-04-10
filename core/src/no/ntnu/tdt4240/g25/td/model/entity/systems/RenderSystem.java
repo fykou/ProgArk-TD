@@ -6,18 +6,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
 
-import java.util.Comparator;
-
-import no.ntnu.tdt4240.g25.td.model.entity.components.TransformComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
 
-@All({TransformComponent.class, TextureComponent.class})
+@All({PositionComponent.class, TextureComponent.class})
 public class RenderSystem extends SortedIteratingSystem {
 
-    ComponentMapper<TextureComponent> spriteMapper;
-    ComponentMapper<TransformComponent> positionMapper;
+    ComponentMapper<TextureComponent> mTexture;
+    ComponentMapper<PositionComponent> mPosition;
+    ComponentMapper<RotationComponent> mRotation;
     private final SpriteBatch batch;
     private final OrthographicCamera cam;
 
@@ -31,8 +30,9 @@ public class RenderSystem extends SortedIteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        TextureComponent textureComponent = spriteMapper.get(entityId);
-        TransformComponent position = positionMapper.get(entityId);
+        TextureComponent textureComponent = mTexture.get(entityId);
+        PositionComponent position = mPosition.get(entityId);
+        RotationComponent rotation = mRotation.has(entityId) ? mRotation.get(entityId) : null;
         if (textureComponent.region == null) {
             return;
         }
@@ -41,12 +41,14 @@ public class RenderSystem extends SortedIteratingSystem {
         float originX = width / 2f;
         float originY = height / 2f;
 
+
+        var renderRot = rotation != null ? rotation.get() : 0f;
         batch.draw(textureComponent.region,
-                position.x - originX, position.y - originY,
+                position.get().x - originX, position.get().y - originY,
                 originX, originY,
                 width, height,
                 1, 1,
-                position.rotation - 90);
+                renderRot + textureComponent.offsetRotation); // TODO: fix rotation/initial direction in sprites rather than here
 
     }
 
@@ -61,11 +63,11 @@ public class RenderSystem extends SortedIteratingSystem {
     @Override
     protected void end() {
         batch.end();
-        sortedIds.clear();
+        entityIds.clear();
     }
 
     @Override
     protected void sort() {
-        sortedIds.sort((o1, o2) -> Float.compare(positionMapper.get(o1).z, positionMapper.get(o2).z));
+        entityIds.sort((o1, o2) -> Float.compare(mPosition.get(o1).get().z, mPosition.get(o2).get().z));
     }
 }

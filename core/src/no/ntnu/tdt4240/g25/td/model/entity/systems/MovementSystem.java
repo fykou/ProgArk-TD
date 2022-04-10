@@ -5,28 +5,35 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
 import com.artemis.systems.IntervalIteratingSystem;
-import com.artemis.systems.IntervalSystem;
 
-import no.ntnu.tdt4240.g25.td.model.entity.components.TransformComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
 
-@All({VelocityComponent.class, TransformComponent.class})
+@All({VelocityComponent.class, PositionComponent.class})
 public class MovementSystem extends IntervalIteratingSystem {
-    ComponentMapper<TransformComponent> tm;
-    ComponentMapper<VelocityComponent> vm;
+    ComponentMapper<PositionComponent> mTransform;
+    ComponentMapper<VelocityComponent> mVelocity;
+    ComponentMapper<RotationComponent> mRotation;
 
     public MovementSystem(float interval) {
-        super(Aspect.all(VelocityComponent.class, TransformComponent.class), interval);
+        super(Aspect.all(VelocityComponent.class, PositionComponent.class), interval);
     }
     @Override
     protected void process(int entityId) {
-        final TransformComponent position = tm.get(entityId);
-        final VelocityComponent velocity = vm.get(entityId);
+        final PositionComponent position = mTransform.get(entityId);
+        final VelocityComponent velocity = mVelocity.get(entityId);
+        final RotationComponent rotation = mRotation.has(entityId) ? mRotation.get(entityId) : null;
 
         float delta = this.world.getDelta();
-        position.x += velocity.x * delta;
-        position.y += velocity.y * delta;
-        // set rotation to the direction of movement, where
-        position.rotation = (float) Math.atan2(velocity.y, velocity.x);
+        position.get().x += velocity.get().x * delta;
+        position.get().y += velocity.get().y * delta;
+
+        if (rotation != null) {
+            // set rotation to the direction of movement in degrees, where 0 is perpendicular to the x-axis, pointing right.
+            var newRotation = velocity.get().angleDeg();
+            rotation.set(newRotation);
+        }
+
     }
 }
