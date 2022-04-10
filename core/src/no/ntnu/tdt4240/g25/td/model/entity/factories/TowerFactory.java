@@ -1,16 +1,17 @@
 package no.ntnu.tdt4240.g25.td.model.entity.factories;
 
-import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.IntMap;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.AnimationComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
-import no.ntnu.tdt4240.g25.td.model.entity.components.TransformComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class TowerFactory {
@@ -34,11 +35,14 @@ public class TowerFactory {
         animationsMap.put(StateComponent.STATE_IDLE, turret_01_mk1_idle);
         animationsMap.put(StateComponent.STATE_ATTACKING, turret_01_mk1_attack);
         world.createEntity().edit()
-                .add(new TransformComponent(x, y))
+                .add(new PositionComponent(x, y))
+                .add(new RotationComponent())
                 .add(new TowerComponent(TowerComponent.TYPE_1_RANGE, TowerComponent.TYPE_1_MK1_DAMAGE, TowerComponent.TYPE_1_MK1_RATE, TowerComponent.TOWER_TYPE_SINGLE))
                 .add(new StateComponent(StateComponent.STATE_IDLE))
-                .add(new TextureComponent())
-                .add(new AnimationComponent(animationsMap));
+                .add(new TextureComponent(-90f))
+                .add(new AnimationComponent(animationsMap))
+                .add(new VelocityComponent(20,20));
+
     }
 
     /**
@@ -53,10 +57,10 @@ public class TowerFactory {
         animationsMap.put(StateComponent.STATE_IDLE, turret_02_mk1_idle);
         animationsMap.put(StateComponent.STATE_ATTACKING, turret_02_mk1_attack);
         world.createEntity().edit()
-                .add(new TransformComponent(x, y))
+                .add(new PositionComponent(x, y))
                 .add(new TowerComponent(TowerComponent.TYPE_2_RANGE, TowerComponent.TYPE_2_MK1_DAMAGE, TowerComponent.TYPE_2_MK1_RATE, TowerComponent.TOWER_TYPE_AOE))
                 .add(new StateComponent(StateComponent.STATE_IDLE))
-                .add(new TextureComponent())
+                .add(new TextureComponent(-90))
                 .add(new AnimationComponent(animationsMap));
     }
 
