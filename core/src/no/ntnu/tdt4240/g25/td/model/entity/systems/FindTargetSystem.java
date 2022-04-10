@@ -5,7 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.EntitySubscription;
 import com.artemis.annotations.All;
 import com.artemis.annotations.Exclude;
-import com.artemis.systems.IteratingSystem;
+import com.artemis.systems.IntervalIteratingSystem;
 import com.artemis.utils.IntBag;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.HasTargetComponent;
@@ -15,24 +15,54 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 
 @All(TowerComponent.class)
 @Exclude(HasTargetComponent.class)
-public class FindTargetSystem extends IteratingSystem {
+public class FindTargetSystem extends IntervalIteratingSystem {
 
-    ComponentMapper<TowerComponent> towerMapper;
-    ComponentMapper<PositionComponent> transformMapper;
+    ComponentMapper<TowerComponent> mTower;
+    ComponentMapper<PositionComponent> mPosition;
 
-    EntitySubscription subscription = world.getAspectSubscriptionManager()
-            .get(Aspect.all(MobComponent.class, PositionComponent.class));
-    IntBag enemies = subscription.getEntities();
+    EntitySubscription enemySubscription;
+
+    /**
+     * Creates a new IntervalEntityProcessingSystem.
+     *
+     * @param interval the interval in seconds between processing of entities.
+     */
+    public FindTargetSystem(float interval) {
+        super(Aspect.all(TowerComponent.class).exclude(HasTargetComponent.class), interval);
+    }
+
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        enemySubscription = world.getAspectSubscriptionManager()
+                .get(Aspect.all(MobComponent.class, PositionComponent.class));
+    }
+
 
     @Override
     protected void process(int entityId) {
-        TowerComponent tower = towerMapper.get(entityId);
-        PositionComponent transform = transformMapper.get(entityId);
+        IntBag enemies = enemySubscription.getEntities();
+        TowerComponent tower = mTower.get(entityId);
+        PositionComponent transform = mPosition.get(entityId);
 
+        var closest = Float.MAX_VALUE;
+        var closestEnemy = -1;
         for (int i = 0; i < enemies.size(); i++) {
             int enemy = enemies.get(i);
-            PositionComponent enemyTransform = transformMapper.get(enemy);
-
+            PositionComponent enemyTransform = mPosition.get(enemy);
+            var distance = transform.get().dst(enemyTransform.get());
+            if (distance > tower.range) continue;
+            if (distance < closest) {
+                closest = distance;
+                closestEnemy = enemy;
+            }
+        }
+        if (closest != Float.MAX_VALUE) {
+            this.world.getEntity(entityId)
+                    .edit()
+                    .create(HasTargetComponent.class)
+                    .targetId = closestEnemy;
         }
     }
 }

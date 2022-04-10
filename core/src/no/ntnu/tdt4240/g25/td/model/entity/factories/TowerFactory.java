@@ -40,8 +40,7 @@ public class TowerFactory {
                 .add(new TowerComponent(TowerComponent.TYPE_1_RANGE, TowerComponent.TYPE_1_MK1_DAMAGE, TowerComponent.TYPE_1_MK1_RATE, TowerComponent.TOWER_TYPE_SINGLE))
                 .add(new StateComponent(StateComponent.STATE_IDLE))
                 .add(new TextureComponent(-90f))
-                .add(new AnimationComponent(animationsMap))
-                .add(new VelocityComponent(20,20));
+                .add(new AnimationComponent(animationsMap));
 
     }
 
