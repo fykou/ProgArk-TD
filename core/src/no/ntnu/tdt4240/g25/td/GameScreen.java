@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AnimationSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.AttackingSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.FindTargetSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.RenderSystem;
 
@@ -34,6 +36,8 @@ public class GameScreen extends ScreenAdapter {
                 .with(new MovementSystem(1f/60))
                 .with(new RenderSystem(batch))
                 .with(new AnimationSystem())
+                .with(new FindTargetSystem(1f/60))
+                .with(new AttackingSystem())
                 .build();
         this.world = new World(config);
     }
@@ -47,6 +51,9 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         super.render(delta);
+        if (delta > 0.1f) {
+            delta = 0.1f;
+        }
         gameWorld.update(delta);
     }
 
