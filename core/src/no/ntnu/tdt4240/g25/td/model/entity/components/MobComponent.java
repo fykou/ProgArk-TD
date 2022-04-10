@@ -11,4 +11,18 @@ public class MobComponent extends Component {
     public int mobType;
     public int health;
     public int maxHealth;
+
+    public MobComponent(int mobType, int health, int maxHealth) {
+        this.mobType = mobType;
+        this.health = health;
+        this.maxHealth = maxHealth;
+    }
+
+    public MobComponent(int mobType) {
+        this(mobType, 100, 100);
+    }
+
+    public MobComponent() {
+        this(NORMAL_MOB, 100, 100);
+    }
 }

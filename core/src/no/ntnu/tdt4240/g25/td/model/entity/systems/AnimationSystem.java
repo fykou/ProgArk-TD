@@ -10,16 +10,16 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 
 @All({AnimationComponent.class, TextureComponent.class, StateComponent.class})
 public class AnimationSystem extends IteratingSystem {
-    ComponentMapper<AnimationComponent> animationMapper;
-    ComponentMapper<StateComponent> stateMapper;
-    ComponentMapper<TextureComponent> spriteMapper;
+    ComponentMapper<AnimationComponent> mAnimation;
+    ComponentMapper<StateComponent> mState;
+    ComponentMapper<TextureComponent> mTexture;
 
     @Override
     protected void process(int entityId) {
-        var ac = animationMapper.get(entityId);
-        var state = stateMapper.get(entityId);
+        var ac = mAnimation.get(entityId);
+        var state = mState.get(entityId);
         if (ac.animations.containsKey(state.get())) {
-            var tm = spriteMapper.get(entityId);
+            var tm = mTexture.get(entityId);
             tm.region = ac.animations.get(state.get()).getKeyFrame(state.time, state.isLooping);
         }
         state.time += this.world.delta;

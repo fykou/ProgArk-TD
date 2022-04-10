@@ -68,6 +68,6 @@ public class RenderSystem extends SortedIteratingSystem {
 
     @Override
     protected void sort() {
-        entityIds.sort((o1, o2) -> Float.compare(mPosition.get(o1).get().z, mPosition.get(o2).get().z));
+        entityIds.sort((o1, o2) -> Float.compare(mPosition.get(o1).z, mPosition.get(o2).z));
     }
 }
