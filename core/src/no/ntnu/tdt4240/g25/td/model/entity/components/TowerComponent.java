@@ -10,8 +10,10 @@ public class TowerComponent extends Component {
     public static final int TOWER_TYPE_SINGLE = 0;
     public static final int TOWER_TYPE_AOE = 1;
 
+    public static final int TURN_RATE_DEGREES = 180;
+
     // Type 1, aka "normal" tower
-    public static int TYPE_1_RANGE = 100;
+    public static int TYPE_1_RANGE = 500;
 
     public static int TYPE_1_MK1_DAMAGE = 6;
     public static float TYPE_1_MK1_RATE = 3;
@@ -23,7 +25,7 @@ public class TowerComponent extends Component {
     public static float TYPE_1_MK4_RATE = 1;
 
     // Type 2, aka "AoE" tower
-    public static int TYPE_2_RANGE = 100;
+    public static int TYPE_2_RANGE = 500;
 
     public static int TYPE_2_MK1_DAMAGE = 3;
     public static float TYPE_2_MK1_RATE = 3;
@@ -35,12 +37,12 @@ public class TowerComponent extends Component {
     public static float TYPE_2_MK4_RATE = 1;
 
 
-    float range;
-    float damage;
-    float fireRate;
-    float firingTimer;
-    int upgradeLevel;
-    int type;
+    public float range;
+    public float damage;
+    public float fireRate;
+    public float firingTimer;
+    public int upgradeLevel;
+    public int type;
 
     public TowerComponent(float range, float damage, float fireRate, int type) {
         this.range = range;
