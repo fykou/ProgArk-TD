@@ -21,6 +21,8 @@ public class MovementSystem extends IntervalIteratingSystem {
     }
     @Override
     protected void process(int entityId) {
+        var ent = world.getEntity(entityId);
+
         final PositionComponent position = mTransform.get(entityId);
         final VelocityComponent velocity = mVelocity.get(entityId);
         final RotationComponent rotation = mRotation.has(entityId) ? mRotation.get(entityId) : null;

@@ -6,6 +6,7 @@ import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
+import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AnimationSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AimingSystem;
@@ -17,6 +18,7 @@ import no.ntnu.tdt4240.g25.td.service.AssetService;
 public class GameWorld {
     TowerFactory towerFactory;
     MobFactory mobFactory;
+    ProjectileFactory projectileFactory;
     World world;
 
 
@@ -35,6 +37,9 @@ public class GameWorld {
         towerFactory.createTower(350, 450, TowerType.TYPE_2, TowerLevel.MK4);
 
         mobFactory.createMob(250, 100, MobType.NORMAL);
+
+        projectileFactory.createProjectile(50,50,150,500,50,200);
+        projectileFactory.createProjectile(250,0,0, 500,50,0);
     }
 
     protected void createWorld(SpriteBatch batch) {
@@ -47,18 +52,21 @@ public class GameWorld {
                 .build()
                 // now register the factories to be injected into the systems
                 .register(towerFactory)
-                .register(mobFactory);
+                .register(mobFactory)
+                .register(projectileFactory);
 
         this.world = new World(config);
 
         // set world for the factories to be able to create entities
         towerFactory.setWorld(world);
         mobFactory.setWorld(world);
+        projectileFactory.setWorld(world);
     }
 
     protected void createFactories(AssetService assetManager) {
         towerFactory = new TowerFactory(assetManager);
         mobFactory = new MobFactory(assetManager);
+        projectileFactory = new ProjectileFactory(assetManager);
     }
 
     public void update(float delta) {

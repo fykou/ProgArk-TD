@@ -7,6 +7,7 @@ public class TextureComponent extends Component {
 
     public TextureRegion region;
     public float offsetRotation; // degrees, as a workaround for turrets pointing "north" instead of to the right
+    public float scale;
 
     public TextureComponent(TextureRegion region, float offsetRotation) {
         this.region = region;

@@ -45,7 +45,7 @@ public class TowerFactory {
 
     public Animation<TextureAtlas.AtlasRegion> getAnimation(TowerType type, TowerLevel level) {
         var regions = assetService.getAtlasRegionArray(type.atlasPath, level.name());
-        var frameDuration = 1f / 30f;
+        var frameDuration = regions.size / 60f;
         return new Animation<>(frameDuration, regions);
     }
 

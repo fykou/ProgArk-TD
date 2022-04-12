@@ -11,6 +11,10 @@ public class AssetService {
 
     public final AssetManager assetManager = new AssetManager();
 
+    public TextureAtlas getAtlas(String name) {
+        return assetManager.get(name, TextureAtlas.class);
+    }
+
     public TextureAtlas.AtlasRegion getAtlasRegion(String atlasPath, String regionName){
         return assetManager.get(atlasPath, TextureAtlas.class).findRegion(regionName, 0);
     }
@@ -20,21 +24,24 @@ public class AssetService {
     }
 
     public Array<TextureAtlas.AtlasRegion> wrapRegionInArray(TextureAtlas.AtlasRegion region){
-        Array<TextureAtlas.AtlasRegion> regions = new Array<TextureAtlas.AtlasRegion>();
+        Array<TextureAtlas.AtlasRegion> regions = new Array<>();
         regions.add(region);
         return regions;
     }
 
     public void loadTextures(){
+        // In order to add new types of towers and mobs together with the fact that their enums
+        // are used other places, they're defined elsewhere, while other more generic assets are defined
+        // with paths here.
         for (TowerType type : TowerType.values()) {
             assetManager.load(type.atlasPath, TextureAtlas.class);
         }
         for (MobType type : MobType.values()) {
             assetManager.load(type.atlasPath, TextureAtlas.class);
         }
-        assetManager.load(Textures.TERRAIN_ATLAS, TextureAtlas.class);
-        assetManager.load(Textures.BUILDSPOTS_ATLAS, TextureAtlas.class);
-        assetManager.load(Textures.WALLS_ATLAS, TextureAtlas.class);
+        for (Atlas atlas : Atlas.values()) {
+            assetManager.load(atlas.path, TextureAtlas.class);
+        }
         assetManager.finishLoading();
     }
 
@@ -46,16 +53,20 @@ public class AssetService {
         return assetManager.update();
     }
 
-    public static abstract class Textures {
+    public enum Atlas {
+        Terrain("map/terrain.atlas"),
+        Buildspots("map/buildspots.atlas"),
+        Walls("map/walls.atlas"),
+        Explosion("effects/explosion.atlas"),
+        Sparks("effects/sparks.atlas"),
+        Bullet("projectiles/bullet.atlas"),
+        Plasma("projectiles/plasma.atlas");
 
-        // Map assets
-        public static final String TERRAIN_ATLAS = "map/terrain.atlas";
-        public static final String BUILDSPOTS_ATLAS = "map/buildspots.atlas";
-        public static final String WALLS_ATLAS = "map/walls.atlas";
+        public final String path;
 
-    }
+        Atlas(String path) {
+            this.path = path;
+        }
 
-    public static abstract class Sounds {
-        public static final String EXAMPLE_SOUND = "example/sound.mp3";
     }
 }

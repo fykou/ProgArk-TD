@@ -8,9 +8,10 @@ import com.badlogic.gdx.math.MathUtils;
 import no.ntnu.tdt4240.g25.td.model.entity.components.HasTargetComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 
-@All({TowerComponent.class, HasTargetComponent.class, PositionComponent.class, RotationComponent.class})
+@All({TowerComponent.class, HasTargetComponent.class, PositionComponent.class, RotationComponent.class, StateComponent.class})
 public class AimingSystem extends IteratingSystem {
 
     public static final int MAX_ANGLE_DIFF_TO_FIRE = 1;
@@ -20,6 +21,7 @@ public class AimingSystem extends IteratingSystem {
     ComponentMapper<HasTargetComponent> mHasTarget;
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<RotationComponent> mRotation;
+    ComponentMapper<StateComponent> mState;
 
     @Override
     protected void process(int entityId) {
@@ -34,6 +36,7 @@ public class AimingSystem extends IteratingSystem {
         //  as range checking could result in a null pointer or invalid entity id)
         if (position.get().dst(enemyPosition.get()) > tower.range) {
             world.getEntity(entityId).edit().remove(HasTargetComponent.class);
+            mState.get(entityId).set(StateComponent.STATE_IDLE);
             return;
         }
 
