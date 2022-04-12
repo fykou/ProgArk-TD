@@ -9,7 +9,8 @@ public class StateComponent extends Component {
     public static final int STATE_DYING = 3;
     public static final int STATE_DEAD = 4;
 
-    private int state;
+
+    private int state; // private, as the timer needs to be reset when the state changes
     public float time;
     public boolean isLooping;
 
@@ -23,12 +24,21 @@ public class StateComponent extends Component {
         this(STATE_IDLE);
     }
 
+    /**
+     * Returns the current state of the entity.
+     * @return the int representing the state
+     */
     public int get() {
         return state;
     }
 
+    /**
+     * Sets the state of the entity and resets the time.
+     * @param newState the new statethe new state
+     */
     public void set(int newState) {
         state = newState;
+        time = 0f;
     }
 
 }

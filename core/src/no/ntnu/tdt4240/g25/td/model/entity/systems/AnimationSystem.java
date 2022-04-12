@@ -18,9 +18,15 @@ public class AnimationSystem extends IteratingSystem {
     protected void process(int entityId) {
         var ac = mAnimation.get(entityId);
         var state = mState.get(entityId);
+        var tm = mTexture.get(entityId);
         if (ac.animations.containsKey(state.get())) {
-            var tm = mTexture.get(entityId);
             tm.region = ac.animations.get(state.get()).getKeyFrame(state.time, state.isLooping);
+        }
+        else if (ac.animations.containsKey(StateComponent.STATE_IDLE)) { // Fallback to idle animation
+            tm.region = ac.animations.get(StateComponent.STATE_IDLE).getKeyFrame(state.time, state.isLooping);
+        }
+        else { // Fallback to null animation
+            tm.region = null;
         }
         state.time += this.world.delta;
     }
