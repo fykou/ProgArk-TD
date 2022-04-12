@@ -16,7 +16,7 @@ public class StateComponent extends Component {
     public StateComponent(int newState) {
         time = 0f;
         state = newState;
-        isLooping = true;
+        isLooping = false;
     }
 
     public StateComponent() {

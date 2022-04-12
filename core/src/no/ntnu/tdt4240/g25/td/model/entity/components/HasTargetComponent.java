@@ -4,6 +4,7 @@ import com.artemis.Component;
 
 public class HasTargetComponent extends Component {
     public int targetId;
+    public boolean canShoot = false;
 }
 
 

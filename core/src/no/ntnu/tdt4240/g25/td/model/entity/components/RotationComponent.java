@@ -18,6 +18,6 @@ public class RotationComponent extends Component {
     }
 
     public void set(float rotation) {
-        this.rotation = rotation;
+        this.rotation = rotation % 360;
     }
 }
