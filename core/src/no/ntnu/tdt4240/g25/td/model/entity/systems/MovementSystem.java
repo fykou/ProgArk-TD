@@ -30,7 +30,7 @@ public class MovementSystem extends IntervalIteratingSystem {
         position.get().y += velocity.get().y * delta;
 
         if (rotation != null) {
-            // set rotation to the direction of movement in degrees, where 0 is perpendicular to the x-axis, pointing right.
+            // set rotation to the direction of movement in degrees, where 0 along the x-axis, pointing right.
             var newRotation = velocity.get().angleDeg();
             rotation.set(newRotation);
         }

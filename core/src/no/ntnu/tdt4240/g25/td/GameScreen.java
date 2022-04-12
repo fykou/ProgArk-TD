@@ -1,18 +1,9 @@
 package no.ntnu.tdt4240.g25.td;
 
-import com.artemis.World;
-import com.artemis.WorldConfiguration;
-import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.AnimationSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.AttackingSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.FindTargetSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.RenderSystem;
 
 /**
  * WIP
@@ -22,26 +13,13 @@ public class GameScreen extends ScreenAdapter {
     private TdGame game;
     private Screen parent;
     private GameWorld gameWorld;
-    private World world;
+
 
     public GameScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
-        setupWorld(game.getBatch());
-        this.gameWorld = new GameWorld(world, game.getAssetManager());
+        this.gameWorld = new GameWorld(game.getAssetManager(), game.getBatch());
     }
-
-    protected void setupWorld(SpriteBatch batch) {
-        WorldConfiguration config = new WorldConfigurationBuilder()
-                .with(new MovementSystem(1f/60))
-                .with(new RenderSystem(batch))
-                .with(new AnimationSystem())
-                .with(new FindTargetSystem(1f/60))
-                .with(new AttackingSystem())
-                .build();
-        this.world = new World(config);
-    }
-
 
     @Override
     public void show() {
@@ -51,6 +29,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         super.render(delta);
+        // just for testing/debugging as big deltas mess up stuff
         if (delta > 0.1f) {
             delta = 0.1f;
         }
