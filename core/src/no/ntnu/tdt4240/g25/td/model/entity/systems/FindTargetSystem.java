@@ -19,6 +19,7 @@ public class FindTargetSystem extends IntervalIteratingSystem {
 
     ComponentMapper<TowerComponent> mTower;
     ComponentMapper<PositionComponent> mPosition;
+    ComponentMapper<HasTargetComponent> mTarget;
 
     EntitySubscription enemySubscription;
 
@@ -59,10 +60,9 @@ public class FindTargetSystem extends IntervalIteratingSystem {
             }
         }
         if (closest != Float.MAX_VALUE) {
-            this.world.getEntity(entityId)
-                    .edit()
-                    .create(HasTargetComponent.class)
-                    .targetId = closestEnemy;
+            var target = mTarget.create(entityId);
+            target.targetId = closestEnemy;
+
         }
     }
 }

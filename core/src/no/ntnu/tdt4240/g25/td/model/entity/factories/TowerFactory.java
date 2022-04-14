@@ -30,7 +30,7 @@ public class TowerFactory {
     }
 
     // generalize the create functions defined above to use the new tower types enum, so that I can remove the above two functions
-    public void createTower(float x, float y, TowerType type, TowerLevel level) {
+    public void create(float x, float y, TowerType type, TowerLevel level) {
         var animationsMap = new IntMap<Animation<TextureAtlas.AtlasRegion>>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, level.name()))));
         animationsMap.put(StateComponent.STATE_ATTACKING, getAnimation(type, level));
@@ -45,7 +45,7 @@ public class TowerFactory {
 
     public Animation<TextureAtlas.AtlasRegion> getAnimation(TowerType type, TowerLevel level) {
         var regions = assetService.getAtlasRegionArray(type.atlasPath, level.name());
-        var frameDuration = regions.size / 60f;
+        var frameDuration = 1 / 30f;
         return new Animation<>(frameDuration, regions);
     }
 

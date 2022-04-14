@@ -36,9 +36,10 @@ public class StateComponent extends Component {
      * Sets the state of the entity and resets the time.
      * @param newState the new statethe new state
      */
-    public void set(int newState) {
+    public void set(int newState, boolean isLooping) {
         state = newState;
         time = 0f;
+        this.isLooping = isLooping;
     }
 
 }
