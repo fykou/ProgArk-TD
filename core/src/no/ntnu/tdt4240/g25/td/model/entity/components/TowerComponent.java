@@ -29,7 +29,4 @@ public class TowerComponent extends Component {
         this(0, 0, 0, 0, 1, TowerType.TYPE_1);
     }
 
-    public float currentCooldown() {
-        return cooldown;
-    }
 }
