@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.model;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+import com.artemis.link.EntityLinkManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
@@ -49,6 +50,7 @@ public class GameWorld {
                 .with(new AnimationSystem())
                 .with(new RenderSystem(batch))
                 .build()
+                .register(new EntityLinkManager())
                 // now register the factories to be injected into the systems
                 .register(towerFactory)
                 .register(mobFactory)
