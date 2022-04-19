@@ -38,12 +38,12 @@ public class GameWorld {
         towerFactory.create(350, 350, TowerType.TYPE_2, TowerLevel.MK3);
         towerFactory.create(350, 450, TowerType.TYPE_2, TowerLevel.MK4);
 
-        mobFactory.create(250, 100, MobType.NORMAL);
+        mobFactory.create(250, 100, MobType.TANK);
     }
 
     protected void createWorld(SpriteBatch batch) {
         WorldConfiguration config = new WorldConfigurationBuilder()
-                .with(new MovementSystem(1f/60))
+                .with(new MovementSystem())
                 .with(new FindTargetSystem(1f/60))
                 .with(new AimingSystem())
                 .with(new FiringSystem())
