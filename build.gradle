@@ -63,9 +63,16 @@ project(":android") {
 
     dependencies {
         implementation project(":core")
+
+        // Import the BoM for the Firebase platform
         implementation platform('com.google.firebase:firebase-bom:29.3.1')
 
-        implementation 'com.google.firebase:firebase-analytics'
+        // Declare the dependency for the Cloud Firestore library
+        // When using the BoM, you don't specify versions in Firebase library dependencies
+        implementation 'com.google.firebase:firebase-firestore'
+
+        implementation "com.google.firebase:firebase-analytics"
+
 
         api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"

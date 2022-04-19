@@ -9,11 +9,15 @@ public class TdGame extends Game {
 
 	private SpriteBatch batch;
 	private AssetService assetService;
+	private FirebaseInterface _FBIC;
+
+	public TdGame(FirebaseInterface FBIC) {_FBIC = FBIC;}
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-
+		_FBIC.SomeFunction();
+		_FBIC.FirstFireBaseTest();
 		assetService = new AssetService();
 		assetService.loadTextures();
 		while (!assetService.update()) {
