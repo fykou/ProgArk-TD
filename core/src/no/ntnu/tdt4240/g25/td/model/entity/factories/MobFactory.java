@@ -33,7 +33,7 @@ public class MobFactory {
         animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1/8f, assetService.getAtlasRegionArray(type.atlasPath, type.name())));
         world.createEntity().edit()
                 .add(new PositionComponent(x, y))
-                .add(new VelocityComponent(0, 25))
+                .add(new VelocityComponent())
                 .add(new RotationComponent(0))
                 .add(new StateComponent(StateComponent.STATE_IDLE))
                 .add(new MobComponent(type))
