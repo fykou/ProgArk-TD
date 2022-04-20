@@ -20,7 +20,7 @@ public class FindTargetSystem extends IntervalIteratingSystem {
     ComponentMapper<TowerComponent> mTower;
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<HasTargetComponent> mTarget;
-    EntitySubscription enemySubscription;
+    IntBag enemies;
 
     /**
      * Creates a new IntervalEntityProcessingSystem.
@@ -35,14 +35,13 @@ public class FindTargetSystem extends IntervalIteratingSystem {
     @Override
     public void initialize() {
         super.initialize();
-        enemySubscription = world.getAspectSubscriptionManager()
-                .get(Aspect.all(MobComponent.class, PositionComponent.class));
+        enemies = world.getAspectSubscriptionManager()
+                .get(Aspect.all(MobComponent.class, PositionComponent.class)).getEntities();
     }
 
 
     @Override
     protected void process(int entityId) {
-        IntBag enemies = enemySubscription.getEntities();
         TowerComponent tower = mTower.get(entityId);
         PositionComponent transform = mPosition.get(entityId);
 
