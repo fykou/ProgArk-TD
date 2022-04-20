@@ -20,7 +20,7 @@ public class TdGame extends Game {
 			// Wait for loading to complete
 		}
 
-		setScreen(new GameScreen(this, null));
+		setScreen(new MenuScreen(this, null));
 	}
 
 	public AssetService getAssetManager() {
