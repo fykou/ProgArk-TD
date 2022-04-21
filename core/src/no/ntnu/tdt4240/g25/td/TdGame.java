@@ -1,6 +1,7 @@
 package no.ntnu.tdt4240.g25.td;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g25.td.service.AssetService;

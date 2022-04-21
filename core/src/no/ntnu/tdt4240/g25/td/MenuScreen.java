@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,6 +19,7 @@ public class MenuScreen extends ScreenAdapter {
 
     private Texture playButton;
     private Texture settingsButton;
+    private Texture menuBackground;
 
     // Play Button
     private int playButton_positionX;
@@ -38,16 +40,17 @@ public class MenuScreen extends ScreenAdapter {
         this.sb = game.getBatch();
         this.playButton = new Texture("screens/play.png");
         this.settingsButton = new Texture("screens/settings.PNG");
+        this.menuBackground = new Texture("screens/menuBackground.png");
 
         playButtonWidth = 150;
-        playButtonHeight = 75;
+        playButtonHeight = 50;
         playButton_positionX = Gdx.graphics.getWidth() / 2 - (playButtonWidth / 2);
         playButton_positionY = Gdx.graphics.getHeight() / 2 - (playButtonHeight / 2);
 
         settingsButtonWidth = 150;
-        settingsButtonHeight = 75;
+        settingsButtonHeight = 50;
         settingsButton_positionX = Gdx.graphics.getWidth() / 2 - (settingsButtonWidth / 2);
-        settingsButton_positionY = Gdx.graphics.getHeight() / 2 - (settingsButtonHeight / 2) - 100;
+        settingsButton_positionY = Gdx.graphics.getHeight() / 2 - (settingsButtonHeight / 2) - 65;
     }
 
     @Override
@@ -70,13 +73,15 @@ public class MenuScreen extends ScreenAdapter {
             if (playButtonBounds.contains(inputCoordinates.x, inputCoordinates.y)){
                 game.setScreen(new GameScreen(game, this));
             } else if (settingsButtonBounds.contains(inputCoordinates.x, inputCoordinates.y)) {
-                System.out.println("Settings!");
+                game.setScreen(new SettingsScreen(game, this));
             }
         }
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         handleInput();
         super.render(delta);
         // just for testing/debugging as big deltas mess up stuff
@@ -85,12 +90,9 @@ public class MenuScreen extends ScreenAdapter {
         }
 
         sb.begin();
-        //sb.draw(drawObject, Gdx.graphics.getWidth() / 2 - drawObject.getWidth() / 2, 200, 200, 100);
-
+        sb.draw(menuBackground, 0, 0);
         sb.draw(playButton, playButton_positionX, playButton_positionY, playButtonWidth, playButtonHeight);
         sb.draw(settingsButton, settingsButton_positionX, settingsButton_positionY, settingsButtonWidth, settingsButtonHeight);
-
-
         sb.end();
     }
 
