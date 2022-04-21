@@ -16,9 +16,9 @@ public class AnimationSystem extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        var ac = mAnimation.get(entityId);
-        var state = mState.get(entityId);
-        var tm = mTexture.get(entityId);
+        AnimationComponent ac = mAnimation.get(entityId);
+        StateComponent state = mState.get(entityId);
+        TextureComponent tm = mTexture.get(entityId);
         if (ac.animations.containsKey(state.get())) {
             tm.region = ac.animations.get(state.get()).getKeyFrame(state.time, state.isLooping);
         }

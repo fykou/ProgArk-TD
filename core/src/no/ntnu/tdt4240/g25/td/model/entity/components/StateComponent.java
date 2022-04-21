@@ -1,16 +1,16 @@
 package no.ntnu.tdt4240.g25.td.model.entity.components;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
+@PooledWeaver
 public class StateComponent extends Component {
     public static final int STATE_IDLE = 0;
     public static final int STATE_MOVING = 1;
     public static final int STATE_ATTACKING = 2;
     public static final int STATE_DYING = 3;
-    public static final int STATE_DEAD = 4;
 
-
-    private int state; // private, as the timer needs to be reset when the state changes
+    public int state; // private, as the timer needs to be reset when the state changes
     public float time;
     public boolean isLooping;
 
