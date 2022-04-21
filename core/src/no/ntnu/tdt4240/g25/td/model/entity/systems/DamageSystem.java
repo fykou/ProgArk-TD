@@ -5,6 +5,7 @@ import com.artemis.annotations.All;
 import com.artemis.systems.IteratingSystem;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.DamageComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 
@@ -14,6 +15,7 @@ public class DamageSystem extends IteratingSystem {
     ComponentMapper<DamageComponent> mDamage;
     ComponentMapper<MobComponent> mMob;
     ComponentMapper<StateComponent> mState;
+    ComponentMapper<ExpireComponent> mExpire;
 
     @Override
     protected void process(int entityId) {
@@ -23,7 +25,9 @@ public class DamageSystem extends IteratingSystem {
         mob.health -= damage.damage;
         if(mob.health <= 0) {
             mob.health = 0;
+            mExpire.create(entityId);
             state.set(StateComponent.STATE_DYING, true);
         }
+        mDamage.remove(entityId);
     }
 }

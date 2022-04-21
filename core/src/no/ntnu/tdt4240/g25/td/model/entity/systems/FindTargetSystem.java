@@ -20,7 +20,7 @@ public class FindTargetSystem extends IntervalIteratingSystem {
     ComponentMapper<TowerComponent> mTower;
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<HasTargetComponent> mTarget;
-    IntBag enemies;
+    EntitySubscription enemySubscription;
 
     /**
      * Creates a new IntervalEntityProcessingSystem.
@@ -35,8 +35,8 @@ public class FindTargetSystem extends IntervalIteratingSystem {
     @Override
     public void initialize() {
         super.initialize();
-        enemies = world.getAspectSubscriptionManager()
-                .get(Aspect.all(MobComponent.class, PositionComponent.class)).getEntities();
+        enemySubscription = world.getAspectSubscriptionManager()
+                .get(Aspect.all(MobComponent.class, PositionComponent.class));
     }
 
 
@@ -44,6 +44,7 @@ public class FindTargetSystem extends IntervalIteratingSystem {
     protected void process(int entityId) {
         TowerComponent tower = mTower.get(entityId);
         PositionComponent transform = mPosition.get(entityId);
+        IntBag enemies = enemySubscription.getEntities();
 
         // Prefer to target the closest enemy, start by setting the target to null
         // and then iterate through all enemies and find the closest one

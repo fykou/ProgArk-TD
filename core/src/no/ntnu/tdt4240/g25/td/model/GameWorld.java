@@ -11,6 +11,10 @@ import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AnimationSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AimingSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.BoundsSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.CollisionSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.DamageSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.ExpireSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FindTargetSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FiringSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
@@ -44,13 +48,17 @@ public class GameWorld {
     protected void createWorld(SpriteBatch batch) {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(new MovementSystem())
+                .with(new BoundsSystem())
+                .with(new CollisionSystem())
                 .with(new FindTargetSystem(1f/60))
                 .with(new AimingSystem())
                 .with(new FiringSystem())
+                .with(new DamageSystem())
+                .with(new ExpireSystem())
                 .with(new AnimationSystem())
                 .with(new RenderSystem(batch))
                 .build()
-                .register(new EntityLinkManager())
+                .register(EntityLinkManager.class)
                 // now register the factories to be injected into the systems
                 .register(towerFactory)
                 .register(mobFactory)

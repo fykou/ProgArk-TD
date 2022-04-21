@@ -34,6 +34,13 @@ public class AimingSystem extends IteratingSystem {
         // the entity and return.
         // TODO: check if target is still alive (this check should be done before the range check,
         //  as range checking could result in a null pointer or invalid entity id)
+        if (target.targetId == -1) {
+            mHasTarget.remove(entityId);
+            return;
+        }
+        if (enemyPosition == null || enemyPosition.get() == null) {
+            System.out.println("hit null");
+        }
         if (position.get().dst(enemyPosition.get()) > tower.range) {
             mPosition.remove(target.targetId);
             mState.get(entityId).set(StateComponent.STATE_IDLE, false);
