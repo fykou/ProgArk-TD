@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.AnimationComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.ProjectileComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
@@ -37,7 +38,8 @@ public class ProjectileFactory extends EntityFactory {
                 .add(new RotationComponent())
                 .add(new TextureComponent())
                 .add(new AnimationComponent(animationsMap))
-                .add(new ProjectileComponent(damage, splashRadius));
+                .add(new ProjectileComponent(damage, splashRadius))
+                .add(new ExpireComponent(5f));
 
     }
 }

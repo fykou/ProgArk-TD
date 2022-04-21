@@ -10,6 +10,7 @@ import com.artemis.utils.IntBag;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.HasTargetComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 
@@ -20,6 +21,7 @@ public class FindTargetSystem extends IntervalIteratingSystem {
     ComponentMapper<TowerComponent> mTower;
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<HasTargetComponent> mTarget;
+    ComponentMapper<StateComponent> mState;
     EntitySubscription enemySubscription;
 
     /**
@@ -36,7 +38,7 @@ public class FindTargetSystem extends IntervalIteratingSystem {
     public void initialize() {
         super.initialize();
         enemySubscription = world.getAspectSubscriptionManager()
-                .get(Aspect.all(MobComponent.class, PositionComponent.class));
+                .get(Aspect.all(MobComponent.class, PositionComponent.class, StateComponent.class));
     }
 
 
@@ -53,6 +55,8 @@ public class FindTargetSystem extends IntervalIteratingSystem {
         for (int i = 0; i < enemies.size(); i++) {
             int enemy = enemies.get(i);
             PositionComponent enemyTransform = mPosition.get(enemy);
+            StateComponent enemyState = mState.get(enemy);
+            if (enemyState.get() == StateComponent.STATE_DYING) continue;
             float distance = transform.get().dst(enemyTransform.get());
             if (distance > tower.range) continue;
             if (distance < closest) {

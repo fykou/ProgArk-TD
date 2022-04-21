@@ -24,9 +24,9 @@ public class DamageSystem extends IteratingSystem {
         StateComponent state = mState.get(entityId);
         mob.health -= damage.damage;
         if(mob.health <= 0) {
-            mob.health = 0;
-            mExpire.create(entityId);
-            state.set(StateComponent.STATE_DYING, true);
+            ExpireComponent expire = mExpire.create(entityId);
+            expire.timeLeft = 2;
+            state.set(StateComponent.STATE_DYING, false);
         }
         mDamage.remove(entityId);
     }
