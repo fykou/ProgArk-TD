@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.model;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+import com.artemis.link.EntityLinkManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
@@ -10,6 +11,10 @@ import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AnimationSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AimingSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.BoundsSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.CollisionSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.DamageSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.ExpireSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FindTargetSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FiringSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
@@ -37,15 +42,20 @@ public class GameWorld {
         towerFactory.create(350, 350, TowerType.TYPE_2, TowerLevel.MK3);
         towerFactory.create(350, 450, TowerType.TYPE_2, TowerLevel.MK4);
 
-        mobFactory.create(250, 100, MobType.NORMAL);
+        mobFactory.create(250, 100, MobType.TANK);
     }
 
     protected void createWorld(SpriteBatch batch) {
         WorldConfiguration config = new WorldConfigurationBuilder()
-                .with(new MovementSystem(1f/60))
+                .dependsOn(EntityLinkManager.class)
+                .with(new MovementSystem())
+                .with(new BoundsSystem())
+                .with(new CollisionSystem())
                 .with(new FindTargetSystem(1f/60))
                 .with(new AimingSystem())
                 .with(new FiringSystem())
+                .with(new DamageSystem())
+                .with(new ExpireSystem())
                 .with(new AnimationSystem())
                 .with(new RenderSystem(batch))
                 .build()
