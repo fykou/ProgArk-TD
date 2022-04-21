@@ -47,7 +47,7 @@ public class CollisionSystem extends IteratingSystem {
             BoundsComponent mobBounds = mBounds.get(mob);
             if (mobBounds != null && overlaps(position, mobBounds)) {
                 DamageComponent damage = mDamage.create(mob);
-                damage.damage = projectile.damage;
+                damage.damage += projectile.damage;
 
                 // If the projectile has splash damage, apply it to all mobs in the area
                 if (projectile.radius > 0) {
