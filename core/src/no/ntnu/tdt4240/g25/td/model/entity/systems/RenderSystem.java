@@ -42,7 +42,7 @@ public class RenderSystem extends SortedIteratingSystem {
         float originY = height / 2f;
 
 
-        var renderRot = rotation != null ? rotation.get() : 0f;
+        float renderRot = rotation != null ? rotation.get() : 0f;
         batch.draw(textureComponent.region,
                 position.get().x - originX, position.get().y - originY,
                 originX, originY,

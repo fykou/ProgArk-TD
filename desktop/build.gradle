@@ -1,9 +1,10 @@
-sourceCompatibility = 11
+sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../assets"]
 
 project.ext.mainClassName = "no.ntnu.tdt4240.g25.td.DesktopLauncher"
 project.ext.assetsDir = new File("../assets")
+project.ext.weaveDir = new File("$buildDir/exploded")
 
 import org.gradle.internal.os.OperatingSystem
 

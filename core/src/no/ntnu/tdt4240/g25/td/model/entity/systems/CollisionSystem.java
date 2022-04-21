@@ -46,7 +46,7 @@ public class CollisionSystem extends IteratingSystem {
             if (position.get().dst(mobPosition.get()) > POSITION_CHECK_THRESHOLD) continue;
             BoundsComponent mobBounds = mBounds.get(mob);
             if (mobBounds != null && overlaps(position, mobBounds)) {
-                var damage = mDamage.create(mob);
+                DamageComponent damage = mDamage.create(mob);
                 damage.damage = projectile.damage;
 
                 // If the projectile has splash damage, apply it to all mobs in the area
@@ -57,7 +57,7 @@ public class CollisionSystem extends IteratingSystem {
                         PositionComponent nearbyMobPosition = mPosition.get(nearbyMob);
                         if (nearbyMobPosition.get().dst(mobPosition.get()) > POSITION_CHECK_THRESHOLD) continue;
                         if (nearbyMobPosition.get().dst(position.get()) > projectile.radius) continue;
-                        var nearbyMobBounds = mBounds.get(nearbyMob);
+                        BoundsComponent nearbyMobBounds = mBounds.get(nearbyMob);
                         if (nearbyMobBounds != null && overlaps(nearbyMobPosition, nearbyMobBounds)) {
                             applyDamage(nearbyMob, projectile.damage);
                         }
@@ -69,14 +69,11 @@ public class CollisionSystem extends IteratingSystem {
     }
 
     private void applyDamage(int mob, float damage) {
-        var mobDamage = mDamage.create(mob);
+        DamageComponent mobDamage = mDamage.create(mob);
         mobDamage.damage += damage;
     }
 
     private boolean overlaps(PositionComponent projectile, BoundsComponent mobBounds) {
-        var mb = mobBounds.get();
-        var p = projectile.get();
-        return mb.contains(p);
-        //return mobBounds.get().contains(projectile.get());
+        return mobBounds.get().contains(projectile.get());
     }
 }

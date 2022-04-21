@@ -29,7 +29,7 @@ public class MobFactory {
         this.world = world;
     }
     public void create(float x, float y, MobType type) {
-        var animationsMap = new IntMap<Animation<TextureAtlas.AtlasRegion>>();
+        IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, type.name()))));
         animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1/8f, assetService.getAtlasRegionArray(type.atlasPath, type.name())));
         world.createEntity().edit()

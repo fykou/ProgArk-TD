@@ -25,11 +25,11 @@ public class AimingSystem extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        var tower = mTower.get(entityId);
-        var rotation = mRotation.get(entityId);
-        var position = mPosition.get(entityId);
-        var target = mHasTarget.get(entityId);
-        var enemyPosition = mPosition.get(target.targetId);
+        TowerComponent tower = mTower.get(entityId);
+        RotationComponent rotation = mRotation.get(entityId);
+        PositionComponent position = mPosition.get(entityId);
+        HasTargetComponent target = mHasTarget.get(entityId);
+
         // first, check if current target is within range, if not, remove HasTargetComponent from
         // the entity and return.
         // TODO: check if target is still alive (this check should be done before the range check,
@@ -38,9 +38,7 @@ public class AimingSystem extends IteratingSystem {
             mHasTarget.remove(entityId);
             return;
         }
-        if (enemyPosition == null || enemyPosition.get() == null) {
-            System.out.println("hit null");
-        }
+        PositionComponent enemyPosition = mPosition.get(target.targetId);
         if (position.get().dst(enemyPosition.get()) > tower.range) {
             mPosition.remove(target.targetId);
             mState.get(entityId).set(StateComponent.STATE_IDLE, false);
@@ -49,17 +47,17 @@ public class AimingSystem extends IteratingSystem {
 
         // first, if the tower can rotate, aim towards the target, setting rotation to within +/- MAX_ANGLE_DIFF_TO_FIRE
         // of the target position, rotating at a rate of 180 degrees per second.
-        var goalAngle = enemyPosition.get().cpy().sub(position.get()).angleDeg();
+        float goalAngle = enemyPosition.get().cpy().sub(position.get()).angleDeg();
 
         // get the difference between the current angle and the goal angle
-        var difference = goalAngle - rotation.get();
+        float difference = goalAngle - rotation.get();
 
         // subtract 360 if the difference is greater than 180 degrees, so we can get the shortest direction
         if (difference > 180f) difference -= 360f;
-        var direction = Math.signum(difference);
+        float direction = Math.signum(difference);
 
         if (Math.abs(difference) > MAX_ANGLE_DIFF_TO_FIRE) {
-            var toTurn = direction * TURN_RATE_DEGREES * world.delta;
+            float toTurn = direction * TURN_RATE_DEGREES * world.delta;
             if (Math.abs(toTurn) > Math.abs(difference)) toTurn = difference;
             rotation.set(rotation.get() + toTurn);
         }
