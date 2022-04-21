@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.IntMap;
 
 import no.ntnu.tdt4240.g25.td.model.MobType;
 import no.ntnu.tdt4240.g25.td.model.entity.components.AnimationComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.BoundsComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
@@ -33,6 +34,7 @@ public class MobFactory {
         animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1/8f, assetService.getAtlasRegionArray(type.atlasPath, type.name())));
         world.createEntity().edit()
                 .add(new PositionComponent(x, y))
+                .add(new BoundsComponent(100, 100))
                 .add(new VelocityComponent())
                 .add(new RotationComponent(0))
                 .add(new StateComponent(StateComponent.STATE_IDLE))

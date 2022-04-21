@@ -4,4 +4,8 @@ import com.artemis.Component;
 
 public class DamageComponent extends Component {
     public float damage;
+
+    public DamageComponent() {
+        this.damage = 0;
+    }
 }
