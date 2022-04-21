@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.model.entity.factories;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 
 import no.ntnu.tdt4240.g25.td.model.TowerLevel;
@@ -15,23 +16,15 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
-public class TowerFactory {
-
-    AssetService assetService;
-
-    World world;
+public class TowerFactory extends EntityFactory {
 
     public TowerFactory(AssetService assetService) {
-        this.assetService = assetService;
-    }
-
-    public void setWorld(World world) {
-        this.world = world;
+        super(assetService);
     }
 
     // generalize the create functions defined above to use the new tower types enum, so that I can remove the above two functions
     public void create(float x, float y, TowerType type, TowerLevel level) {
-        var animationsMap = new IntMap<Animation<TextureAtlas.AtlasRegion>>();
+        IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, level.name()))));
         animationsMap.put(StateComponent.STATE_ATTACKING, getAnimation(type, level));
         world.createEntity().edit()
@@ -44,8 +37,8 @@ public class TowerFactory {
     }
 
     public Animation<TextureAtlas.AtlasRegion> getAnimation(TowerType type, TowerLevel level) {
-        var regions = assetService.getAtlasRegionArray(type.atlasPath, level.name());
-        var frameDuration = 1 / 30f;
+        Array<TextureAtlas.AtlasRegion> regions = assetService.getAtlasRegionArray(type.atlasPath, level.name());
+        float frameDuration = 1 / 30f;
         return new Animation<>(frameDuration, regions);
     }
 
