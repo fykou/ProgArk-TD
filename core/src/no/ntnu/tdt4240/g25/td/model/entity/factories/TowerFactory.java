@@ -16,18 +16,10 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
-public class TowerFactory {
-
-    AssetService assetService;
-
-    World world;
+public class TowerFactory extends EntityFactory {
 
     public TowerFactory(AssetService assetService) {
-        this.assetService = assetService;
-    }
-
-    public void setWorld(World world) {
-        this.world = world;
+        super(assetService);
     }
 
     // generalize the create functions defined above to use the new tower types enum, so that I can remove the above two functions
