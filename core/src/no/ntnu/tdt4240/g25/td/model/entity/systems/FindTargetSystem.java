@@ -48,12 +48,12 @@ public class FindTargetSystem extends IntervalIteratingSystem {
 
         // Prefer to target the closest enemy, start by setting the target to null
         // and then iterate through all enemies and find the closest one
-        var closest = Float.MAX_VALUE;
-        var closestEnemy = -1;
+        float closest = Float.MAX_VALUE;
+        int closestEnemy = -1;
         for (int i = 0; i < enemies.size(); i++) {
             int enemy = enemies.get(i);
             PositionComponent enemyTransform = mPosition.get(enemy);
-            var distance = transform.get().dst(enemyTransform.get());
+            float distance = transform.get().dst(enemyTransform.get());
             if (distance > tower.range) continue;
             if (distance < closest) {
                 closest = distance;
@@ -62,7 +62,7 @@ public class FindTargetSystem extends IntervalIteratingSystem {
         }
         // if we found an enemy, set the target
         if (closest != Float.MAX_VALUE) {
-            var target = mTarget.create(entityId);
+            HasTargetComponent target = mTarget.create(entityId);
             target.targetId = closestEnemy;
 
         }

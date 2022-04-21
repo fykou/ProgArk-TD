@@ -29,7 +29,7 @@ public class ProjectileFactory {
     }
 
     public void create(float x, float y, float vx, float vy, float damage, float splashRadius) {
-        var animationsMap = new IntMap<Animation<TextureAtlas.AtlasRegion>>();
+        IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         // get bullet for projectile without splash, plasma for splash
         Array<TextureAtlas.AtlasRegion> regions;
         if (splashRadius != 0) {

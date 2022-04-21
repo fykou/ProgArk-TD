@@ -47,6 +47,7 @@ public class GameWorld {
 
     protected void createWorld(SpriteBatch batch) {
         WorldConfiguration config = new WorldConfigurationBuilder()
+                .dependsOn(EntityLinkManager.class)
                 .with(new MovementSystem())
                 .with(new BoundsSystem())
                 .with(new CollisionSystem())
@@ -58,7 +59,6 @@ public class GameWorld {
                 .with(new AnimationSystem())
                 .with(new RenderSystem(batch))
                 .build()
-                .register(EntityLinkManager.class)
                 // now register the factories to be injected into the systems
                 .register(towerFactory)
                 .register(mobFactory)

@@ -29,7 +29,7 @@ public class MovementSystem extends IteratingSystem {
 
         if (rotation != null) {
             // set rotation to the direction of movement in degrees, where 0 along the x-axis, pointing right.
-            var newRotation = velocity.get().angleDeg();
+            float newRotation = velocity.get().angleDeg();
             rotation.set(newRotation);
         }
 
