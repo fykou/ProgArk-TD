@@ -6,37 +6,33 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.LoadingScreen;
 
 public class TdGame extends Game {
 
-	private SpriteBatch batch;
-	private ShapeRenderer shapeRenderer;
-	private AssetService assetService;
+    private SpriteBatch batch;
+    private ShapeRenderer shapeRenderer;
+    private AssetService assetService;
 
-	@Override
-	public void create() {
-		batch = new SpriteBatch();
-		shapeRenderer = new ShapeRenderer();
-		assetService = new AssetService();
-		assetService.loadTextures();
-		assetService.loadFonts(Gdx.graphics.getHeight());
-		while (!assetService.update()) {
-			// Wait for loading to complete
-		}
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
+        assetService = new AssetService();
 
-		setScreen(new MenuScreen(this, null));
-	}
+        setScreen(new LoadingScreen(this, null));
+    }
 
-	public AssetService getAssetManager() {
-		return assetService;
-	}
+    public AssetService getAssetManager() {
+        return assetService;
+    }
 
-	public SpriteBatch getBatch() {
-		return batch;
-	}
+    public SpriteBatch getBatch() {
+        return batch;
+    }
 
-	public ShapeRenderer getShapeRenderer() {
-		return shapeRenderer;
-	}
+    public ShapeRenderer getShapeRenderer() {
+        return shapeRenderer;
+    }
 
 }
