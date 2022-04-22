@@ -55,7 +55,10 @@ public class AssetService {
         for (Atlas atlas : Atlas.values()) {
             assetManager.load(atlas.path, TextureAtlas.class);
         }
-        assetManager.finishLoading();
+
+        for (TerrainAtlas atlas : TerrainAtlas.values()) {
+            assetManager.load(atlas.path, TextureAtlas.class);
+        }
     }
 
     public void loadFonts(float initialSize) {
@@ -85,13 +88,12 @@ public class AssetService {
     }
 
     public enum Atlas {
-        Terrain("map/terrain.atlas"),
-        Buildspots("map/buildspots.atlas"),
-        Walls("map/walls.atlas"),
-        Explosion("effects/explosion.atlas"),
-        Sparks("effects/sparks.atlas"),
-        Bullet("projectiles/bullet.atlas"),
-        Plasma("projectiles/plasma.atlas");
+        BUILDSPOTS("map/buildspots.atlas"),
+        WALLS("map/walls.atlas"),
+        EXPLOSION("effects/explosion.atlas"),
+        SPARKS("effects/sparks.atlas"),
+        BULLET("projectiles/bullet.atlas"),
+        PLASMA("projectiles/plasma.atlas");
 
         public final String path;
 
@@ -99,6 +101,7 @@ public class AssetService {
             this.path = path;
         }
     }
+
 
     public enum Font {
         GILROY("fonts/gilroy.ttf"),
@@ -109,6 +112,19 @@ public class AssetService {
         public final String path;
 
         Font(String path) {
+            this.path = path;
+        }
+    }
+
+    public enum TerrainAtlas {
+        SUMMER("map/terrain/summer.atlas"),
+        WINTER("map/terrain/winter.atlas"),
+        FALL("map/terrain/fall.atlas"),
+        SPRING("map/terrain/spring.atlas");
+      
+        public final String path;
+      
+        TerrainAtlas(String path) {
             this.path = path;
         }
     }

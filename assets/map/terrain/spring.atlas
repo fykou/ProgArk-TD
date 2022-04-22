@@ -1,0 +1,55 @@
+
+spring.png
+size: 1024, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+obstacle
+  rotate: false
+  xy: 392, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+plain
+  rotate: false
+  xy: 782, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+road
+  rotate: false
+  xy: 132, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+road_cross
+  rotate: false
+  xy: 2, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+road_tcross
+  rotate: false
+  xy: 262, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+road_turn
+  rotate: false
+  xy: 522, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+trees
+  rotate: false
+  xy: 652, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
