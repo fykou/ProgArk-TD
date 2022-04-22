@@ -20,14 +20,13 @@ public class MapGrid {
     }
 
     public void createMapGrid() {
-        int gridSize = 1;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (path.contains(new Vector2(i, j))) {
-                    grid.add(new MapTile(i, j, gridSize, MapTileType.ROAD));
+                    grid.add(new MapTile(i, j, MapTileType.ROAD));
                 }
                 else {
-                    grid.add(new MapTile(i, j, gridSize, MapTileType.PLAIN));
+                    grid.add(new MapTile(i, j, MapTileType.PLAIN));
                 }
             }
         }
