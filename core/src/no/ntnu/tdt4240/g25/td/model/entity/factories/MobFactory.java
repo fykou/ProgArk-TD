@@ -27,7 +27,7 @@ public class MobFactory extends EntityFactory {
         animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1 / 8f, assetService.getAtlasRegionArray(type.atlasPath, type.name())));
         world.createEntity().edit()
                 .add(new PositionComponent(x, y))
-                .add(new BoundsComponent(100, 100))
+                .add(new BoundsComponent(0.8f, 0.8f))
                 .add(new VelocityComponent())
                 .add(new RotationComponent(0))
                 .add(new StateComponent(StateComponent.STATE_IDLE))

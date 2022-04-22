@@ -28,6 +28,7 @@ allprojects {
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.2.1'
         artemisVersion = '2.3.0'
+        artemisContribVersion = '2.5.0'
     }
 
     repositories {
@@ -84,6 +85,9 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
 
+        implementation "net.mostlyoriginal.artemis-odb:contrib-core:$artemisContribVersion"
+        implementation "net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisContribVersion"
+        implementation "net.mostlyoriginal.artemis-odb:contrib-jam:$artemisContribVersion"
         implementation "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
         
     }
