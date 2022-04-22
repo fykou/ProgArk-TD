@@ -26,9 +26,9 @@ public class ProjectileFactory extends EntityFactory {
         // get bullet for projectile without splash, plasma for splash
         Array<TextureAtlas.AtlasRegion> regions;
         if (splashRadius != 0) {
-            regions = assetService.getAtlasRegionArray(AssetService.Atlas.Plasma.path, AssetService.Atlas.Plasma.name());
+            regions = assetService.getAtlasRegionArray(AssetService.Atlas.PLASMA.path, AssetService.Atlas.PLASMA.name());
         } else { // default to bullet
-            regions = assetService.getAtlasRegionArray(AssetService.Atlas.Bullet.path, AssetService.Atlas.Bullet.name());
+            regions = assetService.getAtlasRegionArray(AssetService.Atlas.BULLET.path, AssetService.Atlas.BULLET.name());
         }
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(regions.size / 60f, regions));
         world.createEntity().edit()
