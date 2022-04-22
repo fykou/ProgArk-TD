@@ -3,54 +3,76 @@ package no.ntnu.tdt4240.g25.td;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
+import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class MenuScreen extends ScreenAdapter {
+
+    // Logic size menu
+    public int MENU_LOGIC_WIDTH = 720;
+    public int MENU_LOGIC_HEIGHT = 1280;
 
     private TdGame game;
     private Screen parent;
     private SpriteBatch sb;
-
-    private Texture playButton;
-    private Texture settingsButton;
-    private Texture menuBackground;
+    private ShapeRenderer sr;
+    private OrthographicCamera camera;
 
     // Play Button
-    private int playButton_positionX;
-    private int playButton_positionY;
-    private int playButtonWidth;
-    private int playButtonHeight;
+    private Rectangle playButton;
+    private GlyphLayout playButtonLayout;
 
     // Settings Button
-    private int settingsButton_positionX;
-    private int settingsButton_positionY;
-    private int settingsButtonWidth;
-    private int settingsButtonHeight;
+    private Rectangle settingsButton;
+    private GlyphLayout settingsButtonLayout;
+
+    // Fonts
+    private BitmapFont font;
 
 
     public MenuScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.sb = game.getBatch();
-        this.playButton = new Texture("screens/play.png");
-        this.settingsButton = new Texture("screens/settings.PNG");
-        this.menuBackground = new Texture("screens/menuBackground.png");
+        this.sr = game.getShapeRenderer();
+        this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
 
-        playButtonWidth = 150;
-        playButtonHeight = 50;
-        playButton_positionX = Gdx.graphics.getWidth() / 2 - (playButtonWidth / 2);
-        playButton_positionY = Gdx.graphics.getHeight() / 2 - (playButtonHeight / 2);
+        // Camera
+        float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
+        camera = new OrthographicCamera(MENU_LOGIC_HEIGHT / aspectRatio, MENU_LOGIC_HEIGHT);
+        camera.position.set(MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_HEIGHT / 2f, 0);
 
-        settingsButtonWidth = 150;
-        settingsButtonHeight = 50;
-        settingsButton_positionX = Gdx.graphics.getWidth() / 2 - (settingsButtonWidth / 2);
-        settingsButton_positionY = Gdx.graphics.getHeight() / 2 - (settingsButtonHeight / 2) - 65;
+
+        // Play Button
+        playButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_WIDTH / 4f)
+                .setCenter(MENU_LOGIC_WIDTH / 2f, (MENU_LOGIC_HEIGHT / 2f) + MENU_LOGIC_HEIGHT / 5f);
+
+        playButtonLayout = new GlyphLayout(font, "Play", font.getColor(), playButton.width, Align.center, false);
+
+        // Settings Button
+        settingsButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_WIDTH / 4f)
+                .setCenter(MENU_LOGIC_WIDTH / 2f, (MENU_LOGIC_HEIGHT / 2f) - MENU_LOGIC_HEIGHT / 5f);
+
+        settingsButtonLayout = new GlyphLayout(font, "Settings", Color.WHITE, settingsButton.width, Align.center, false);
+
+
     }
 
     @Override
@@ -62,17 +84,12 @@ public class MenuScreen extends ScreenAdapter {
         if (Gdx.input.justTouched()) {
 
             // Input coordinates
-            Vector3 inputCoordinates = new Vector3(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0);
+            Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-            // Draw bounds around Play Button
-            Rectangle playButtonBounds = new Rectangle(playButton_positionX, playButton_positionY, playButtonWidth, playButtonHeight);
 
-            // Draw bounds around Settings Button
-            Rectangle settingsButtonBounds = new Rectangle(settingsButton_positionX, settingsButton_positionY, settingsButtonWidth, settingsButtonHeight);
-
-            if (playButtonBounds.contains(inputCoordinates.x, inputCoordinates.y)){
+            if (playButton.contains(inputCoordinates.x, inputCoordinates.y)) {
                 game.setScreen(new GameScreen(game, this));
-            } else if (settingsButtonBounds.contains(inputCoordinates.x, inputCoordinates.y)) {
+            } else if (settingsButton.contains(inputCoordinates.x, inputCoordinates.y)) {
                 game.setScreen(new SettingsScreen(game, this));
             }
         }
@@ -81,18 +98,22 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         handleInput();
-        super.render(delta);
         // just for testing/debugging as big deltas mess up stuff
         if (delta > 0.1f) {
             delta = 0.1f;
         }
-
+        camera.update();
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.setProjectionMatrix(camera.combined);
+        sr.setColor(Color.WHITE);
+        sr.rect(playButton.x, playButton.y, playButton.width, playButton.height);
+        sr.rect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height);
+        sr.end();
         sb.begin();
-        sb.draw(menuBackground, 0, 0);
-        sb.draw(playButton, playButton_positionX, playButton_positionY, playButtonWidth, playButtonHeight);
-        sb.draw(settingsButton, settingsButton_positionX, settingsButton_positionY, settingsButtonWidth, settingsButtonHeight);
+        sb.setProjectionMatrix(camera.combined);
+        font.draw(sb, playButtonLayout, playButton.x, (playButton.y + playButton.height / 2f) + font.getCapHeight() / 2f);
+        font.draw(sb, settingsButtonLayout, settingsButton.x, (settingsButton.y + settingsButton.height / 2f) + font.getCapHeight() / 2f);
         sb.end();
     }
 
