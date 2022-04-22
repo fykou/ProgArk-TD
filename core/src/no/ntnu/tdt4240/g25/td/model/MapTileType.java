@@ -2,15 +2,15 @@ package no.ntnu.tdt4240.g25.td.model;
 
 public enum MapTileType {
 
-    PLAIN("map/terrain/summer.atlas"),
-    OBSTACLE("map/terrain/summer.atlas"),
-    TREES("map/terrain/summer.atlas"),
-    ROAD("map/terrain/summer.atlas"),
-    ROAD_TURN("map/terrain/summer.atlas");
+    PLAIN("plain"),
+    OBSTACLE("obstacle"),
+    TREES("trees"),
+    ROAD("road"),
+    ROAD_TURN("road_turn");
 
-    public final String atlasPath;
+    public final String regionName;
 
-    MapTileType(String atlasPath) {
-        this.atlasPath = atlasPath;
+    MapTileType(String regionName) {
+        this.regionName = regionName;
     }
 }
