@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g25.td;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -13,6 +14,7 @@ public class TdGame extends Game {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private AssetService assetService;
+
 
     @Override
     public void create() {

@@ -39,6 +39,10 @@ public class MenuScreen extends ScreenAdapter {
     private Rectangle playButton;
     private GlyphLayout playButtonLayout;
 
+    // Leaderboard Button
+    private Rectangle leaderboardButton;
+    private GlyphLayout leaderboardButtonLayout;
+
     // Settings Button
     private Rectangle settingsButton;
     private GlyphLayout settingsButtonLayout;
@@ -72,7 +76,11 @@ public class MenuScreen extends ScreenAdapter {
 
         settingsButtonLayout = new GlyphLayout(font, "Settings", Color.WHITE, settingsButton.width, Align.center, false);
 
+        // Leaderboard Button
+        leaderboardButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_WIDTH / 4f)
+                .setCenter(MENU_LOGIC_WIDTH / 2f, (MENU_LOGIC_HEIGHT / 2f));
 
+        leaderboardButtonLayout = new GlyphLayout(font, "Leaderboard", Color.WHITE, leaderboardButton.width, Align.center, false);
     }
 
     @Override
@@ -91,6 +99,8 @@ public class MenuScreen extends ScreenAdapter {
                 game.setScreen(new GameScreen(game, this));
             } else if (settingsButton.contains(inputCoordinates.x, inputCoordinates.y)) {
                 game.setScreen(new SettingsScreen(game, this));
+            } else if (leaderboardButton.contains(inputCoordinates.x, inputCoordinates.y)) {
+                game.setScreen(new HighscoreScreen(game, this));
             }
         }
     }
@@ -109,11 +119,13 @@ public class MenuScreen extends ScreenAdapter {
         sr.setColor(Color.WHITE);
         sr.rect(playButton.x, playButton.y, playButton.width, playButton.height);
         sr.rect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height);
+        sr.rect(leaderboardButton.x, leaderboardButton.y, leaderboardButton.width, leaderboardButton.height);
         sr.end();
         sb.begin();
         sb.setProjectionMatrix(camera.combined);
         font.draw(sb, playButtonLayout, playButton.x, (playButton.y + playButton.height / 2f) + font.getCapHeight() / 2f);
         font.draw(sb, settingsButtonLayout, settingsButton.x, (settingsButton.y + settingsButton.height / 2f) + font.getCapHeight() / 2f);
+        font.draw(sb, leaderboardButtonLayout, leaderboardButton.x, (leaderboardButton.y + leaderboardButton.height / 2f) + font.getCapHeight() / 2f);
         sb.end();
     }
 
