@@ -8,6 +8,8 @@ public class MapTile {
 
 
     public MapTile(int x, int y, MapTileType tile) {
+        this.x = x;
+        this.y = y;
         this.tile = tile;
     }
 
