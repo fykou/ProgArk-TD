@@ -3,6 +3,8 @@ package no.ntnu.tdt4240.g25.td;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.ArrayList;
+
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class TdGame extends Game {
@@ -16,8 +18,23 @@ public class TdGame extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		_FBIC.SomeFunction();
-		_FBIC.FirstFireBaseTest();
+		_FBIC.getTopFiveHighScores(new FirestoreCallbackRead() {
+			@Override
+			public void onCompleteCallback(ArrayList topFiveHighScoresList) {
+				System.out.println("Callback fra TdGame: "+ topFiveHighScoresList);
+			}
+		});
+//		Usikker på hvordan vi skal sende inn inputs når det er inception, async, callbackfunksjoner.
+//		Lagde to settere. eksempel på hvordan det kan gjøres:
+//		_FBIC.setName("callback is my name!");
+//		_FBIC.setHighScore(9001);
+		_FBIC.UpdateHighScoreInFirestore(new FirestoreCallbackWrite() {
+			@Override
+			public boolean onSuccessCallback(boolean highScoreDbSuccessful) {
+				System.out.println("Boolean trigger for db interaction success: "+ highScoreDbSuccessful);
+				return highScoreDbSuccessful;
+			}
+		});
 		assetService = new AssetService();
 		assetService.loadTextures();
 		while (!assetService.update()) {
@@ -26,7 +43,6 @@ public class TdGame extends Game {
 
 		setScreen(new GameScreen(this, null));
 	}
-
 	public AssetService getAssetManager() {
 		return assetService;
 	}
@@ -34,5 +50,4 @@ public class TdGame extends Game {
 	public SpriteBatch getBatch() {
 		return batch;
 	}
-
 }
