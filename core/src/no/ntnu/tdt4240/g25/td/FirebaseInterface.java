@@ -1,6 +1,7 @@
 package no.ntnu.tdt4240.g25.td;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface FirebaseInterface {
     void getTopFiveHighScores(FirestoreCallbackRead firestoreCallbackRead);
@@ -9,8 +10,8 @@ public interface FirebaseInterface {
     void setHighScore(Integer highScore);
 }
 interface FirestoreCallbackRead {
-    void onCompleteCallback(ArrayList topFiveHighScoresList);
+    void onCompleteCallback(ArrayList<Map<String,String>> topFiveHighScoresList);
 }
 interface FirestoreCallbackWrite{
-    boolean onSuccessCallback(boolean highScoreDbSuccessful);
+    void onSuccessCallback(boolean highScoreDbSuccessful);
 }
