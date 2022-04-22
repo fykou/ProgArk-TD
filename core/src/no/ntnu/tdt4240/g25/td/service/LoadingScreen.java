@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import no.ntnu.tdt4240.g25.td.HighscoreScreen;
 import no.ntnu.tdt4240.g25.td.MenuScreen;
 import no.ntnu.tdt4240.g25.td.TdGame;
 
