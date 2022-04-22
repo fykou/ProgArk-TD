@@ -13,7 +13,6 @@ buildscript {
         classpath "net.onedaybeard.artemis:artemis-odb-gradle-plugin:2.3.0"
         classpath "net.onedaybeard.artemis:artemis-fluid-gradle-plugin:2.3.0"
         classpath 'com.google.gms:google-services:4.3.10'
-
     }
 }
 
