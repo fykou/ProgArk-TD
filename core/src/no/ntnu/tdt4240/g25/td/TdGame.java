@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
@@ -18,22 +19,13 @@ public class TdGame extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		_FBIC.getTopFiveHighScores(new FirestoreCallbackRead() {
-			@Override
-			public void onCompleteCallback(ArrayList topFiveHighScoresList) {
-				System.out.println("Callback fra TdGame: "+ topFiveHighScoresList);
-			}
-		});
-//		Usikker på hvordan vi skal sende inn inputs når det er inception, async, callbackfunksjoner.
-//		Lagde to settere. eksempel på hvordan det kan gjøres:
-//		_FBIC.setName("callback is my name!");
-//		_FBIC.setHighScore(9001);
-		_FBIC.UpdateHighScoreInFirestore(new FirestoreCallbackWrite() {
-			@Override
-			public boolean onSuccessCallback(boolean highScoreDbSuccessful) {
-				System.out.println("Boolean trigger for db interaction success: "+ highScoreDbSuccessful);
-				return highScoreDbSuccessful;
-			}
+		_FBIC.getTopFiveHighScores((ArrayList<Map<String, String>> topFiveHighScoresList) -> System.out.println("Use this descending ordered list to display top 5 global high scores: " + topFiveHighScoresList));
+//		Need to set name and highscore on _FBIC object.
+//		These fields will be used to send data to Firestore
+//		_FBIC.setName("name");
+//		_FBIC.setHighScore(9);
+		_FBIC.UpdateHighScoreInFirestore( highScoreDbSuccessful -> {
+		System.out.println("This boolean returns true if highscore was successfully written to Firestore DB: "+ highScoreDbSuccessful);
 		});
 		assetService = new AssetService();
 		assetService.loadTextures();

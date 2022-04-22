@@ -2,29 +2,23 @@ package no.ntnu.tdt4240.g25.td;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AndroidInterfaceClass implements FirebaseInterface{
     private boolean highScoreDbSuccessful = false;
     private String name;
     private Integer highScore;
     private static final String TAG = "TowerDefence --> ";
-    private FirebaseFirestore db;
-    private ArrayList topFivehighScoresList = new ArrayList();
+    private final FirebaseFirestore db;
+    private ArrayList<Map<String,String>> topFiveHighScoresList;
 
     public AndroidInterfaceClass(){ db = FirebaseFirestore.getInstance(); }
 
@@ -36,29 +30,32 @@ public class AndroidInterfaceClass implements FirebaseInterface{
     public void setHighScore(Integer highScore) { this.highScore = highScore; }
 
     /**
-     * This is a async callback method that will provide an ArrayList<Map> of the top five highscores in the Firestore Database in descending order.
-     * First item is the highest highscore and so on.
+     * This is a async callback method that will provide an ArrayList<Map> of the top five high scores in the Firestore Database in descending order.
+     * First item is the highest high score and so on.
      * @param firestoreCallbackRead (functional interface).
      */
     @Override
     public void getTopFiveHighScores(FirestoreCallbackRead firestoreCallbackRead) {
+        topFiveHighScoresList = new ArrayList<>();
         db.collection("HighScores")
-            .orderBy("highScore", Query.Direction.DESCENDING).limit(5)
+            .orderBy("highScore", Query.Direction.DESCENDING).limit(8)
             .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Map highScoreMap = new HashMap();
-                            highScoreMap.put("name", document.get("name"));
-                            highScoreMap.put("highScore", document.get("highScore"));
-                            topFivehighScoresList.add(highScoreMap);
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Map<String,String> highScoreMap = new HashMap<>();
+                        if(document.get("name") != null | document.get("highScore") != null){
+                            highScoreMap.put("name", document.get("name").toString());
+                            highScoreMap.put("highScore", document.get("highScore").toString());
+                            topFiveHighScoresList.add(highScoreMap);
+                        }else{
+                            Log.d(TAG, "One of the items was null");
+                            break;
                         }
-                        firestoreCallbackRead.onCompleteCallback(topFivehighScoresList);
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
                     }
+                    firestoreCallbackRead.onCompleteCallback(topFiveHighScoresList);
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             });
     }
@@ -66,28 +63,29 @@ public class AndroidInterfaceClass implements FirebaseInterface{
     /**
      * This method updates the HighScores collection in our Firestore Database with a new document consisting of two fields.
      * And provides a boolean that is TRUE if the database has been populated successfully.
+     * Will return a boolean on successful permutation of database.
+     * Will return FALSE if either name or highscore is null.
      * @param firestoreCallbackWrite (functional interface).
      */
     @Override
     public void UpdateHighScoreInFirestore(FirestoreCallbackWrite firestoreCallbackWrite) {
-        // Create a new user with a player name and a high score
-        Map<String, Object> user = new HashMap<>();
-        user.put("name", this.name);
-        user.put("highScore", this.highScore);
-        // Add a new document with a generated ID
-        db.collection("HighScores")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        highScoreDbSuccessful = true;
-                        firestoreCallbackWrite.onSuccessCallback(highScoreDbSuccessful);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error adding highscore for username: " + name + " , with highscore: " + highScore + ".", e);
-            }
-        });
+        if (this.name == null | this.highScore == null){
+            firestoreCallbackWrite.onSuccessCallback(false);
+        } else{
+            // Create a new user with a player name and a high score
+            Map<String, Object> user = new HashMap<>();
+            user.put("name", this.name);
+            user.put("highScore", this.highScore);
+            // Add a new document with a generated ID
+            db.collection("HighScores")
+                    .add(user)
+                    .addOnSuccessListener(documentReference -> {
+                        // Successful block of code, return true
+                        firestoreCallbackWrite.onSuccessCallback(true);
+                    }).addOnFailureListener(e -> {
+                Log.w(TAG, "Error adding high score for username: " + name + " , with high score: " + highScore + ".", e);
+                firestoreCallbackWrite.onSuccessCallback(false);
+            });
+        }
     }
 }
