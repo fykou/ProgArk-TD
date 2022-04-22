@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.LoadingScreen;
 
 public class TdGame extends Game {
 
@@ -18,13 +19,8 @@ public class TdGame extends Game {
 		batch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
 		assetService = new AssetService();
-		assetService.loadTextures();
-		assetService.loadFonts(Gdx.graphics.getHeight());
-		while (!assetService.update()) {
-			// Wait for loading to complete
-		}
 
-		setScreen(new MenuScreen(this, null));
+		setScreen(new LoadingScreen(this, null));
 	}
 
 	public AssetService getAssetManager() {
