@@ -1,6 +1,6 @@
 package no.ntnu.tdt4240.g25.td.model;
 
-public enum TileType {
+public enum MapTileType {
 
     PLAIN("map/terrain/summer.atlas"),
     OBSTACLE("map/terrain/summer.atlas"),
@@ -10,7 +10,7 @@ public enum TileType {
 
     public final String atlasPath;
 
-    TileType(String atlasPath) {
+    MapTileType(String atlasPath) {
         this.atlasPath = atlasPath;
     }
 }

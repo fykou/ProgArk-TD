@@ -1,28 +1,22 @@
 package no.ntnu.tdt4240.g25.td.model;
 
-public class TileGrid {
+public class MapTile {
 
-    private int width;
-    private int height;
+    private int size;
     private int x;
     private int y;
-    private TileType tile;
+    private MapTileType tile;
 
 
-    public TileGrid(int width, int height, int x, int y, TileType tile) {
-        this.width = width;
-        this.height = height;
+    public MapTile(int x, int y, int size, MapTileType tile) {
         this.x = x;
         this.y = y;
+        this.size = size;
         this.tile = tile;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
+    public int getSize() {
+        return size;
     }
 
     public int getX() {
@@ -33,9 +27,7 @@ public class TileGrid {
         return y;
     }
 
-    public TileType getTile() {
+    public MapTileType getTile() {
         return tile;
     }
-
-
 }
