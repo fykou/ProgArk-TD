@@ -4,42 +4,42 @@ size: 64, 16
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-sparks
+SPARKS
   rotate: false
   xy: 2, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 3
-sparks
+SPARKS
   rotate: false
   xy: 12, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 0
-sparks
+SPARKS
   rotate: false
   xy: 22, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 5
-sparks
+SPARKS
   rotate: false
   xy: 32, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 2
-sparks
+SPARKS
   rotate: false
   xy: 42, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 4
-sparks
+SPARKS
   rotate: false
   xy: 52, 2
   size: 8, 8
