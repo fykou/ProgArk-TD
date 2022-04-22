@@ -145,6 +145,7 @@ public class SettingsScreen extends ScreenAdapter {
                 }
             }
 
+            // Volume up
             else if (volumePlus.contains(inputCoordinates.x, inputCoordinates.y)) {
                 int currentVolume = prefs.getInteger("gameVolume");
 
