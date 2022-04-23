@@ -86,8 +86,7 @@ public class HighscoreScreen extends ScreenAdapter {
         });
 
         //Setting sound from game object
-        sound = game.touchSound;
-        highscoreLoadSuccess= game.highScoreLoad;
+
     }
 
 

@@ -21,6 +21,8 @@ public class LoadingScreen extends ScreenAdapter {
         game.getAssetManager().loadFonts(Gdx.graphics.getHeight());
         game.getAssetManager().assetManager.finishLoading(); // block until fonts are loaded for loading screen
         game.getAssetManager().loadTextures();
+        game.getAssetManager().loadSounds();
+        game.getAssetManager().loadMusic();
 
     }
 
