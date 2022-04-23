@@ -40,10 +40,10 @@ public class GameWorld {
         createFactories(assetManager);
         createWorld(batch, assetManager);
 
-        towerFactory.create(1, 1, TowerType.TYPE_2, TowerLevel.MK1);
-        towerFactory.create(3, 1, TowerType.TYPE_2, TowerLevel.MK2);
-        towerFactory.create(4, 4, TowerType.TYPE_2, TowerLevel.MK3);
-        towerFactory.create(8, 7, TowerType.TYPE_2, TowerLevel.MK4);
+        towerFactory.create(1, 1, TowerType.TYPE_1, TowerLevel.MK4);
+        towerFactory.create(3, 1, TowerType.TYPE_2, TowerLevel.MK4);
+        towerFactory.create(4, 4, TowerType.TYPE_2, TowerLevel.MK4);
+        towerFactory.create(8, 7, TowerType.TYPE_1, TowerLevel.MK4);
 
         mobFactory.create(8, 8, MobType.TANK);
     }
