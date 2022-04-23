@@ -29,9 +29,8 @@ public class MobFactory extends EntityFactory {
         world.createEntity().edit()
                 .add(new PositionComponent(x, y))
                 .add(new BoundsComponent(100, 100))
-                //.add(new VelocityComponent()) uncomment this
-                .add(new VelocityComponent(0, 20)) //delete this
-                .add(new PathComponent()) //added by me
+                .add(new VelocityComponent())
+                .add(new PathComponent())
                 .add(new RotationComponent(0))
                 .add(new StateComponent(StateComponent.STATE_IDLE))
                 .add(new MobComponent(type))
