@@ -1,6 +1,8 @@
 package no.ntnu.tdt4240.g25.td;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -19,12 +21,19 @@ public class TdGame extends Game {
 	public TdGame(FirebaseInterface FBIC) {
 	    _FBIC = FBIC;
 	}
+	private Music music;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         assetService = new AssetService();
+        music = Gdx.audio.newMusic(Gdx.files.internal("Race to Mars.mp3"));
+
+        music.setVolume(0.5f);
+        music.setLooping(true);
+        music.play();
+
 //      Need to set name and highscore on _FBIC object.
 //      These fields will be used to send data to Firestore
 //      _FBIC.setName("name");
