@@ -8,6 +8,7 @@ import no.ntnu.tdt4240.g25.td.model.MobType;
 import no.ntnu.tdt4240.g25.td.model.entity.components.AnimationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.BoundsComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.PathComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
@@ -29,6 +30,7 @@ public class MobFactory extends EntityFactory {
                 .add(new PositionComponent(tileX - .5f, tileY - .5f))
                 .add(new BoundsComponent(0.8f, 0.8f))
                 .add(new VelocityComponent())
+                .add(new PathComponent())
                 .add(new RotationComponent(0))
                 .add(new StateComponent(StateComponent.STATE_IDLE))
                 .add(new MobComponent(type))
