@@ -11,11 +11,11 @@ import java.util.Set;
 public class MapGrid implements Iterable<MapTile> {
 
     private Array<MapTile> grid;
-    private Set<Vector2> path;
+    private Array<Vector2> path;
     private int width;
     private int height;
 
-    public MapGrid(int width, int height, Set<Vector2> path) {
+    public MapGrid(int width, int height, Array<Vector2> path) {
         this.width = width;
         this.height = height;
         this.path = path;
@@ -26,7 +26,7 @@ public class MapGrid implements Iterable<MapTile> {
         grid = new Array<>(width * height);
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (path.contains(new Vector2(i, j))) {
+                if (path.contains(new Vector2(i, j), false)) {
                     grid.add(new MapTile(i, j, MapTileType.ROAD));
                 }
                 else {
@@ -39,7 +39,9 @@ public class MapGrid implements Iterable<MapTile> {
     public static MapGrid getTestGrid(int width, int height) {
         // create a test grid, containing a path going from 0,0 to 9,16 , only being able
         // to move up, down, left and right.
-        Set<Vector2> path = new HashSet<>(Arrays.asList(new Vector2(4, 0),
+        Array<Vector2> path = new Array<>();
+        path.addAll(
+                new Vector2(4, 0),
                 new Vector2(4, 1),
                 new Vector2(4, 2),
                 new Vector2(4, 3),
@@ -64,13 +66,17 @@ public class MapGrid implements Iterable<MapTile> {
                 new Vector2(2, 14),
                 new Vector2(2, 15),
                 new Vector2(2, 16)
-        ));
+        );
         return new MapGrid(width, height, path);
 
     }
 
     public Array<MapTile> getGrid() {
         return grid;
+    }
+
+    public Array<Vector2> getPath() {
+        return path;
     }
 
     @Override
