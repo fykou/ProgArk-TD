@@ -10,6 +10,7 @@ import com.artemis.utils.IntBag;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.HasTargetComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 
@@ -20,7 +21,7 @@ public class FindTargetSystem extends IntervalIteratingSystem {
     ComponentMapper<TowerComponent> mTower;
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<HasTargetComponent> mTarget;
-
+    ComponentMapper<StateComponent> mState;
     EntitySubscription enemySubscription;
 
     /**
@@ -37,30 +38,35 @@ public class FindTargetSystem extends IntervalIteratingSystem {
     public void initialize() {
         super.initialize();
         enemySubscription = world.getAspectSubscriptionManager()
-                .get(Aspect.all(MobComponent.class, PositionComponent.class));
+                .get(Aspect.all(MobComponent.class, PositionComponent.class, StateComponent.class));
     }
 
 
     @Override
     protected void process(int entityId) {
-        IntBag enemies = enemySubscription.getEntities();
         TowerComponent tower = mTower.get(entityId);
         PositionComponent transform = mPosition.get(entityId);
+        IntBag enemies = enemySubscription.getEntities();
 
-        var closest = Float.MAX_VALUE;
-        var closestEnemy = -1;
+        // Prefer to target the closest enemy, start by setting the target to null
+        // and then iterate through all enemies and find the closest one
+        float closest = Float.MAX_VALUE;
+        int closestEnemy = -1;
         for (int i = 0; i < enemies.size(); i++) {
             int enemy = enemies.get(i);
             PositionComponent enemyTransform = mPosition.get(enemy);
-            var distance = transform.get().dst(enemyTransform.get());
+            StateComponent enemyState = mState.get(enemy);
+            if (enemyState.get() == StateComponent.STATE_DYING) continue;
+            float distance = transform.get().dst(enemyTransform.get());
             if (distance > tower.range) continue;
             if (distance < closest) {
                 closest = distance;
                 closestEnemy = enemy;
             }
         }
+        // if we found an enemy, set the target
         if (closest != Float.MAX_VALUE) {
-            var target = mTarget.create(entityId);
+            HasTargetComponent target = mTarget.create(entityId);
             target.targetId = closestEnemy;
 
         }
