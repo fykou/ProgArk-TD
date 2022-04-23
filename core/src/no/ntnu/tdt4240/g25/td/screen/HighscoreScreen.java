@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g25.td;
+package no.ntnu.tdt4240.g25.td.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
@@ -71,27 +72,27 @@ public class HighscoreScreen extends ScreenAdapter {
 
     // TODO: Hente data fra firebase
     public void addMockupData() {
-        Map<String, String> highscore1 = new HashMap();
+        Map<String, String> highscore1 = new HashMap<>();
         highscore1.put("highScore", "100");
         highscore1.put("name", "groven");
         highscores.add(highscore1);
 
-        Map<String, String> highscore2 = new HashMap();
+        Map<String, String> highscore2 = new HashMap<>();
         highscore2.put("highScore", "50");
         highscore2.put("name", "vemund");
         highscores.add(highscore2);
 
-        Map<String, String> highscore3 = new HashMap();
+        Map<String, String> highscore3 = new HashMap<>();
         highscore3.put("highScore", "47");
         highscore3.put("name", "Bjørn");
         highscores.add(highscore3);
 
-        Map<String, String> highscore4 = new HashMap();
+        Map<String, String> highscore4 = new HashMap<>();
         highscore4.put("highScore", "35");
         highscore4.put("name", "Alex");
         highscores.add(highscore4);
 
-        Map<String, String> highscore5 = new HashMap();
+        Map<String, String> highscore5 = new HashMap<>();
         highscore5.put("highScore", "14");
         highscore5.put("name", "Crolas og Lavik");
         highscores.add(highscore5);
