@@ -21,6 +21,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.systems.MapRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.RenderSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.debug.DebugRenderSystem;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class GameWorld {
@@ -64,8 +65,8 @@ public class GameWorld {
 
                         // Renders
                         new MapRenderSystem(),
-                        new RenderSystem()
-                        //new DebugRenderSystem(batch)
+                        new RenderSystem(),
+                        new DebugRenderSystem(batch)
                 )
 
                 .build()

@@ -8,6 +8,10 @@ project.ext.weaveDir = new File("$buildDir/exploded")
 
 import org.gradle.internal.os.OperatingSystem
 
+tasks.compileJava {
+    dependsOn(":core:weave")
+}
+
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
     classpath = sourceSets.main.runtimeClasspath
