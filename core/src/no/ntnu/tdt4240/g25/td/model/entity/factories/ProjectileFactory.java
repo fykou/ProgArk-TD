@@ -18,19 +18,14 @@ import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class ProjectileFactory extends EntityFactory {
 
-    ComponentMapper<PositionComponent> mPosition;
-    ComponentMapper<VelocityComponent> mVelocity;
-    ComponentMapper<RotationComponent> mRotation;
-    ComponentMapper<TextureComponent> mTexture;
-    ComponentMapper<AnimationComponent> mAnimation;
-    ComponentMapper<StateComponent> mState;
-    ComponentMapper<ProjectileComponent> mProjectile;
-    ComponentMapper<ExpireComponent> mExpire;
-
-
-    public ProjectileFactory(AssetService assetService) {
-        super(assetService);
-    }
+    private ComponentMapper<PositionComponent> mPosition;
+    private ComponentMapper<VelocityComponent> mVelocity;
+    private ComponentMapper<RotationComponent> mRotation;
+    private ComponentMapper<TextureComponent> mTexture;
+    private ComponentMapper<AnimationComponent> mAnimation;
+    private ComponentMapper<StateComponent> mState;
+    private ComponentMapper<ProjectileComponent> mProjectile;
+    private ComponentMapper<ExpireComponent> mExpire;
 
     public void create(float x, float y, float vx, float vy, float damage, float splashRadius) {
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();

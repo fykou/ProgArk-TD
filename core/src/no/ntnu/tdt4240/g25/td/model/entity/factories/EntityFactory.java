@@ -11,11 +11,6 @@ public abstract class EntityFactory extends BaseSystem {
     @Wire
     protected AssetService assetService;
 
-    public EntityFactory(AssetService assetService) {
-    }
-
     @Override // no processing on factories
-    public final void processSystem() {
-
-    }
+    public final void processSystem() {}
 }

@@ -20,38 +20,25 @@ import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class MobFactory extends EntityFactory {
 
-    @Wire
-    ComponentMapper<MobComponent> mMob;
-    @Wire
-    ComponentMapper<PositionComponent> mPosition;
-    @Wire
-    ComponentMapper<VelocityComponent> mVelocity;
-    @Wire
-    ComponentMapper<BoundsComponent> mBounds;
-    @Wire
-    ComponentMapper<TextureComponent> mTexture;
-    @Wire
-    ComponentMapper<AnimationComponent> mAnimation;
-    @Wire
-    ComponentMapper<RotationComponent> mRotation;
-    @Wire
-    ComponentMapper<StateComponent> mState;
-    @Wire
-    ComponentMapper<PathComponent> mPath;
-
-    public MobFactory(AssetService assetService) {
-        super(assetService);
-    }
+    private ComponentMapper<MobComponent> mMob;
+    private ComponentMapper<PositionComponent> mPosition;
+    private ComponentMapper<VelocityComponent> mVelocity;
+    private ComponentMapper<BoundsComponent> mBounds;
+    private ComponentMapper<TextureComponent> mTexture;
+    private ComponentMapper<AnimationComponent> mAnimation;
+    private ComponentMapper<RotationComponent> mRotation;
+    private ComponentMapper<StateComponent> mState;
+    private ComponentMapper<PathComponent> mPath;
 
     public void create(int tileX, int tileY, MobType type) {
-        tileX -= .5f;
-        tileY -= .5f;
+        float x = tileX -.5f;
+        float y = tileY -.5f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, type.name()))));
         animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1 / 8f, assetService.getAtlasRegionArray(type.atlasPath, type.name())));
         int newId = world.create();
-        mPosition.create(newId).get().set(tileX, tileY);
-        mBounds.create(newId).get().set(tileX, tileY,0.8f, 0.8f);
+        mPosition.create(newId).get().set(x, y);
+        mBounds.create(newId).get().set(x, y,0.8f, 0.8f);
         mVelocity.create(newId).get();
         mPath.create(newId).currentCheckpoint = 0;
         mRotation.create(newId);
@@ -59,7 +46,5 @@ public class MobFactory extends EntityFactory {
         mMob.create(newId).set(type, 1f); // get wavemultiplier parameter when we have it
         mTexture.create(newId).offsetRotation = -90f;
         mAnimation.create(newId).animations = animationsMap;
-
     }
-
 }
