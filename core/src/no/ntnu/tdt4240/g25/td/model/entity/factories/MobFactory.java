@@ -8,6 +8,7 @@ import no.ntnu.tdt4240.g25.td.model.MobType;
 import no.ntnu.tdt4240.g25.td.model.entity.components.AnimationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.BoundsComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.PathComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
@@ -28,7 +29,9 @@ public class MobFactory extends EntityFactory {
         world.createEntity().edit()
                 .add(new PositionComponent(x, y))
                 .add(new BoundsComponent(100, 100))
-                .add(new VelocityComponent())
+                //.add(new VelocityComponent()) uncomment this
+                .add(new VelocityComponent(0, 20)) //delete this
+                .add(new PathComponent()) //added by me
                 .add(new RotationComponent(0))
                 .add(new StateComponent(StateComponent.STATE_IDLE))
                 .add(new MobComponent(type))
