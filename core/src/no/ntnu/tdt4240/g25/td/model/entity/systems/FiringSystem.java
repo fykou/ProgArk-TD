@@ -15,7 +15,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 @All({TowerComponent.class, StateComponent.class, HasTargetComponent.class, PositionComponent.class})
 public class FiringSystem extends IteratingSystem {
 
-    public static int PROJECTILE_SPEED = 5;
+    public static int PROJECTILE_SPEED = 7;
 
     @Wire
     ProjectileFactory projectileFactory;

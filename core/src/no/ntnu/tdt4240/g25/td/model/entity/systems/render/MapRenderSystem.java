@@ -1,12 +1,19 @@
 package no.ntnu.tdt4240.g25.td.model.entity.systems.render;
 
+import com.artemis.Aspect;
 import com.artemis.BaseSystem;
+import com.artemis.ComponentMapper;
+import com.artemis.EntitySubscription;
 import com.artemis.annotations.Wire;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
 
+import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
 import no.ntnu.tdt4240.g25.td.model.map.MapGrid;
 import no.ntnu.tdt4240.g25.td.model.map.MapTile;
@@ -21,9 +28,15 @@ public class MapRenderSystem extends BaseSystem {
     private AssetService assetService;
     @Wire
     private SpriteBatch spriteBatch;
+
     private MyCameraSystem cameraSystem;
 
     private ArrayMap<MapTileType, TextureRegion> tileTextures;
+
+    EntitySubscription towerSubscription;
+    ComponentMapper<PositionComponent> mPosition;
+    TextureRegion towerBase;
+
 
 
     @Override
@@ -33,15 +46,22 @@ public class MapRenderSystem extends BaseSystem {
         for (MapTileType type : MapTileType.values()) {
             tileTextures.put(type, atlas.findRegion(type.regionName));
         }
+        towerSubscription = world.getAspectSubscriptionManager().get(Aspect.all(TowerComponent.class, PositionComponent.class));
+        towerBase = assetService.getAtlas(AssetService.Atlas.BUILDSPOTS.path).findRegion("single");
     }
 
     @Override
     protected void processSystem() {
+        IntBag towerIds = towerSubscription.getEntities();
         spriteBatch.setProjectionMatrix(cameraSystem.viewport.getCamera().combined);
         spriteBatch.begin();
         for (MapTile tile : mapGrid) {
             TextureRegion texture = tileTextures.get(tile.getTile());
             spriteBatch.draw(texture, tile.getX(), tile.getY(), 1, 1);
+        }
+        for (int i = 0; i < towerIds.size(); i++) {
+            PositionComponent tower = mPosition.get(towerIds.get(i));
+            spriteBatch.draw(towerBase, tower.get().x -.5f, tower.get().y - .5f, .5f, .5f, 1, 1, 1, 1, 0);
         }
         spriteBatch.end();
     }

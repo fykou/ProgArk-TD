@@ -23,16 +23,16 @@ public class TowerFactory extends EntityFactory {
     }
 
     // generalize the create functions defined above to use the new tower types enum, so that I can remove the above two functions
-    public void create(float x, float y, TowerType type, TowerLevel level) {
+    public void create(int tileX, int tileY, TowerType type, TowerLevel level) {
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, level.name()))));
         animationsMap.put(StateComponent.STATE_ATTACKING, getAnimation(type, level));
         world.createEntity().edit()
-                .add(new PositionComponent(x, y))
+                .add(new PositionComponent(tileX -.5f, tileY - .5f))
                 .add(new RotationComponent())
                 .add(new TowerComponent(type.range, type.splashRadius, getDamage(type, level), getFireRate(type, level), level.level, type))
                 .add(new StateComponent(StateComponent.STATE_IDLE))
-                .add(new TextureComponent(-90f))
+                .add(new TextureComponent(-90f, 1.2f))
                 .add(new AnimationComponent(animationsMap));
     }
 
