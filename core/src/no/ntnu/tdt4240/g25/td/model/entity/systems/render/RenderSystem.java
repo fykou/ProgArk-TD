@@ -1,30 +1,31 @@
-package no.ntnu.tdt4240.g25.td.model.entity.systems;
+package no.ntnu.tdt4240.g25.td.model.entity.systems.render;
 
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.artemis.annotations.Wire;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.SortedIteratingSystem;
 
 @All({PositionComponent.class, TextureComponent.class})
-public class RenderSystem extends SortedIteratingSystem {
+public class RenderSystem extends IteratingSystem {
 
     ComponentMapper<TextureComponent> mTexture;
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<RotationComponent> mRotation;
-    private final SpriteBatch batch;
-    private final OrthographicCamera cam;
 
-    public RenderSystem(SpriteBatch batch) {
+    @Wire
+    SpriteBatch batch;
+
+    MyCameraSystem cameraSystem;
+
+    public RenderSystem() {
         super();
-        this.batch = batch;
-        cam = new OrthographicCamera();
-        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
 
@@ -36,8 +37,8 @@ public class RenderSystem extends SortedIteratingSystem {
         if (textureComponent.region == null) {
             return;
         }
-        float width = textureComponent.region.getRegionWidth();
-        float height = textureComponent.region.getRegionHeight();
+        float width = textureComponent.region.getRegionWidth() / 128f;
+        float height = textureComponent.region.getRegionHeight() / 128f;
         float originX = width / 2f;
         float originY = height / 2f;
 
@@ -54,8 +55,8 @@ public class RenderSystem extends SortedIteratingSystem {
 
     @Override
     protected void begin() {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(cam.combined);
+
+        batch.setProjectionMatrix(cameraSystem.viewport.getCamera().combined);
         batch.enableBlending();
         batch.begin();
     }
@@ -63,11 +64,5 @@ public class RenderSystem extends SortedIteratingSystem {
     @Override
     protected void end() {
         batch.end();
-        entityIds.clear();
-    }
-
-    @Override
-    protected void sort() {
-        entityIds.sort((o1, o2) -> Float.compare(mPosition.get(o1).z, mPosition.get(o2).z));
     }
 }

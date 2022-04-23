@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g25.td.model.entity.systems;
+package no.ntnu.tdt4240.g25.td.model.entity.systems.render;
 
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
