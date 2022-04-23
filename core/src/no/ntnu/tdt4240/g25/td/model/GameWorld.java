@@ -18,6 +18,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.systems.ExpireSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FindTargetSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FiringSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.PathingSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.RenderSystem;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
@@ -49,6 +50,7 @@ public class GameWorld {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .dependsOn(EntityLinkManager.class)
                 .with(new MovementSystem())
+                .with(new PathingSystem())
                 .with(new BoundsSystem())
                 .with(new CollisionSystem())
                 .with(new FindTargetSystem(1f/60))
