@@ -1,16 +1,16 @@
-package no.ntnu.tdt4240.g25.td.model.entity.systems;
+package no.ntnu.tdt4240.g25.td.model.entity.systems.render;
 
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ArrayMap;
 
-import no.ntnu.tdt4240.g25.td.model.MapGrid;
-import no.ntnu.tdt4240.g25.td.model.MapTile;
-import no.ntnu.tdt4240.g25.td.model.MapTileType;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
+import no.ntnu.tdt4240.g25.td.model.map.MapGrid;
+import no.ntnu.tdt4240.g25.td.model.map.MapTile;
+import no.ntnu.tdt4240.g25.td.model.map.MapTileType;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class MapRenderSystem extends BaseSystem {

@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g25.td;
+package no.ntnu.tdt4240.g25.td.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 
 
+import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
