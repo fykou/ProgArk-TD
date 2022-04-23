@@ -4,12 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-import java.util.ArrayList;
-import java.util.Map;
-
+import no.ntnu.tdt4240.g25.td.firebase.FirebaseInterface;
 import no.ntnu.tdt4240.g25.td.screen.LoadingScreen;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
@@ -17,7 +12,7 @@ public class TdGame extends Game {
 
 	private SpriteBatch batch;
 	private AssetService assetService;
-	private FirebaseInterface _FBIC;
+	private final FirebaseInterface _FBIC;
 	private ShapeRenderer shapeRenderer;
 
 
@@ -30,22 +25,23 @@ public class TdGame extends Game {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         assetService = new AssetService();
-        _FBIC.getTopFiveHighScores((ArrayList<Map<String, String>> topFiveHighScoresList) -> {
-            System.out.println("Use this descending ordered list to display top 5 global high scores: " + topFiveHighScoresList);
-        });
 //      Need to set name and highscore on _FBIC object.
 //      These fields will be used to send data to Firestore
 //      _FBIC.setName("name");
 //      _FBIC.setHighScore(9);
-        _FBIC.UpdateHighScoreInFirestore(highScoreDbSuccessful -> {
-            System.out.println("This boolean returns true if highscore was successfully written to Firestore DB: "+ highScoreDbSuccessful);
-        });
+//        _FBIC.UpdateHighScoreInFirestore(highScoreDbSuccessful -> {
+//            System.out.println("This boolean returns true if highscore was successfully written to Firestore DB: "+ highScoreDbSuccessful);
+//        });
 
         setScreen(new LoadingScreen(this, null));
     }
 
     public AssetService getAssetManager() {
         return assetService;
+    }
+
+    public FirebaseInterface getDb() {
+        return _FBIC;
     }
 
     public SpriteBatch getBatch() {

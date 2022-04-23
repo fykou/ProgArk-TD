@@ -67,10 +67,15 @@ public class HighscoreScreen extends ScreenAdapter {
 
 
         highscores = new ArrayList<>();
-        addMockupData();
+
+        game.getDb().getTopFiveHighScores((ArrayList<Map<String, String>> topFiveHighScoresList) -> {
+            highscores.clear();
+            highscores.addAll(topFiveHighScoresList);
+            System.out.println("updated highscores");
+        });
     }
 
-    // TODO: Hente data fra firebase
+
     public void addMockupData() {
         Map<String, String> highscore1 = new HashMap<>();
         highscore1.put("highScore", "100");

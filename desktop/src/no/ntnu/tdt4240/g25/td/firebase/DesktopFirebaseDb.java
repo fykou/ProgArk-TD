@@ -1,7 +1,7 @@
-package no.ntnu.tdt4240.g25.td;
+package no.ntnu.tdt4240.g25.td.firebase;
 
-public class CoreInterfaceClass implements FirebaseInterface{
 
+public class DesktopFirebaseDb implements FirebaseInterface {
     @Override
     public void getTopFiveHighScores(FirestoreCallbackRead firestoreCallbackRead) { }
 

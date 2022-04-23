@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g25.td;
+package no.ntnu.tdt4240.g25.td.firebase;
 
 import android.util.Log;
 
@@ -10,17 +10,19 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-public class AndroidInterfaceClass implements FirebaseInterface{
-    private boolean highScoreDbSuccessful = false;
+import no.ntnu.tdt4240.g25.td.firebase.FirebaseInterface;
+import no.ntnu.tdt4240.g25.td.firebase.FirestoreCallbackRead;
+import no.ntnu.tdt4240.g25.td.firebase.FirestoreCallbackWrite;
+
+public class AndroidFirebaseDb implements FirebaseInterface {
     private String name;
     private Integer highScore;
     private static final String TAG = "TowerDefence --> ";
     private final FirebaseFirestore db;
     private ArrayList<Map<String,String>> topFiveHighScoresList;
 
-    public AndroidInterfaceClass(){ db = FirebaseFirestore.getInstance(); }
+    public AndroidFirebaseDb(){ db = FirebaseFirestore.getInstance(); }
 
 //    Setters for name and highScore to be written to the DB.
     @Override
