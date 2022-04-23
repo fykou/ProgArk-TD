@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -46,6 +47,10 @@ public class HighscoreScreen extends ScreenAdapter {
     // Top five highscores
     private ArrayList<Map<String, String>> highscores;
 
+    // Sound FX
+    private Sound sound;
+    private Sound highscoreLoadSuccess;
+
     public HighscoreScreen(TdGame game, Screen parent) {
 
         this.game = game;
@@ -69,10 +74,20 @@ public class HighscoreScreen extends ScreenAdapter {
         highscores = new ArrayList<>();
 
         game.getDb().getTopFiveHighScores((ArrayList<Map<String, String>> topFiveHighScoresList) -> {
+            // Play high score load sound
+            long id = highscoreLoadSuccess.play(1.0f);
+            highscoreLoadSuccess.setVolume(id,0.85f);
+            highscoreLoadSuccess.setPitch(id, 1);
+            highscoreLoadSuccess.setLooping(id,false);
+
             highscores.clear();
             highscores.addAll(topFiveHighScoresList);
             System.out.println("updated highscores");
         });
+
+        //Setting sound from game object
+        sound = game.touchSound;
+        highscoreLoadSuccess= game.highScoreLoad;
     }
 
 
@@ -105,6 +120,10 @@ public class HighscoreScreen extends ScreenAdapter {
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
+            long id = sound.play(1.0f);
+            sound.setVolume(id,0.5f);
+            sound.setPitch(id, 1);
+            sound.setLooping(id,false);
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
@@ -182,6 +201,8 @@ public class HighscoreScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         super.dispose();
+        sound.dispose();
+        highscoreLoadSuccess.dispose();
     }
 
 

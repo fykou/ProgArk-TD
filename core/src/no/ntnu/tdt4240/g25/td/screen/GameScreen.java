@@ -3,6 +3,8 @@ package no.ntnu.tdt4240.g25.td.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -42,6 +44,10 @@ public class GameScreen extends ScreenAdapter {
     // Fonts
     private BitmapFont font;
 
+    //SoundFX
+    private Sound sound;
+    private Music music;
+
 
     public GameScreen(TdGame game, Screen parent) {
         this.game = game;
@@ -50,6 +56,10 @@ public class GameScreen extends ScreenAdapter {
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
         this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
+
+        //Turn off music
+        music = game.music;
+        music.stop();
 
         exitButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 13f, MENU_LOGIC_HEIGHT / 20f)
                 .setCenter(MENU_LOGIC_WIDTH - (MENU_LOGIC_WIDTH / 13f), MENU_LOGIC_HEIGHT - MENU_LOGIC_HEIGHT / 20f);
@@ -61,6 +71,10 @@ public class GameScreen extends ScreenAdapter {
         camera = new OrthographicCamera(MENU_LOGIC_HEIGHT / aspectRatio, MENU_LOGIC_HEIGHT);
         camera.position.set(MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_HEIGHT / 2f, 0);
 
+        //Setting sound from game object
+        sound = game.touchSound;
+
+
     }
 
     @Override
@@ -70,6 +84,10 @@ public class GameScreen extends ScreenAdapter {
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
+            long id = sound.play(1.0f);
+            sound.setVolume(id,1.0f);
+            sound.setPitch(id, 1);
+            sound.setLooping(id,false);
 
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -131,6 +149,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         super.dispose();
+        sound.dispose();
     }
 
 }

@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -44,6 +45,9 @@ public class MenuScreen extends ScreenAdapter {
     // Fonts
     private BitmapFont font;
 
+    // Sound FX
+    private Sound sound;
+
 
     public MenuScreen(TdGame game, Screen parent) {
         this.game = game;
@@ -75,6 +79,10 @@ public class MenuScreen extends ScreenAdapter {
                 .setCenter(MENU_LOGIC_WIDTH / 2f, (MENU_LOGIC_HEIGHT / 2f));
 
         leaderboardButtonLayout = new GlyphLayout(font, "Leaderboard", Color.WHITE, leaderboardButton.width, Align.center, false);
+
+        //Setting sound from game object
+        sound = game.touchSound;
+
     }
 
     @Override
@@ -84,6 +92,11 @@ public class MenuScreen extends ScreenAdapter {
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
+
+            long id = sound.play(1.0f);
+            sound.setVolume(id,0.5f);
+            sound.setPitch(id, 0.5f);
+            sound.setLooping(id,false);
 
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -149,6 +162,7 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         super.dispose();
+        sound.dispose();
     }
 
 }
