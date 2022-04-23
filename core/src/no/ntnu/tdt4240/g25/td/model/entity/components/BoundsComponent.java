@@ -8,15 +8,7 @@ public class BoundsComponent extends PooledComponent {
     public Rectangle bounds;
 
     public BoundsComponent() {
-        this(0, 0);
-    }
-
-    public BoundsComponent(float width, float height) {
-        this(new Rectangle(0, 0, width, height));
-    }
-
-    public BoundsComponent(Rectangle bounds) {
-        this.bounds = bounds;
+        bounds = new Rectangle();
     }
 
     public Rectangle get() {

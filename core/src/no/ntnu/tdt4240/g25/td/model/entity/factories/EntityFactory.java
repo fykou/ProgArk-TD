@@ -1,19 +1,21 @@
 package no.ntnu.tdt4240.g25.td.model.entity.factories;
 
+import com.artemis.BaseSystem;
 import com.artemis.World;
+import com.artemis.annotations.Wire;
 
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
-public abstract class EntityFactory {
+public abstract class EntityFactory extends BaseSystem {
 
+    @Wire
     protected AssetService assetService;
-    protected World world;
 
     public EntityFactory(AssetService assetService) {
-        this.assetService = assetService;
     }
 
-    public void setWorld(World world) {
-        this.world = world;
+    @Override // no processing on factories
+    public final void processSystem() {
+
     }
 }

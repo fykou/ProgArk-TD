@@ -8,18 +8,10 @@ public class PositionComponent extends PooledComponent {
     public Vector2 position;
     public float z; // z-index for rendering
 
-    public PositionComponent(float x, float y) {
-        this(x, y, 0);
-    }
-
     public PositionComponent() {
-        this(0, 0, 0);
+        position = new Vector2();
     }
 
-    public PositionComponent(float x, float y, float z) {
-        this.position = new Vector2(x, y);
-        this.z = z;
-    }
 
     public Vector2 get() {
         return position;
@@ -27,7 +19,7 @@ public class PositionComponent extends PooledComponent {
 
     @Override
     protected void reset() {
-        position = null;
+        position.setZero();
         z = 0;
     }
 }

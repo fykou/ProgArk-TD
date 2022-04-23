@@ -1,5 +1,7 @@
 package no.ntnu.tdt4240.g25.td.model.entity.factories;
 
+import com.artemis.ComponentMapper;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.IntMap;
@@ -18,24 +20,46 @@ import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class MobFactory extends EntityFactory {
 
+    @Wire
+    ComponentMapper<MobComponent> mMob;
+    @Wire
+    ComponentMapper<PositionComponent> mPosition;
+    @Wire
+    ComponentMapper<VelocityComponent> mVelocity;
+    @Wire
+    ComponentMapper<BoundsComponent> mBounds;
+    @Wire
+    ComponentMapper<TextureComponent> mTexture;
+    @Wire
+    ComponentMapper<AnimationComponent> mAnimation;
+    @Wire
+    ComponentMapper<RotationComponent> mRotation;
+    @Wire
+    ComponentMapper<StateComponent> mState;
+    @Wire
+    ComponentMapper<PathComponent> mPath;
+
     public MobFactory(AssetService assetService) {
         super(assetService);
     }
 
     public void create(int tileX, int tileY, MobType type) {
+        tileX -= .5f;
+        tileY -= .5f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, type.name()))));
         animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1 / 8f, assetService.getAtlasRegionArray(type.atlasPath, type.name())));
-        world.createEntity().edit()
-                .add(new PositionComponent(tileX - .5f, tileY - .5f))
-                .add(new BoundsComponent(0.8f, 0.8f))
-                .add(new VelocityComponent())
-                .add(new PathComponent())
-                .add(new RotationComponent(0))
-                .add(new StateComponent(StateComponent.STATE_IDLE))
-                .add(new MobComponent(type))
-                .add(new TextureComponent(-90f))
-                .add(new AnimationComponent(animationsMap));
+        int newId = world.create();
+        mPosition.create(newId).get().set(tileX, tileY);
+        mBounds.create(newId).get().set(tileX, tileY,0.8f, 0.8f);
+        mVelocity.create(newId).get();
+        mPath.create(newId).currentCheckpoint = 0;
+        mRotation.create(newId);
+        mState.create(newId).set(StateComponent.STATE_IDLE, true);
+        mMob.create(newId).set(type, 1f); // get wavemultiplier parameter when we have it
+        mTexture.create(newId).offsetRotation = -90f;
+        mAnimation.create(newId).animations = animationsMap;
+
     }
 
 }

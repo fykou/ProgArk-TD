@@ -14,14 +14,8 @@ public class StateComponent extends PooledComponent {
     public float time;
     public boolean isLooping;
 
-    public StateComponent(int newState) {
-        time = 0f;
-        state = newState;
-        isLooping = false;
-    }
-
     public StateComponent() {
-        this(STATE_IDLE);
+        reset();
     }
 
     /**

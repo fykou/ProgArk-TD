@@ -6,13 +6,9 @@ public class ProjectileComponent extends PooledComponent {
     public float damage;
     public float radius; // radius of the explosion, if any
 
-    public ProjectileComponent(float damage, float radius) {
+    public void set(float damage, float radius) {
         this.damage = damage;
         this.radius = radius;
-    }
-
-    public ProjectileComponent() {
-        this(0, 0);
     }
 
     @Override

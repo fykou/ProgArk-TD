@@ -15,7 +15,6 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaypointsCompone
 
 @All({VelocityComponent.class, PositionComponent.class, MobComponent.class, PathComponent.class})
 public class PathingSystem extends IteratingSystem {
-
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<VelocityComponent> mVelocity;
     ComponentMapper<PathComponent> mPath;
@@ -24,7 +23,6 @@ public class PathingSystem extends IteratingSystem {
 
     WaypointsComponent waypoints;
 
-
     @Override
     protected void process(int entityId) {
         final PositionComponent position = mPosition.get(entityId);
@@ -32,7 +30,7 @@ public class PathingSystem extends IteratingSystem {
         final PathComponent path = mPath.get(entityId);
         final MobComponent mob = mMob.get(entityId);
 
-        // if velocity is zero, set velocity to the next checkpoint
+        // if velocity is zero, set velocity to the next checkpoint TODO: fix this, maybe in wave system?
         if (velocity.get().len() == 0) {
             Vector2 nextCheckpoint = waypoints.path.get(path.currentCheckpoint);
             Vector2 direction = nextCheckpoint.cpy().sub(position.get());
@@ -40,18 +38,20 @@ public class PathingSystem extends IteratingSystem {
         }
 
         // if close enough to the next checkpoint that it would be overshot on next update, move to
-        // next checkpoint. If no more checkpoints, expire and subtract life from player
+        // next checkpoint.
         if (position.get().dst(waypoints.path.get(path.currentCheckpoint)) > velocity.get().len() * world.delta
                 && velocity.get().len() >= 0.0f) {
-            if (path.currentCheckpoint == waypoints.path.size) {
-                ExpireComponent expire = mExpire.create(entityId);
-                expire.timeLeft = 0;
-                // TODO: subtract life
-            }
             return;
         }
 
         path.currentCheckpoint++;
+
+        // If no more checkpoints, expire and subtract life from player
+        if (path.currentCheckpoint >= waypoints.path.size - 1) {
+            ExpireComponent expire = mExpire.create(entityId);
+            expire.timeLeft = 0;
+            // TODO: subtract life
+        }
 
         Vector2 nextCheckpoint = waypoints.path.get(path.currentCheckpoint).cpy();
         Vector2 direction = nextCheckpoint.sub(position.get());
