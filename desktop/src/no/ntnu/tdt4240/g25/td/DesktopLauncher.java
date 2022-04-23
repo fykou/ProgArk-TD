@@ -10,6 +10,6 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("Tower Defense");
 		config.setWindowedMode(480, 854); // anything 16:9
-		new Lwjgl3Application(new TdGame(), config);
+		new Lwjgl3Application(new TdGame(new DesktopInterfaceClass()), config);
 	}
 }
