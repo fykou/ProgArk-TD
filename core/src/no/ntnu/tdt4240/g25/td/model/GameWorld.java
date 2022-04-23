@@ -50,7 +50,7 @@ public class GameWorld {
 //        towerFactory.create(4, 4, TowerType.TYPE_2, TowerLevel.MK3);
 //        towerFactory.create(8, 7, TowerType.TYPE_2, TowerLevel.MK4);
 
-        mobFactory.create(4, 0, MobType.TANK);
+        mobFactory.create(5, 0, MobType.TANK);
     }
 
     protected void createWorld(SpriteBatch batch, AssetService assetManager) {
@@ -79,25 +79,25 @@ public class GameWorld {
                         // Renders
                         new MapRenderSystem(),
                         new RenderSystem(),
-                        new DebugRenderSystem(batch)
-                )
+                        new DebugRenderSystem(batch),
 
+                        // Factories
+                        towerFactory,
+                        mobFactory,
+                        projectileFactory
+                )
                 .build()
-                // now register the factories to be injected into the systems
-                .register(towerFactory)
-                .register(mobFactory)
-                .register(projectileFactory)
                 .register(batch)
                 .register(assetManager)
                 .register(MapGrid.getTestGrid(GAME_WIDTH, GAME_HEIGHT));
 
-
         this.world = new World(config);
 
+        world.inject(towerFactory);
+        world.inject(mobFactory);
+        world.inject(projectileFactory);
+
         // set world for the factories to be able to create entities
-        towerFactory.setWorld(world);
-        mobFactory.setWorld(world);
-        projectileFactory.setWorld(world);
     }
 
     protected void createFactories(AssetService assetManager) {

@@ -8,23 +8,23 @@ import no.ntnu.tdt4240.g25.td.model.MobType;
 public class MobComponent extends PooledComponent {
 
     public MobType type;
-    public int health;
-    public int maxHealth;
+    public float health;
+    public float maxHealth;
     public float speed;
 
-    public MobComponent(MobType type, int health, int maxHealth, float speed) {
-        this.type = type;
-        this.health = health;
-        this.maxHealth = maxHealth;
-        this.speed = speed;
-    }
-
-    public MobComponent(MobType mobType) {
-        this(mobType, 100, 100, 1);
-    }
 
     public MobComponent() {
-        this(MobType.NORMAL, 100, 100, 1);
+        this.type = MobType.NORMAL;
+        this.health = 0;
+        this.maxHealth = 0;
+        this.speed = 0;
+    }
+
+    public void set(MobType type, float waveMultiplier) {
+        this.type = type;
+        this.health = type.baseHealth * waveMultiplier;
+        this.maxHealth = type.baseHealth * waveMultiplier;
+        this.speed = type.baseSpeed;
     }
 
     @Override

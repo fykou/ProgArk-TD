@@ -12,22 +12,15 @@ public class TextureComponent extends PooledComponent {
     public float offsetRotation; // degrees, as a workaround for turrets pointing "north" instead of to the right
     public float scale;
 
-    public TextureComponent(TextureRegion region, float offsetRotation, float scale) {
+
+    public TextureComponent() {
+        reset();
+    }
+
+    public void set(TextureRegion region, float offsetRotation, float scale) {
         this.region = region;
         this.offsetRotation = offsetRotation;
         this.scale = scale;
-    }
-
-    public TextureComponent() {
-        this(0);
-    }
-
-    public TextureComponent(float offsetRotation) {
-        this(offsetRotation, 1);
-    }
-
-    public TextureComponent(float offsetRotation, float scale) {
-        this(null, offsetRotation, scale);
     }
 
     @Override

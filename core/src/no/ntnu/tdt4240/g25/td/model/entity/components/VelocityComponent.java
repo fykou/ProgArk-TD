@@ -7,12 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 public class VelocityComponent extends PooledComponent {
     public Vector2 velocity;
 
-    public VelocityComponent(float x, float y) {
-        velocity = new Vector2(x, y);
-    }
-
     public VelocityComponent() {
-        this(0, 0);
+        velocity = new Vector2();
     }
 
 
@@ -22,6 +18,6 @@ public class VelocityComponent extends PooledComponent {
 
     @Override
     protected void reset() {
-        velocity = null;
+        velocity.setZero();
     }
 }
