@@ -1,10 +1,11 @@
 package no.ntnu.tdt4240.g25.td.model.entity.components;
 
 import com.artemis.Component;
+import com.artemis.PooledComponent;
 
 import no.ntnu.tdt4240.g25.td.model.MobType;
 
-public class MobComponent extends Component {
+public class MobComponent extends PooledComponent {
 
     public MobType type;
     public int health;
@@ -24,5 +25,13 @@ public class MobComponent extends Component {
 
     public MobComponent() {
         this(MobType.NORMAL, 100, 100, 1);
+    }
+
+    @Override
+    protected void reset() {
+        type = MobType.NORMAL;
+        health = 0;
+        maxHealth = 0;
+        speed = 0;
     }
 }
