@@ -57,9 +57,6 @@ public class GameScreen extends ScreenAdapter {
         this.sr = game.getShapeRenderer();
         this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
 
-        //Turn off music
-        music = game.music;
-        music.stop();
 
         exitButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 13f, MENU_LOGIC_HEIGHT / 20f)
                 .setCenter(MENU_LOGIC_WIDTH - (MENU_LOGIC_WIDTH / 13f), MENU_LOGIC_HEIGHT - MENU_LOGIC_HEIGHT / 20f);
@@ -70,10 +67,6 @@ public class GameScreen extends ScreenAdapter {
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
         camera = new OrthographicCamera(MENU_LOGIC_HEIGHT / aspectRatio, MENU_LOGIC_HEIGHT);
         camera.position.set(MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_HEIGHT / 2f, 0);
-
-        //Setting sound from game object
-        sound = game.touchSound;
-
 
     }
 

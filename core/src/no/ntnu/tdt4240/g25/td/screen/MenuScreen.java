@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -24,29 +25,32 @@ public class MenuScreen extends ScreenAdapter {
     public int MENU_LOGIC_WIDTH = 720;
     public int MENU_LOGIC_HEIGHT = 1280;
 
-    private TdGame game;
-    private Screen parent;
-    private SpriteBatch sb;
-    private ShapeRenderer sr;
-    private OrthographicCamera camera;
+    private final TdGame game;
+    private final Screen parent;
+    private final SpriteBatch sb;
+    private final ShapeRenderer sr;
+    private final OrthographicCamera camera;
 
     // Play Button
-    private Rectangle playButton;
-    private GlyphLayout playButtonLayout;
+    private final Rectangle playButton;
+    private final GlyphLayout playButtonLayout;
 
     // Leaderboard Button
-    private Rectangle leaderboardButton;
-    private GlyphLayout leaderboardButtonLayout;
+    private final Rectangle leaderboardButton;
+    private final GlyphLayout leaderboardButtonLayout;
 
     // Settings Button
-    private Rectangle settingsButton;
-    private GlyphLayout settingsButtonLayout;
+    private final Rectangle settingsButton;
+    private final GlyphLayout settingsButtonLayout;
 
     // Fonts
-    private BitmapFont font;
+    private final BitmapFont font;
 
     // Sound FX
     private Sound sound;
+
+    // Music
+    private final Music music;
 
 
     public MenuScreen(TdGame game, Screen parent) {
@@ -55,6 +59,8 @@ public class MenuScreen extends ScreenAdapter {
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
         this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
+        //this.sound = game.getAssetManager().assetManager.get(AssetService.Sound.TOUCH.path, Sound.class);
+        this.music = game.getAssetManager().assetManager.get(AssetService.GameMusic.MENU.path, Music.class);
 
         // Camera
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
@@ -81,22 +87,24 @@ public class MenuScreen extends ScreenAdapter {
         leaderboardButtonLayout = new GlyphLayout(font, "Leaderboard", Color.WHITE, leaderboardButton.width, Align.center, false);
 
         //Setting sound from game object
-        sound = game.touchSound;
+
 
     }
 
     @Override
     public void show() {
-
+        music.setVolume(.2f);
+        music.setLooping(true);
+        music.play();
     }
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
 
-            long id = sound.play(1.0f);
-            sound.setVolume(id,0.5f);
-            sound.setPitch(id, 0.5f);
-            sound.setLooping(id,false);
+//            long id = sound.play(1.0f);
+//            sound.setVolume(id,0.5f);
+//            sound.setPitch(id, 0.5f);
+//            sound.setLooping(id,false);
 
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));

@@ -1,13 +1,11 @@
 package no.ntnu.tdt4240.g25.td.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 
+import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
@@ -50,9 +49,7 @@ public class SettingsScreen extends ScreenAdapter {
     private GlyphLayout volumePlusLayout;
     private Rectangle volumeMinus;
     private GlyphLayout volumeMinusLayout;
-    private Integer gameVolume;
-
-    Preferences prefs = Gdx.app.getPreferences("no.ntnu.tdt4240.g25.td.settings");
+    private float gameVolume;
 
 
     // Fonts
@@ -67,9 +64,9 @@ public class SettingsScreen extends ScreenAdapter {
         this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
 
         // Settings
-        enableSFX = prefs.getBoolean("sfxOn");
-        enableMusic = prefs.getBoolean("musicOn");
-        gameVolume = prefs.getInteger("gameVolume", 5);
+        enableSFX = TdConfig.get().getSfxEnabled();
+        enableMusic = TdConfig.get().getMusicEnabled();
+        gameVolume = TdConfig.get().getVolume();
 
         // Camera
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
@@ -123,36 +120,30 @@ public class SettingsScreen extends ScreenAdapter {
             // CLICK SFX checkbox
             else if (sfxCheckbox.contains(inputCoordinates.x, inputCoordinates.y)) {
                 enableSFX = !enableSFX;
-                prefs.putBoolean("sfxOn", enableSFX);
+                TdConfig.get().setSfxEnabled(enableSFX);
                 sfxCheckboxLayout.setText(font, (enableSFX ? "X" : ""), font.getColor(), sfxCheckbox.width, Align.center, false);
-                prefs.flush();
             }
 
             // CLICK Music checkbox
             else if (musicCheckbox.contains(inputCoordinates.x, inputCoordinates.y)) {
                 enableMusic = !enableMusic;
-                prefs.putBoolean("musicOn", enableMusic);
+                TdConfig.get().setMusicEnabled(enableMusic);
                 musicCheckboxLayout.setText(font, (enableMusic ? "X" : ""), font.getColor(), musicCheckbox.width, Align.center, false);
-                prefs.flush();
             }
 
             // Volume down
             else if (volumeMinus.contains(inputCoordinates.x, inputCoordinates.y)) {
-                int currentVolume = prefs.getInteger("gameVolume");
-
+                float currentVolume = TdConfig.get().getVolume();
                 if (currentVolume > 0) {
-                    prefs.putInteger("gameVolume", currentVolume - 1);
-                    prefs.flush();
+                    TdConfig.get().setVolume(currentVolume - 0.1f);
                 }
             }
 
             // Volume up
             else if (volumePlus.contains(inputCoordinates.x, inputCoordinates.y)) {
-                int currentVolume = prefs.getInteger("gameVolume");
-
+                float currentVolume = TdConfig.get().getVolume();
                 if (currentVolume < 10) {
-                    prefs.putInteger("gameVolume", currentVolume + 1);
-                    prefs.flush();
+                    TdConfig.get().setVolume(currentVolume + 0.1f);
                 }
             }
         }
@@ -192,7 +183,7 @@ public class SettingsScreen extends ScreenAdapter {
         font.draw(sb, "Volume", volumeMinus.x - 185, volumeMinus.y + 40);
         font.draw(sb, volumeMinusLayout, volumeMinus.x, (volumeMinus.y + volumeMinus.height / 2f) + font.getCapHeight() / 2f);
         font.draw(sb, volumePlusLayout, volumePlus.x, (volumePlus.y + volumePlus.height / 2f) + font.getCapHeight() / 2f);
-        font.draw(sb, String.valueOf(prefs.getInteger("gameVolume")), volumeMinus.x + 75, volumeMinus.y + 35);
+        font.draw(sb, String.valueOf(TdConfig.get().getVolume() * 10), volumeMinus.x + 75, volumeMinus.y + 35);
         sb.end();
     }
 

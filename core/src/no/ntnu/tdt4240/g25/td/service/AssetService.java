@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.service;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -61,6 +62,19 @@ public class AssetService {
         }
     }
 
+    public void loadMusic() {
+        for (GameMusic music : GameMusic.values()) {
+            assetManager.load(music.path, Music.class);
+        }
+    }
+
+
+    public void loadSounds(){
+        for (Sound sound : Sound.values()) {
+            assetManager.load(sound.path, com.badlogic.gdx.audio.Sound.class);
+        }
+    }
+
     public void loadFonts(float initialSize) {
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallParam = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         smallParam.fontFileName = Font.GILROY.path;
@@ -80,7 +94,6 @@ public class AssetService {
 
     public void dispose() {
         assetManager.dispose();
-
     }
 
     public boolean update() {
@@ -128,4 +141,34 @@ public class AssetService {
             this.path = path;
         }
     }
+
+    public enum GameMusic {
+        MENU("sounds/Race to Mars.mp3");
+
+        public final String path;
+
+        GameMusic(String path) {
+            this.path = path;
+        }
+    }
+
+    public enum Sound {
+        //TOUCH("sounds/BUTTON_03.wav"),
+        HIGHSCORE_FLOURISH("sounds/Activate Glyph Forcefield.wav"),
+
+//        BUILD("sounds/build.wav"),
+//        EXPLODE("sounds/explode.wav"),
+//        FIRE("sounds/fire.wav"),
+//        HIT("sounds/hit.wav"),
+//        MOVE("sounds/move.wav"),
+//        SELECT("sounds/select.wav"),
+//        WALL("sounds/wall.wav")
+        ;
+        public final String path;
+
+        Sound(String path) {
+            this.path = path;
+        }
+    }
+
 }
