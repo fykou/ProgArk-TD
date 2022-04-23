@@ -1,11 +1,11 @@
 package no.ntnu.tdt4240.g25.td.model.entity.components;
 
 
-import com.artemis.Component;
+import com.artemis.PooledComponent;
 
 import no.ntnu.tdt4240.g25.td.model.TowerType;
 
-public class TowerComponent extends Component {
+public class TowerComponent extends PooledComponent {
 
     public float range;
     public float damage;
@@ -27,6 +27,17 @@ public class TowerComponent extends Component {
     }
     public TowerComponent() {
         this(0, 0, 0, 0, 1, TowerType.TYPE_1);
+    }
+
+    @Override
+    protected void reset() {
+        range = 0;
+        damage = 0;
+        fireRate = 0;
+        cooldown = 0;
+        splashRadius = 0;
+        level = 1;
+        type = TowerType.TYPE_1;
     }
 
 }
