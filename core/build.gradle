@@ -1,6 +1,21 @@
-sourceCompatibility = 11
+apply plugin: "artemis"
+
+sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 eclipse.project.name = appName + "-core"
+
+
+// artemis-odb: weaving settings.
+weave {
+    classesDir = new File(buildDir, "classes/java")
+    dependsOn build
+    enableArtemisPlugin = true
+    enablePooledWeaving = true
+    generateLinkMutators = true
+    optimizeEntitySystems = true
+}
+
+classes.finalizedBy weave

@@ -7,17 +7,18 @@ buildscript {
         gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.3'
         classpath "net.onedaybeard.artemis:artemis-odb-gradle-plugin:2.3.0"
-        classpath "net.onedaybeard.artemis:artemis-fluid-gradle-plugin:2.3.0"
         classpath 'com.google.gms:google-services:4.3.10'
     }
 }
 
 allprojects {
     apply plugin: "eclipse"
+    apply plugin: "idea"
 
     version = '1.0'
     ext {
@@ -28,6 +29,7 @@ allprojects {
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.2.1'
         artemisVersion = '2.3.0'
+        artemisContribVersion = '2.5.0'
     }
 
     repositories {
@@ -35,6 +37,7 @@ allprojects {
         mavenCentral()
         google()
         gradlePluginPortal()
+        jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://jitpack.io" }
@@ -95,6 +98,9 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
 
+        implementation "net.mostlyoriginal.artemis-odb:contrib-core:$artemisContribVersion"
+        implementation "net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisContribVersion"
+        implementation "net.mostlyoriginal.artemis-odb:contrib-jam:$artemisContribVersion"
         implementation "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
         
     }
