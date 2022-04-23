@@ -4,35 +4,26 @@ package no.ntnu.tdt4240.g25.td.model.entity.systems;
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
 import com.artemis.systems.IteratingSystem;
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PathComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaypointsComponent;
 
 @All({VelocityComponent.class, PositionComponent.class, MobComponent.class, PathComponent.class})
 public class PathingSystem extends IteratingSystem {
+
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<VelocityComponent> mVelocity;
     ComponentMapper<PathComponent> mPath;
     ComponentMapper<MobComponent> mMob;
     ComponentMapper<ExpireComponent> mExpire;
 
-    Array<Vector2> checkpoints = new Array<>();
+    WaypointsComponent waypoints;
 
-    @Override
-    protected void initialize() {
-        checkpoints.addAll(
-                new Vector2(250, 300),
-                new Vector2(350, 300), new Vector2(350, 400), new Vector2(300, 400),
-                new Vector2(300, 350), new Vector2(350, 350)
-        );
-    }
 
     @Override
     protected void process(int entityId) {
@@ -41,32 +32,31 @@ public class PathingSystem extends IteratingSystem {
         final PathComponent path = mPath.get(entityId);
         final MobComponent mob = mMob.get(entityId);
 
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        // if velocity is zero, set velocity to the next checkpoint
+        if (velocity.get().len() == 0) {
+            Vector2 nextCheckpoint = waypoints.path.get(path.currentCheckpoint);
+            Vector2 direction = nextCheckpoint.cpy().sub(position.get());
+            velocity.get().set(direction.setLength(mob.speed));
+        }
 
-        // if the mob has reached the end, add expire component to despawn and subtract life
-        if (path.currentCheckpoint == checkpoints.size) {
-            ExpireComponent expire = mExpire.create(entityId);
-            expire.timeLeft = 0;
-            // TODO: subtract life
+        // if close enough to the next checkpoint that it would be overshot on next update, move to
+        // next checkpoint. If no more checkpoints, expire and subtract life from player
+        if (position.get().dst(waypoints.path.get(path.currentCheckpoint)) > velocity.get().len() * world.delta
+                && velocity.get().len() >= 0.0f) {
+            if (path.currentCheckpoint == waypoints.path.size) {
+                ExpireComponent expire = mExpire.create(entityId);
+                expire.timeLeft = 0;
+                // TODO: subtract life
+            }
             return;
         }
 
-        // if velocity is zero, set velocity to the next checkpoint
-        if (velocity.get().len() == 0) {
-            Vector2 nextCheckpoint = checkpoints.get(path.currentCheckpoint);
-            Vector2 direction = nextCheckpoint.cpy().sub(position.get());
-            velocity.get().set(direction.setLength(mob.speed * 20));
-        }
-
-        // if close enough to the next checkpoint, move to next checkpoint
-        if (position.get().dst(checkpoints.get(path.currentCheckpoint)) > velocity.get().len() && velocity.get().len() >= 0.0f) return;
-
         path.currentCheckpoint++;
 
-        Vector2 nextCheckpoint = checkpoints.get(path.currentCheckpoint).cpy();
+        Vector2 nextCheckpoint = waypoints.path.get(path.currentCheckpoint).cpy();
         Vector2 direction = nextCheckpoint.sub(position.get());
 
-        velocity.get().set(direction).setLength(mob.speed * 20);
+        velocity.get().set(direction).setLength(mob.speed);
 
         /*if (path.getRight()) {
             if (path.previousCoordinate < path.currentCheckpoint && path.currentCheckpoint <= position.get().x) {
