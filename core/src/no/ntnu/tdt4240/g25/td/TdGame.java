@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -21,16 +22,21 @@ public class TdGame extends Game {
 	public TdGame(FirebaseInterface FBIC) {
 	    _FBIC = FBIC;
 	}
-	private Music music;
+	public Music music;
+	public Sound touchSound;
+	public Sound highScoreLoad;
+
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         assetService = new AssetService();
-        music = Gdx.audio.newMusic(Gdx.files.internal("Race to Mars.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/Race to Mars.mp3"));
+        touchSound = Gdx.audio.newSound(Gdx.files.internal("sounds/PUNCH_DESIGNED_HEAVY_74.wav"));
+        highScoreLoad = Gdx.audio.newSound(Gdx.files.internal("sounds/Activate Glyph Forcefield.wav"));
 
-        music.setVolume(0.5f);
+        music.setVolume(0.2f);
         music.setLooping(true);
         music.play();
 
