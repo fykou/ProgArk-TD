@@ -48,9 +48,8 @@ public class RenderSystem extends IteratingSystem {
                 position.get().x - originX, position.get().y - originY,
                 originX, originY,
                 width, height,
-                1, 1,
-                renderRot + textureComponent.offsetRotation); // TODO: fix rotation/initial direction in sprites rather than here
-
+                textureComponent.scale, textureComponent.scale,
+                renderRot + textureComponent.offsetRotation);
     }
 
     @Override
