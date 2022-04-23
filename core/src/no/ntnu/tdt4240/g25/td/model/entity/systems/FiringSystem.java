@@ -15,7 +15,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 @All({TowerComponent.class, StateComponent.class, HasTargetComponent.class, PositionComponent.class})
 public class FiringSystem extends IteratingSystem {
 
-    public static int PROJECTILE_SPEED = 750;
+    public static int PROJECTILE_SPEED = 5;
 
     @Wire
     ProjectileFactory projectileFactory;
@@ -40,7 +40,7 @@ public class FiringSystem extends IteratingSystem {
         Vector2 startPosition = position.position.cpy();
         Vector2 enemyPosition = mPosition.get(target.targetId).position;
         Vector2 velocity = enemyPosition.cpy().sub(startPosition).setLength(PROJECTILE_SPEED);
-        Vector2 offset = velocity.cpy().setLength(50);
+        Vector2 offset = velocity.cpy().setLength(0.5f);
         startPosition.add(offset);
         projectileFactory.create(startPosition.x, startPosition.y, velocity.x, velocity.y, tower.damage, tower.splashRadius);
         state.set(StateComponent.STATE_ATTACKING, false);

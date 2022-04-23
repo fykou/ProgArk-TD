@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "754779739732",
+    "project_id": "tdt4240-td",
+    "storage_bucket": "tdt4240-td.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:754779739732:android:6aca84d5c3b69dafdabfc1",
+        "android_client_info": {
+          "package_name": "no.ntnu.tdt4240.g25.td"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "754779739732-b22dbb8rkslajrh22uvb4gdu5urep46t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_XH2_5b3B0G90ZupqnEz41ZitpCuLqRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "754779739732-b22dbb8rkslajrh22uvb4gdu5urep46t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

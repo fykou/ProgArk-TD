@@ -2,33 +2,54 @@ package no.ntnu.tdt4240.g25.td;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import no.ntnu.tdt4240.g25.td.firebase.FirebaseInterface;
+import no.ntnu.tdt4240.g25.td.screen.LoadingScreen;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class TdGame extends Game {
 
 	private SpriteBatch batch;
 	private AssetService assetService;
+	private final FirebaseInterface _FBIC;
+	private ShapeRenderer shapeRenderer;
 
-	@Override
-	public void create() {
-		batch = new SpriteBatch();
 
-		assetService = new AssetService();
-		assetService.loadTextures();
-		while (!assetService.update()) {
-			// Wait for loading to complete
-		}
-
-		setScreen(new GameScreen(this, null));
+	public TdGame(FirebaseInterface FBIC) {
+	    _FBIC = FBIC;
 	}
 
-	public AssetService getAssetManager() {
-		return assetService;
-	}
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
+        assetService = new AssetService();
+//      Need to set name and highscore on _FBIC object.
+//      These fields will be used to send data to Firestore
+//      _FBIC.setName("name");
+//      _FBIC.setHighScore(9);
+//        _FBIC.UpdateHighScoreInFirestore(highScoreDbSuccessful -> {
+//            System.out.println("This boolean returns true if highscore was successfully written to Firestore DB: "+ highScoreDbSuccessful);
+//        });
 
-	public SpriteBatch getBatch() {
-		return batch;
-	}
+        setScreen(new LoadingScreen(this, null));
+    }
+
+    public AssetService getAssetManager() {
+        return assetService;
+    }
+
+    public FirebaseInterface getDb() {
+        return _FBIC;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public ShapeRenderer getShapeRenderer() {
+        return shapeRenderer;
+    }
 
 }
