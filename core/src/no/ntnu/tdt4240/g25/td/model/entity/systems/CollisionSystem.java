@@ -17,7 +17,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
 @All({ProjectileComponent.class, PositionComponent.class})
 public class CollisionSystem extends IteratingSystem {
 
-    public static int POSITION_CHECK_THRESHOLD = 250;
+    public static int POSITION_CHECK_THRESHOLD = 3;
 
     ComponentMapper<ProjectileComponent> mProjectile;
     ComponentMapper<PositionComponent> mPosition;

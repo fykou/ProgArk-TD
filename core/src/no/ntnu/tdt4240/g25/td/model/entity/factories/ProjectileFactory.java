@@ -36,7 +36,7 @@ public class ProjectileFactory extends EntityFactory {
                 .add(new PositionComponent(x, y))
                 .add(new VelocityComponent(vx, vy))
                 .add(new RotationComponent())
-                .add(new TextureComponent())
+                .add(new TextureComponent(0, 5))
                 .add(new AnimationComponent(animationsMap))
                 .add(new ProjectileComponent(damage, splashRadius))
                 .add(new ExpireComponent(5f));
