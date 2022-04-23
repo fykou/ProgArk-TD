@@ -19,27 +19,23 @@ import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class TowerFactory extends EntityFactory {
 
-    ComponentMapper<PositionComponent> mPosition;
-    ComponentMapper<RotationComponent> mRotation;
-    ComponentMapper<TextureComponent> mTexture;
-    ComponentMapper<AnimationComponent> mAnimation;
-    ComponentMapper<TowerComponent> mTower;
-    ComponentMapper<StateComponent> mState;
+    private ComponentMapper<PositionComponent> mPosition;
+    private ComponentMapper<RotationComponent> mRotation;
+    private ComponentMapper<TextureComponent> mTexture;
+    private ComponentMapper<AnimationComponent> mAnimation;
+    private ComponentMapper<TowerComponent> mTower;
+    private ComponentMapper<StateComponent> mState;
 
-
-    public TowerFactory(AssetService assetService) {
-        super(assetService);
-    }
 
     // generalize the create functions defined above to use the new tower types enum, so that I can remove the above two functions
     public void create(int tileX, int tileY, TowerType type, TowerLevel level) {
-        tileX -= .5f;
-        tileY -= .5f;
+        float x = tileX - .5f;
+        float y = tileY - .5f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, level.name()))));
         animationsMap.put(StateComponent.STATE_ATTACKING, getAnimation(type, level));
         int newId = world.create();
-        mPosition.create(newId).get().set(tileX, tileY);
+        mPosition.create(newId).get().set(x, y);
         mRotation.create(newId).get();
         mTower.create(newId).set(type, level);
         mState.create(newId).set(StateComponent.STATE_IDLE, false);
@@ -52,6 +48,4 @@ public class TowerFactory extends EntityFactory {
         float frameDuration = 1 / 30f;
         return new Animation<>(frameDuration, regions);
     }
-
-
 }

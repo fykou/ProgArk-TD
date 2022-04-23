@@ -42,7 +42,7 @@ public class GameWorld {
 
 
     public GameWorld(AssetService assetManager, SpriteBatch batch) {
-        createFactories(assetManager);
+        createFactories();
         createWorld(batch, assetManager);
 
 //        towerFactory.create(1, 1, TowerType.TYPE_2, TowerLevel.MK1);
@@ -93,17 +93,13 @@ public class GameWorld {
 
         this.world = new World(config);
 
-        world.inject(towerFactory);
-        world.inject(mobFactory);
-        world.inject(projectileFactory);
-
         // set world for the factories to be able to create entities
     }
 
-    protected void createFactories(AssetService assetManager) {
-        towerFactory = new TowerFactory(assetManager);
-        mobFactory = new MobFactory(assetManager);
-        projectileFactory = new ProjectileFactory(assetManager);
+    protected void createFactories() {
+        towerFactory = new TowerFactory();
+        mobFactory = new MobFactory();
+        projectileFactory = new ProjectileFactory();
     }
 
     public void update(float delta) {
