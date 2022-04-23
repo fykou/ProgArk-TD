@@ -8,7 +8,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
-		config.setWindowedMode(540, 960);
+		config.setTitle("Tower Defense");
+		config.setWindowedMode(480, 854); // anything 16:9
 		new Lwjgl3Application(new TdGame(), config);
 	}
 }
