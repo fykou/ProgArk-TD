@@ -143,8 +143,9 @@ public class HighscoreScreen extends ScreenAdapter {
 
 
         font.draw(sb, "LEADERBOARD", MENU_LOGIC_WIDTH / 4f + 40, MENU_LOGIC_HEIGHT - 200);
+        font.draw(sb, "Name", MENU_LOGIC_WIDTH / 5f, MENU_LOGIC_HEIGHT - 360);
 
-        font.draw(sb, "Score", MENU_LOGIC_WIDTH / 5f + 60 + 330, MENU_LOGIC_HEIGHT - 360);
+        font.draw(sb, "Score", MENU_LOGIC_WIDTH / 5f + 330, MENU_LOGIC_HEIGHT - 360);
 
         for (int i = 0; i < highscores.size(); i++) {
             font.draw(sb, (i + 1) + ".", MENU_LOGIC_WIDTH / 5f, MENU_LOGIC_HEIGHT - 450 - i*100);
