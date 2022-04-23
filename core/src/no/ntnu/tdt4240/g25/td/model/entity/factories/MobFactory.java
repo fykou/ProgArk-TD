@@ -22,12 +22,12 @@ public class MobFactory extends EntityFactory {
         super(assetService);
     }
 
-    public void create(float x, float y, MobType type) {
+    public void create(int tileX, int tileY, MobType type) {
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, type.name()))));
         animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1 / 8f, assetService.getAtlasRegionArray(type.atlasPath, type.name())));
         world.createEntity().edit()
-                .add(new PositionComponent(x, y))
+                .add(new PositionComponent(tileX - .5f, tileY - .5f))
                 .add(new BoundsComponent(0.8f, 0.8f))
                 .add(new VelocityComponent())
                 .add(new PathComponent())
