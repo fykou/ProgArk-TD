@@ -20,20 +20,24 @@ public class TdGame extends Game {
 	private FirebaseInterface _FBIC;
 	private ShapeRenderer shapeRenderer;
 
-	public TdGame(FirebaseInterface FBIC) {_FBIC = FBIC;}
 
+	public TdGame(FirebaseInterface FBIC) {
+	    _FBIC = FBIC;
+	}
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         assetService = new AssetService();
-        _FBIC.getTopFiveHighScores((ArrayList<Map<String, String>> topFiveHighScoresList) -> System.out.println("Use this descending ordered list to display top 5 global high scores: " + topFiveHighScoresList));
+        _FBIC.getTopFiveHighScores((ArrayList<Map<String, String>> topFiveHighScoresList) -> {
+            System.out.println("Use this descending ordered list to display top 5 global high scores: " + topFiveHighScoresList);
+        });
 //      Need to set name and highscore on _FBIC object.
 //      These fields will be used to send data to Firestore
 //      _FBIC.setName("name");
 //      _FBIC.setHighScore(9);
-        _FBIC.UpdateHighScoreInFirestore( highScoreDbSuccessful -> {
+        _FBIC.UpdateHighScoreInFirestore(highScoreDbSuccessful -> {
             System.out.println("This boolean returns true if highscore was successfully written to Firestore DB: "+ highScoreDbSuccessful);
         });
 
