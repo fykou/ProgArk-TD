@@ -6,10 +6,14 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.link.EntityLinkManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import net.mostlyoriginal.api.Singleton;
+import net.mostlyoriginal.api.SingletonPlugin;
+
 import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AimingSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.map.MapManager;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.AnimationSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.BoundsSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.CollisionSystem;
@@ -19,6 +23,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.systems.FindTargetSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FiringSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.MapRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.PathingSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.RenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.debug.DebugRenderSystem;
@@ -40,21 +45,28 @@ public class GameWorld {
         createFactories(assetManager);
         createWorld(batch, assetManager);
 
-        towerFactory.create(1, 1, TowerType.TYPE_2, TowerLevel.MK1);
-        towerFactory.create(3, 1, TowerType.TYPE_2, TowerLevel.MK2);
-        towerFactory.create(4, 4, TowerType.TYPE_2, TowerLevel.MK3);
-        towerFactory.create(8, 7, TowerType.TYPE_2, TowerLevel.MK4);
+//        towerFactory.create(1, 1, TowerType.TYPE_2, TowerLevel.MK1);
+//        towerFactory.create(3, 1, TowerType.TYPE_2, TowerLevel.MK2);
+//        towerFactory.create(4, 4, TowerType.TYPE_2, TowerLevel.MK3);
+//        towerFactory.create(8, 7, TowerType.TYPE_2, TowerLevel.MK4);
 
-        mobFactory.create(8, 8, MobType.TANK);
+        mobFactory.create(4, 0, MobType.TANK);
     }
 
     protected void createWorld(SpriteBatch batch, AssetService assetManager) {
 
         WorldConfiguration config = new WorldConfigurationBuilder()
-                .dependsOn(EntityLinkManager.class)
+                .dependsOn(
+                        EntityLinkManager.class,
+                        SingletonPlugin.class
+                )
                 .with(
+                        // Managers who need to initialize Singleton Components etc.
+                        new MapManager(),
+
                         new MyCameraSystem(GAME_WIDTH, GAME_HEIGHT),
                         new MovementSystem(),
+                        new PathingSystem(),
                         new BoundsSystem(),
                         new CollisionSystem(),
                         new FindTargetSystem(1f / 60),
