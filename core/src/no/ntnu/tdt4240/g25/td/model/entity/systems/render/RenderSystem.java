@@ -1,23 +1,26 @@
-package no.ntnu.tdt4240.g25.td.model.entity.systems;
+package no.ntnu.tdt4240.g25.td.model.entity.systems.render;
 
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
 import com.artemis.annotations.Wire;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.SortedIteratingSystem;
 
 @All({PositionComponent.class, TextureComponent.class})
-public class RenderSystem extends SortedIteratingSystem {
+public class RenderSystem extends IteratingSystem {
 
     ComponentMapper<TextureComponent> mTexture;
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<RotationComponent> mRotation;
 
     @Wire
-    private SpriteBatch batch;
+    SpriteBatch batch;
 
     MyCameraSystem cameraSystem;
 
@@ -61,11 +64,5 @@ public class RenderSystem extends SortedIteratingSystem {
     @Override
     protected void end() {
         batch.end();
-        entityIds.clear();
-    }
-
-    @Override
-    protected void sort() {
-        entityIds.sort((o1, o2) -> Float.compare(mPosition.get(o1).z, mPosition.get(o2).z));
     }
 }

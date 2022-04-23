@@ -10,18 +10,19 @@ import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AimingSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.AnimationSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.render.AnimationSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.BoundsSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.CollisionSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.DamageSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.ExpireSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FindTargetSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FiringSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.MapRenderSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.render.MapRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.RenderSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.render.RenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.debug.DebugRenderSystem;
+import no.ntnu.tdt4240.g25.td.model.map.MapGrid;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class GameWorld {
