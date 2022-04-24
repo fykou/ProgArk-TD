@@ -51,7 +51,7 @@ public class GameWorld {
         createFactories();
         createWorld(batch, renderer, assetManager);
         towerFactory.create(5,7,TYPE_1,TowerLevel.MK1);
-        towerFactory.create(6,9,TYPE_2,TowerLevel.MK2);
+        towerFactory.create(5,5,TYPE_2,TowerLevel.MK2);
     }
 
     protected void createWorld(SpriteBatch batch, ShapeRenderer renderer, AssetService assetManager) {
