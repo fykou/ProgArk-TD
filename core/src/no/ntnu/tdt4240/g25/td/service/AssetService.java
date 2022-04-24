@@ -145,7 +145,6 @@ public class AssetService {
     public enum GameMusic {
         MENU("sounds/Race to Mars.mp3");
 
-
         public final String path;
 
         GameMusic(String path) {
@@ -156,7 +155,8 @@ public class AssetService {
     public enum Sound {
         TOUCH("sounds/BUTTON_03.wav"),
         HIGHSCORE_FLOURISH("sounds/Activate Glyph Forcefield.wav"),
-        HIGHSCORE_CONFIRMED("sounds/DSGNStngr_Kill Confirm Metallic_02.wav");
+        HIGHSCORE_CONFIRMED("sounds/DSGNStngr_Kill Confirm Metallic_02.wav"),
+        GAMESTART("sounds/UI Message Appear 01.wav");
 
 //        BUILD("sounds/build.wav"),
 //        EXPLODE("sounds/explode.wav"),
