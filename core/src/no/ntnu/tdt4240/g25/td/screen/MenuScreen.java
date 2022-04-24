@@ -18,7 +18,9 @@ import com.badlogic.gdx.utils.Align;
 
 import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.Font;
+import no.ntnu.tdt4240.g25.td.service.GameMusic;
+import no.ntnu.tdt4240.g25.td.service.SoundFx;
 
 public class MenuScreen extends ScreenAdapter {
 
@@ -58,9 +60,9 @@ public class MenuScreen extends ScreenAdapter {
         this.parent = parent;
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
-        this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
-        this.sound = game.getAssetManager().assetManager.get(AssetService.Sound.TOUCH.path, Sound.class);
-        this.music = game.getAssetManager().assetManager.get(AssetService.GameMusic.MENU.path, Music.class);
+        this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
+        this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path, Sound.class);
+        this.music = game.getAssetManager().assetManager.get(GameMusic.MENU.path, Music.class);
 
         // Camera
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();

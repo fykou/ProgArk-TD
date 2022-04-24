@@ -19,7 +19,9 @@ import com.badlogic.gdx.utils.Align;
 import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.Font;
+import no.ntnu.tdt4240.g25.td.service.GameMusic;
+import no.ntnu.tdt4240.g25.td.service.SoundFx;
 
 /**
  * WIP
@@ -58,10 +60,10 @@ public class GameScreen extends ScreenAdapter {
         this.gameWorld = new GameWorld(game.getAssetManager(), game.getBatch());
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
-        this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
-        this.gameMusic = game.getAssetManager().assetManager.get(AssetService.GameMusic.GAME.path);
-        this.menuMusic = game.getAssetManager().assetManager.get(AssetService.GameMusic.MENU.path);
-        this.sound = game.getAssetManager().assetManager.get(AssetService.Sound.TOUCH.path);
+        this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
+        this.gameMusic = game.getAssetManager().assetManager.get(GameMusic.GAME.path);
+        this.menuMusic = game.getAssetManager().assetManager.get(GameMusic.MENU.path);
+        this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path);
 //        this.gameStartSound = game.getAssetManager().assetManager.get(AssetService.Sound.GAMESTART.path);
 
         exitButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 13f, MENU_LOGIC_HEIGHT / 20f)

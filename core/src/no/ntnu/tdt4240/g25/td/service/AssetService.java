@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -53,8 +54,8 @@ public class AssetService {
         for (MobType type : MobType.values()) {
             assetManager.load(type.atlasPath, TextureAtlas.class);
         }
-        for (Atlas atlas : Atlas.values()) {
-            assetManager.load(atlas.path, TextureAtlas.class);
+        for (ObjectAtlas objectAtlas : ObjectAtlas.values()) {
+            assetManager.load(objectAtlas.path, TextureAtlas.class);
         }
 
         for (TerrainAtlas atlas : TerrainAtlas.values()) {
@@ -69,9 +70,17 @@ public class AssetService {
     }
 
     public void loadSounds(){
-        for (Sound sound : Sound.values()) {
-            assetManager.load(sound.path, com.badlogic.gdx.audio.Sound.class);
+        for (SoundFx soundFx : SoundFx.values()) {
+            assetManager.load(soundFx.path, com.badlogic.gdx.audio.Sound.class);
         }
+    }
+
+    public Music getMusic(GameMusic music){
+        return assetManager.get(music.path, Music.class);
+    }
+
+    public Sound getSound(SoundFx soundFx){
+        return assetManager.get(soundFx.path, Sound.class);
     }
 
     public void loadFonts(float initialSize) {
@@ -99,76 +108,4 @@ public class AssetService {
         return assetManager.update();
     }
 
-    public enum Atlas {
-        BUILDSPOTS("map/buildspots.atlas"),
-        WALLS("map/walls.atlas"),
-        EXPLOSION("effects/explosion.atlas"),
-        SPARKS("effects/sparks.atlas"),
-        BULLET("projectiles/bullet.atlas"),
-        PLASMA("projectiles/plasma.atlas");
-
-        public final String path;
-
-        Atlas(String path) {
-            this.path = path;
-        }
-    }
-
-    public enum Font {
-        GILROY("fonts/gilroy.ttf"),
-        SMALL("small.ttf"),
-        MEDIUM("medium.ttf"),
-        LARGE("large.ttf");
-
-        public final String path;
-
-        Font(String path) {
-            this.path = path;
-        }
-    }
-
-    public enum TerrainAtlas {
-        SUMMER("map/terrain/summer.atlas"),
-        WINTER("map/terrain/winter.atlas"),
-        FALL("map/terrain/fall.atlas"),
-        SPRING("map/terrain/spring.atlas");
-      
-        public final String path;
-      
-        TerrainAtlas(String path) {
-            this.path = path;
-        }
-    }
-
-    public enum GameMusic {
-        GAME("sounds/Race to Mars.mp3"),
-        MENU("sounds/AMBIENCE_TUNNEL_WIND_LOOP.wav");
-
-        public final String path;
-
-        GameMusic(String path) {
-            this.path = path;
-        }
-    }
-
-    public enum Sound {
-        TOUCH("sounds/BUTTON_03.wav"),
-        SAVESETTINGS("sounds/UI Message Appear 01.wav"),
-        HIGHSCORE_FLOURISH("sounds/Activate Glyph Forcefield.wav"),
-        HIGHSCORE_CONFIRMED("sounds/DSGNStngr_Kill Confirm Metallic_02.wav"),
-        GAMESTART("sounds/UI Message Appear 01.wav");
-//        BUILD("sounds/build.wav"),
-//        EXPLODE("sounds/explode.wav"),
-//        FIRE("sounds/fire.wav"),
-//        HIT("sounds/hit.wav"),
-//        MOVE("sounds/move.wav"),
-//        SELECT("sounds/select.wav"),
-//        WALL("sounds/wall.wav");
-
-        public final String path;
-
-        Sound(String path) {
-            this.path = path;
-        }
-    }
 }
