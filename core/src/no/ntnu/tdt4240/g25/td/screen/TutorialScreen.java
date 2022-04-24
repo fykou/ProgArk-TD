@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Align;
 
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.Font;
 
 public class TutorialScreen extends ScreenAdapter {
 
@@ -45,8 +46,8 @@ public class TutorialScreen extends ScreenAdapter {
         this.parent = parent;
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
-        this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
-        this.fontTutorial = game.getAssetManager().assetManager.get(AssetService.Font.MEDIUM.path, BitmapFont.class);
+        this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
+        this.fontTutorial = game.getAssetManager().assetManager.get(Font.MEDIUM.path, BitmapFont.class);
 
         // Camera
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
