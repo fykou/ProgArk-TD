@@ -7,7 +7,6 @@ import net.mostlyoriginal.api.Singleton;
 @Singleton
 public class PlayerComponent extends Component {
     public int lives = 20;
-    public int score = 0;
     public int cash = 50;
 
     public void enemyKilledReward() {
