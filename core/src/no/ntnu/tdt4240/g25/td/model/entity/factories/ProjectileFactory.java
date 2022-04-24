@@ -14,6 +14,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.ObjectAtlas;
 
 public class ProjectileFactory extends EntityFactory {
 
@@ -26,9 +27,9 @@ public class ProjectileFactory extends EntityFactory {
         // get bullet for projectile without splash, plasma for splash
         Array<TextureAtlas.AtlasRegion> regions;
         if (splashRadius != 0) {
-            regions = assetService.getAtlasRegionArray(AssetService.Atlas.PLASMA.path, AssetService.Atlas.PLASMA.name());
+            regions = assetService.getAtlasRegionArray(ObjectAtlas.PLASMA.path, ObjectAtlas.PLASMA.name());
         } else { // default to bullet
-            regions = assetService.getAtlasRegionArray(AssetService.Atlas.BULLET.path, AssetService.Atlas.BULLET.name());
+            regions = assetService.getAtlasRegionArray(ObjectAtlas.BULLET.path, ObjectAtlas.BULLET.name());
         }
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(regions.size / 60f, regions));
         world.createEntity().edit()

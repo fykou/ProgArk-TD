@@ -20,7 +20,8 @@ import java.util.Map;
 
 import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.Font;
+import no.ntnu.tdt4240.g25.td.service.SoundFx;
 
 public class HighscoreScreen extends ScreenAdapter {
 
@@ -53,9 +54,9 @@ public class HighscoreScreen extends ScreenAdapter {
         this.parent = parent;
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
-        this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
-        this.highscoreLoadSuccess = game.getAssetManager().assetManager.get(AssetService.Sound.HIGHSCORE_CONFIRMED.path);
-        this.sound = game.getAssetManager().assetManager.get(AssetService.Sound.TOUCH.path);
+        this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
+        this.highscoreLoadSuccess = game.getAssetManager().assetManager.get(SoundFx.HIGHSCORE_CONFIRMED.path);
+        this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path);
 
         // Camera
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();

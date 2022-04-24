@@ -17,7 +17,8 @@ import com.badlogic.gdx.utils.Align;
 
 import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.Font;
+import no.ntnu.tdt4240.g25.td.service.SoundFx;
 
 public class SettingsScreen extends ScreenAdapter {
 
@@ -64,9 +65,9 @@ public class SettingsScreen extends ScreenAdapter {
         this.parent = parent;
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
-        this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
-        this.saveSound = game.getAssetManager().assetManager.get(AssetService.Sound.SAVESETTINGS.path);
-        this.sound = game.getAssetManager().assetManager.get(AssetService.Sound.TOUCH.path);
+        this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
+        this.saveSound = game.getAssetManager().assetManager.get(SoundFx.SAVESETTINGS.path);
+        this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path);
 
         // Settings
         enableSFX = TdConfig.get().getSfxEnabled();
@@ -112,7 +113,7 @@ public class SettingsScreen extends ScreenAdapter {
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-            // CLICK Ok button
+            // CLICK Save button
             if (okButton.contains(inputCoordinates.x, inputCoordinates.y)) {
                 if(TdConfig.get().getSfxEnabled()){
                     long id = saveSound.play(TdConfig.get().getVolume());
