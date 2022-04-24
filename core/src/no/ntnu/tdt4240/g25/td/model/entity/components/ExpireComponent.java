@@ -1,10 +1,8 @@
 package no.ntnu.tdt4240.g25.td.model.entity.components;
 
-import com.artemis.Component;
-import com.artemis.annotations.PooledWeaver;
+import com.artemis.PooledComponent;
 
-@PooledWeaver
-public class ExpireComponent extends Component {
+public class ExpireComponent extends PooledComponent {
     public float timeLeft;
 
     public ExpireComponent(float timeToDie) {
@@ -13,5 +11,10 @@ public class ExpireComponent extends Component {
 
     public ExpireComponent() {
         this.timeLeft = 5;
+    }
+
+    @Override
+    protected void reset() {
+        this.timeLeft = 0;
     }
 }

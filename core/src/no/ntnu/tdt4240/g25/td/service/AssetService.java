@@ -44,6 +44,10 @@ public class AssetService {
         return regions;
     }
 
+    public BitmapFont getFont(Font font) {
+        return assetManager.get(font.path, BitmapFont.class);
+    }
+
     public void loadTextures(){
         // In order to add new types of towers and mobs together with the fact that their enums
         // are used other places, they're defined elsewhere, while other more generic assets are defined
@@ -86,12 +90,12 @@ public class AssetService {
     public void loadFonts(float initialSize) {
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallParam = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         smallParam.fontFileName = Font.GILROY.path;
-        smallParam.fontParameters.size = 10;
+        smallParam.fontParameters.size = 20;
         assetManager.load(Font.SMALL.path, BitmapFont.class, smallParam);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter mediumParam = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         mediumParam.fontFileName = Font.GILROY.path;
-        mediumParam.fontParameters.size = 20;
+        mediumParam.fontParameters.size = 30;
         assetManager.load(Font.MEDIUM.path, BitmapFont.class, mediumParam);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter largeParam = new FreetypeFontLoader.FreeTypeFontLoaderParameter();

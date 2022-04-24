@@ -1,13 +1,18 @@
 package no.ntnu.tdt4240.g25.td.model.entity.components;
 
-import com.artemis.Component;
+import com.artemis.PooledComponent;
 import com.artemis.annotations.EntityId;
-import com.artemis.annotations.PooledWeaver;
 
-@PooledWeaver
-public class HasTargetComponent extends Component {
+
+public class HasTargetComponent extends PooledComponent {
     @EntityId public int targetId = -1;
     public boolean canShoot = false;
+
+    @Override
+    protected void reset() {
+        targetId = -1;
+        canShoot = false;
+    }
 }
 
 

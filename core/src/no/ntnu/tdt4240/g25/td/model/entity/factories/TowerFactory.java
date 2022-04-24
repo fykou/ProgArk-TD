@@ -1,5 +1,6 @@
 package no.ntnu.tdt4240.g25.td.model.entity.factories;
 
+import com.artemis.ComponentMapper;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -18,63 +19,32 @@ import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class TowerFactory extends EntityFactory {
 
-    public TowerFactory(AssetService assetService) {
-        super(assetService);
-    }
+    private ComponentMapper<PositionComponent> mPosition;
+    private ComponentMapper<RotationComponent> mRotation;
+    private ComponentMapper<TextureComponent> mTexture;
+    private ComponentMapper<AnimationComponent> mAnimation;
+    private ComponentMapper<TowerComponent> mTower;
+    private ComponentMapper<StateComponent> mState;
 
-    // generalize the create functions defined above to use the new tower types enum, so that I can remove the above two functions
-    public void create(float x, float y, TowerType type, TowerLevel level) {
+
+    public void create(float tileX, float tileY, TowerType type, TowerLevel level) {
+        float x = tileX + .5f;
+        float y = tileY + .5f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, level.name()))));
         animationsMap.put(StateComponent.STATE_ATTACKING, getAnimation(type, level));
-        world.createEntity().edit()
-                .add(new PositionComponent(x, y))
-                .add(new RotationComponent())
-                .add(new TowerComponent(type.range, type.splashRadius, getDamage(type, level), getFireRate(type, level), level.level, type))
-                .add(new StateComponent(StateComponent.STATE_IDLE))
-                .add(new TextureComponent(-90f))
-                .add(new AnimationComponent(animationsMap));
+        int newId = world.create();
+        mPosition.create(newId).get().set(x, y);
+        mRotation.create(newId).get();
+        mTower.create(newId).set(type, level);
+        mState.create(newId).set(StateComponent.STATE_IDLE, false);
+        mTexture.create(newId).set(null,-90f, 1.2f);
+        mAnimation.create(newId).animations = animationsMap;
     }
 
     public Animation<TextureAtlas.AtlasRegion> getAnimation(TowerType type, TowerLevel level) {
         Array<TextureAtlas.AtlasRegion> regions = assetService.getAtlasRegionArray(type.atlasPath, level.name());
         float frameDuration = 1 / 30f;
         return new Animation<>(frameDuration, regions);
-    }
-
-    private float getDamage(TowerType type, TowerLevel level) {
-        float damage;
-        switch (level) {
-            case MK2:
-                damage = type.mk2Damage;
-                break;
-            case MK3:
-                damage = type.mk3Damage;
-                break;
-            case MK4:
-                damage = type.mk4Damage;
-                break;
-            default: // ie. level 1 or anything else
-                damage = type.mk1Damage;
-        }
-        return damage;
-    }
-
-    private float getFireRate(TowerType type, TowerLevel level) {
-        float fireRate;
-        switch (level) {
-            case MK2:
-                fireRate = type.mk2FireRate;
-                break;
-            case MK3:
-                fireRate = type.mk3FireRate;
-                break;
-            case MK4:
-                fireRate = type.mk4FireRate;
-                break;
-            default: // ie. level 1 or anything else
-                fireRate = type.mk1FireRate;
-        }
-        return fireRate;
     }
 }
