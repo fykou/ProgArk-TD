@@ -126,7 +126,7 @@ public class HighscoreScreen extends ScreenAdapter {
         camera.update();
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setProjectionMatrix(camera.combined);
-        sr.setColor(Color.WHITE);
+        sr.setColor(Color.ROYAL);
         sr.rect(goBackButton.x, goBackButton.y, goBackButton.width, goBackButton.height);
         sr.end();
 
