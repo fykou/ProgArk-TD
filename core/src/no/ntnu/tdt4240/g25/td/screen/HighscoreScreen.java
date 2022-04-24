@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Align;
 import java.util.ArrayList;
 import java.util.Map;
 
+import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
@@ -64,18 +65,16 @@ public class HighscoreScreen extends ScreenAdapter {
         // Back to Menu button
         goBackButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_WIDTH / 6f)
                 .setCenter(MENU_LOGIC_WIDTH / 2f, (MENU_LOGIC_HEIGHT / 2f) - MENU_LOGIC_HEIGHT / 3f);
-
         goBackButtonLayout = new GlyphLayout(font, "Back to Menu", font.getColor(), goBackButton.width, Align.center, false);
 
+        // Top five high scores
         highscores = new ArrayList<>();
-
         game.getDb().getTopFiveHighScores((ArrayList<Map<String, String>> topFiveHighScoresList) -> {
-            // Play sound when highscores successfully loaded!
-            long id = highscoreLoadSuccess.play(1.0f);
-            highscoreLoadSuccess.setVolume(id,0.85f);
-            highscoreLoadSuccess.setPitch(id, 1);
-            highscoreLoadSuccess.setLooping(id,false);
-
+            // Play confirmation sound when HS-list successfully loads!
+            if(TdConfig.get().getSfxEnabled()){
+                long id = highscoreLoadSuccess.play(TdConfig.get().getVolume());
+                highscoreLoadSuccess.setLooping(id,false);
+            }
             highscores.clear();
             highscores.addAll(topFiveHighScoresList);
             System.out.println("updated highscores");
@@ -89,10 +88,10 @@ public class HighscoreScreen extends ScreenAdapter {
 
             // Go back to parent screen and play sound
             if (goBackButton.contains(inputCoordinates.x, inputCoordinates.y)) {
-                long id = sound.play(1.0f);
-                sound.setVolume(id,0.5f);
-                sound.setPitch(id, 1);
-                sound.setLooping(id,false);
+                if(TdConfig.get().getSfxEnabled()){
+                    long id = sound.play(TdConfig.get().getVolume());
+                    sound.setLooping(id,false);
+                }
                 game.setScreen(parent);
             }
         }
@@ -137,27 +136,17 @@ public class HighscoreScreen extends ScreenAdapter {
     }
 
     @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-    }
+    public void resize(int width, int height) { super.resize(width, height); }
 
     @Override
-    public void pause() {
-        super.pause();
-    }
+    public void pause() { super.pause(); }
 
     @Override
-    public void resume() {
-        super.resume();
-    }
+    public void resume() { super.resume(); }
 
     @Override
-    public void hide() {
-        super.hide();
-    }
+    public void hide() { super.hide(); }
 
     @Override
-    public void dispose() {
-        super.dispose();
-    }
+    public void dispose() { super.dispose(); }
 }

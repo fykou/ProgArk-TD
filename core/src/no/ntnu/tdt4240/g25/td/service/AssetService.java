@@ -68,7 +68,6 @@ public class AssetService {
         }
     }
 
-
     public void loadSounds(){
         for (Sound sound : Sound.values()) {
             assetManager.load(sound.path, com.badlogic.gdx.audio.Sound.class);
@@ -115,7 +114,6 @@ public class AssetService {
         }
     }
 
-
     public enum Font {
         GILROY("fonts/gilroy.ttf"),
         SMALL("small.ttf"),
@@ -143,7 +141,8 @@ public class AssetService {
     }
 
     public enum GameMusic {
-        MENU("sounds/Race to Mars.mp3");
+        GAME("sounds/Race to Mars.mp3"),
+        MENU("sounds/AMBIENCE_TUNNEL_WIND_LOOP.wav");
 
         public final String path;
 
@@ -154,10 +153,10 @@ public class AssetService {
 
     public enum Sound {
         TOUCH("sounds/BUTTON_03.wav"),
+        SAVESETTINGS("sounds/UI Message Appear 01.wav"),
         HIGHSCORE_FLOURISH("sounds/Activate Glyph Forcefield.wav"),
         HIGHSCORE_CONFIRMED("sounds/DSGNStngr_Kill Confirm Metallic_02.wav"),
         GAMESTART("sounds/UI Message Appear 01.wav");
-
 //        BUILD("sounds/build.wav"),
 //        EXPLODE("sounds/explode.wav"),
 //        FIRE("sounds/fire.wav"),

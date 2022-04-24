@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,44 +25,48 @@ public class SettingsScreen extends ScreenAdapter {
     public int SETTINGS_LOGIC_WIDTH = 720;
     public int SETTINGS_LOGIC_HEIGHT = 1280;
 
-    private TdGame game;
-    private Screen parent;
-    private SpriteBatch sb;
-    private ShapeRenderer sr;
-    private OrthographicCamera camera;
+    private final TdGame game;
+    private final Screen parent;
+    private final SpriteBatch sb;
+    private final ShapeRenderer sr;
+    private final OrthographicCamera camera;
 
     // OK Button
-    private Rectangle okButton;
-    private GlyphLayout okButtonLayout;
+    private final Rectangle okButton;
+    private final GlyphLayout okButtonLayout;
 
     // SFX Checkbox
-    private Rectangle sfxCheckbox;
-    private GlyphLayout sfxCheckboxLayout;
+    private final Rectangle sfxCheckbox;
+    private final GlyphLayout sfxCheckboxLayout;
     private Boolean enableSFX;
 
     // Music Checkbox
-    private Rectangle musicCheckbox;
-    private GlyphLayout musicCheckboxLayout;
+    private final Rectangle musicCheckbox;
+    private final GlyphLayout musicCheckboxLayout;
     private Boolean enableMusic;
 
     // Volume
-    private Rectangle volumePlus;
-    private GlyphLayout volumePlusLayout;
-    private Rectangle volumeMinus;
-    private GlyphLayout volumeMinusLayout;
+    private final Rectangle volumePlus;
+    private final GlyphLayout volumePlusLayout;
+    private final Rectangle volumeMinus;
+    private final GlyphLayout volumeMinusLayout;
     private float gameVolume;
 
-
     // Fonts
-    private BitmapFont font;
+    private final BitmapFont font;
+
+    // Sound
+    private final Sound saveSound;
+    private final Sound sound;
 
     public SettingsScreen(TdGame game, Screen parent) {
-
         this.game = game;
         this.parent = parent;
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
         this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
+        this.saveSound = game.getAssetManager().assetManager.get(AssetService.Sound.SAVESETTINGS.path);
+        this.sound = game.getAssetManager().assetManager.get(AssetService.Sound.TOUCH.path);
 
         // Settings
         enableSFX = TdConfig.get().getSfxEnabled();
@@ -76,7 +81,7 @@ public class SettingsScreen extends ScreenAdapter {
         // OK Button
         okButton = new Rectangle(0, 0, SETTINGS_LOGIC_WIDTH / 4f, SETTINGS_LOGIC_HEIGHT / 12f)
                 .setCenter(SETTINGS_LOGIC_WIDTH / 2f, (SETTINGS_LOGIC_HEIGHT / 7f));
-        okButtonLayout = new GlyphLayout(font, "OK", font.getColor(), okButton.width, Align.center, false);
+        okButtonLayout = new GlyphLayout(font, "SAVE", font.getColor(), okButton.width, Align.center, false);
 
         // SFX Checkbox
         sfxCheckbox = new Rectangle(0, 0, SETTINGS_LOGIC_HEIGHT / 24f, SETTINGS_LOGIC_HEIGHT / 24f)
@@ -97,42 +102,44 @@ public class SettingsScreen extends ScreenAdapter {
         volumePlus = new Rectangle(0, 0, SETTINGS_LOGIC_HEIGHT / 30f, SETTINGS_LOGIC_HEIGHT / 30f)
                 .setCenter(SETTINGS_LOGIC_WIDTH / 2f + 200, SETTINGS_LOGIC_HEIGHT / 2f - 100);
         volumePlusLayout = new GlyphLayout(font, "+", font.getColor(), volumePlus.width, Align.center, false);
-
     }
 
     @Override
-    public void show() {
-
-    }
+    public void show() { }
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-
             // CLICK Ok button
             if (okButton.contains(inputCoordinates.x, inputCoordinates.y)) {
+                if(TdConfig.get().getSfxEnabled()){
+                    long id = saveSound.play(TdConfig.get().getVolume());
+                    saveSound.setLooping(id,false);
+                }
                 game.setScreen(parent);
-            }
-
-            // CLICK SFX checkbox
-            else if (sfxCheckbox.contains(inputCoordinates.x, inputCoordinates.y)) {
-                enableSFX = !enableSFX;
-                TdConfig.get().setSfxEnabled(enableSFX);
-                sfxCheckboxLayout.setText(font, (enableSFX ? "X" : ""), font.getColor(), sfxCheckbox.width, Align.center, false);
             }
 
             // CLICK Music checkbox
             else if (musicCheckbox.contains(inputCoordinates.x, inputCoordinates.y)) {
+                buttonSound();
                 enableMusic = !enableMusic;
                 TdConfig.get().setMusicEnabled(enableMusic);
                 musicCheckboxLayout.setText(font, (enableMusic ? "X" : ""), font.getColor(), musicCheckbox.width, Align.center, false);
             }
 
+            // CLICK SFX checkbox
+            else if (sfxCheckbox.contains(inputCoordinates.x, inputCoordinates.y)) {
+                buttonSound();
+                enableSFX = !enableSFX;
+                TdConfig.get().setSfxEnabled(enableSFX);
+                sfxCheckboxLayout.setText(font, (enableSFX ? "X" : ""), font.getColor(), sfxCheckbox.width, Align.center, false);
+            }
+
             // Volume down
             else if (volumeMinus.contains(inputCoordinates.x, inputCoordinates.y)) {
+                buttonSound();
                 float currentVolume = TdConfig.get().getVolume();
                 if (currentVolume > 0) {
                     TdConfig.get().setVolume(currentVolume - 0.1f);
@@ -141,6 +148,7 @@ public class SettingsScreen extends ScreenAdapter {
 
             // Volume up
             else if (volumePlus.contains(inputCoordinates.x, inputCoordinates.y)) {
+                buttonSound();
                 float currentVolume = TdConfig.get().getVolume();
                 if (currentVolume < 10) {
                     TdConfig.get().setVolume(currentVolume + 0.1f);
@@ -183,37 +191,29 @@ public class SettingsScreen extends ScreenAdapter {
         font.draw(sb, "Volume", volumeMinus.x - 185, volumeMinus.y + 40);
         font.draw(sb, volumeMinusLayout, volumeMinus.x, (volumeMinus.y + volumeMinus.height / 2f) + font.getCapHeight() / 2f);
         font.draw(sb, volumePlusLayout, volumePlus.x, (volumePlus.y + volumePlus.height / 2f) + font.getCapHeight() / 2f);
-        font.draw(sb, String.valueOf(TdConfig.get().getVolume() * 10), volumeMinus.x + 75, volumeMinus.y + 35);
+        font.draw(sb, String.valueOf(Math.round(TdConfig.get().getVolume() * 10)), volumeMinus.x + 75, volumeMinus.y + 35);
         sb.end();
     }
 
     @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-
-    }
+    public void resize(int width, int height) { super.resize(width, height); }
 
     @Override
-    public void pause() {
-        super.pause();
-
-    }
+    public void pause() { super.pause(); }
 
     @Override
-    public void resume() {
-        super.resume();
-    }
+    public void resume() { super.resume(); }
 
     @Override
-    public void hide() {
-        super.hide();
-
-    }
+    public void hide() { super.hide(); }
 
     @Override
-    public void dispose() {
-        super.dispose();
+    public void dispose() { super.dispose(); }
+
+    public void buttonSound(){
+        if(TdConfig.get().getSfxEnabled()){
+            long id = sound.play(TdConfig.get().getVolume());
+            sound.setLooping(id,false);
+        }
     }
-
-
 }
