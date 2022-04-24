@@ -17,6 +17,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
 import no.ntnu.tdt4240.g25.td.screen.GameScreen;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.Font;
 import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 public class WidgetRenderSystem extends BaseSystem {
@@ -46,7 +47,7 @@ public class WidgetRenderSystem extends BaseSystem {
 
     @Override
     protected void initialize() {
-        font = assetService.getFont(AssetService.Font.MEDIUM);
+        font = assetService.getFont(Font.MEDIUM);
         timerLayout = new GlyphLayout(font, "");
         waveLayout = new GlyphLayout(font, "");
         font.setUseIntegerPositions(false);

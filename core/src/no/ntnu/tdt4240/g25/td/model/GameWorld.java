@@ -51,10 +51,6 @@ public class GameWorld {
     public GameWorld(AssetService assetManager, MyShapeRenderer renderer, SpriteBatch batch) {
         createFactories();
         createWorld(batch, renderer, assetManager);
-
-        towerFactory.create(3, 1, TowerType.TYPE_1, TowerLevel.MK2);
-        towerFactory.create(5, 3, TowerType.TYPE_2, TowerLevel.MK3);
-        towerFactory.create(8, 7, TowerType.TYPE_2, TowerLevel.MK4);
     }
 
     protected void createWorld(SpriteBatch batch, MyShapeRenderer renderer, AssetService assetManager) {

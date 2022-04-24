@@ -26,6 +26,7 @@ public class TdGame extends Game {
         batch = new SpriteBatch();
         shapeRenderer = new MyShapeRenderer();
         assetService = new AssetService();
+
 //      Need to set name and highscore on _FBIC object.
 //      These fields will be used to send data to Firestore
 //      _FBIC.setName("name");
