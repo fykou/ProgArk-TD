@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import no.ntnu.tdt4240.g25.td.firebase.FirebaseInterface;
 import no.ntnu.tdt4240.g25.td.screen.LoadingScreen;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 public class TdGame extends Game {
 
 	private SpriteBatch batch;
 	private AssetService assetService;
 	private final FirebaseInterface _FBIC;
-	private ShapeRenderer shapeRenderer;
+	private MyShapeRenderer shapeRenderer;
 
 
 	public TdGame(FirebaseInterface FBIC) {
@@ -23,7 +24,7 @@ public class TdGame extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        shapeRenderer = new ShapeRenderer();
+        shapeRenderer = new MyShapeRenderer();
         assetService = new AssetService();
 //      Need to set name and highscore on _FBIC object.
 //      These fields will be used to send data to Firestore
@@ -48,7 +49,7 @@ public class TdGame extends Game {
         return batch;
     }
 
-    public ShapeRenderer getShapeRenderer() {
+    public MyShapeRenderer getShapeRenderer() {
         return shapeRenderer;
     }
 

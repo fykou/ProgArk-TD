@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Align;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 /**
  * WIP
@@ -32,7 +33,7 @@ public class GameScreen extends ScreenAdapter {
     private Screen parent;
     private GameWorld gameWorld;
     private SpriteBatch sb;
-    private ShapeRenderer sr;
+    private MyShapeRenderer sr;
     private OrthographicCamera camera;
 
     // Exit button

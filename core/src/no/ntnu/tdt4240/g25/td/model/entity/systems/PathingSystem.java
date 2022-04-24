@@ -11,7 +11,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PathComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
-import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaypointsComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.MapComponent;
 
 @All({VelocityComponent.class, PositionComponent.class, MobComponent.class, PathComponent.class})
 public class PathingSystem extends IteratingSystem {
@@ -21,7 +21,7 @@ public class PathingSystem extends IteratingSystem {
     ComponentMapper<MobComponent> mMob;
     ComponentMapper<ExpireComponent> mExpire;
 
-    WaypointsComponent waypoints;
+    MapComponent waypoints;
 
     @Override
     protected void process(int entityId) {
