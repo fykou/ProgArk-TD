@@ -16,7 +16,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 
-
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
@@ -30,24 +29,26 @@ public class GameScreen extends ScreenAdapter {
     public int MENU_LOGIC_WIDTH = 720;
     public int MENU_LOGIC_HEIGHT = 1280;
 
-    private TdGame game;
-    private Screen parent;
-    private GameWorld gameWorld;
-    private SpriteBatch sb;
-    private ShapeRenderer sr;
-    private OrthographicCamera camera;
+    private final TdGame game;
+    private final Screen parent;
+    private final GameWorld gameWorld;
+    private final SpriteBatch sb;
+    private final ShapeRenderer sr;
+    private final OrthographicCamera camera;
 
     // Exit button
-    private Rectangle exitButton;
-    private GlyphLayout exitButtonLayout;
+    private final Rectangle exitButton;
+    private final GlyphLayout exitButtonLayout;
 
     // Fonts
-    private BitmapFont font;
+    private final BitmapFont font;
 
-    //SoundFX
-    private Sound sound;
-    private Music music;
+    // SoundFX
+    private final Sound sound;
+    private final Sound gameStartSound;
 
+    // Music
+    private final Music music;
 
     public GameScreen(TdGame game, Screen parent) {
         this.game = game;
@@ -56,7 +57,9 @@ public class GameScreen extends ScreenAdapter {
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
         this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
-
+        this.music = game.getAssetManager().assetManager.get(AssetService.GameMusic.MENU.path);
+        this.sound = game.getAssetManager().assetManager.get(AssetService.Sound.TOUCH.path);
+        this.gameStartSound = game.getAssetManager().assetManager.get(AssetService.Sound.GAMESTART.path);
 
         exitButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 13f, MENU_LOGIC_HEIGHT / 20f)
                 .setCenter(MENU_LOGIC_WIDTH - (MENU_LOGIC_WIDTH / 13f), MENU_LOGIC_HEIGHT - MENU_LOGIC_HEIGHT / 20f);
@@ -67,26 +70,28 @@ public class GameScreen extends ScreenAdapter {
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
         camera = new OrthographicCamera(MENU_LOGIC_HEIGHT / aspectRatio, MENU_LOGIC_HEIGHT);
         camera.position.set(MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_HEIGHT / 2f, 0);
-
     }
 
     @Override
     public void show() {
-
+        // Stop music and play game start sound
+        music.stop();
+        long id = gameStartSound.play(1.0f);
+        gameStartSound.setVolume(id, 1.0f);
+        gameStartSound.setLooping(id,false);
     }
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-            long id = sound.play(1.0f);
-            sound.setVolume(id,1.0f);
-            sound.setPitch(id, 1);
-            sound.setLooping(id,false);
-
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-
             if (exitButton.contains(inputCoordinates.x, inputCoordinates.y)) {
+                // Go back to parent screen and play sound confirmation
+                long id = sound.play(1.0f);
+                sound.setVolume(id,1.0f);
+                sound.setPitch(id, 1);
+                sound.setLooping(id,false);
                 game.setScreen(parent);
             }
         }
@@ -125,7 +130,6 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void pause() {
         super.pause();
-
     }
 
     @Override
@@ -136,13 +140,10 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void hide() {
         super.hide();
-
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        sound.dispose();
     }
-
 }
