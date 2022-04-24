@@ -127,7 +127,7 @@ public class SettingsScreen extends ScreenAdapter {
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-            // CLICK Back button
+            // CLICK OK button
             if (okButton.contains(inputCoordinates.x, inputCoordinates.y)) {
                 if(TdConfig.get().getSfxEnabled()){
                     long id = saveSound.play(TdConfig.get().getVolume());
