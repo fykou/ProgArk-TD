@@ -17,7 +17,7 @@ public class BoundsComponent extends PooledComponent {
 
     @Override
     protected void reset() {
-        bounds = null;
+        bounds.set(0, 0, 0, 0);
     }
 
 }
