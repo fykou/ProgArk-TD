@@ -9,7 +9,6 @@ import com.artemis.utils.IntBag;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
@@ -27,7 +26,7 @@ public class MapRenderSystem extends BaseSystem {
     @Wire
     private AssetService assetService;
     @Wire
-    private SpriteBatch spriteBatch;
+    private SpriteBatch batch;
 
     private MyCameraSystem cameraSystem;
 
@@ -53,16 +52,17 @@ public class MapRenderSystem extends BaseSystem {
     @Override
     protected void processSystem() {
         IntBag towerIds = towerSubscription.getEntities();
-        spriteBatch.setProjectionMatrix(cameraSystem.viewport.getCamera().combined);
-        spriteBatch.begin();
+        batch.setProjectionMatrix(cameraSystem.viewport.getCamera().combined);
+        batch.enableBlending();
+        batch.begin();
         for (MapTile tile : mapGrid) {
             TextureRegion texture = tileTextures.get(tile.getTile());
-            spriteBatch.draw(texture, tile.getX(), tile.getY(), 1, 1);
+            batch.draw(texture, tile.getX(), tile.getY(), 1, 1);
         }
         for (int i = 0; i < towerIds.size(); i++) {
             PositionComponent tower = mPosition.get(towerIds.get(i));
-            spriteBatch.draw(towerBase, tower.get().x -.5f, tower.get().y - .5f, .5f, .5f, 1, 1, 1, 1, 0);
+            batch.draw(towerBase, tower.get().x -.5f, tower.get().y - .5f, .5f, .5f, 1, 1, 1, 1, 0);
         }
-        spriteBatch.end();
+        batch.end();
     }
 }
