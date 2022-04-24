@@ -1,5 +1,7 @@
 package no.ntnu.tdt4240.g25.td.model.entity.systems;
 
+import static no.ntnu.tdt4240.g25.td.model.TowerType.TYPE_1;
+
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
 import com.artemis.annotations.Wire;
@@ -27,13 +29,15 @@ public class FiringSystem extends IteratingSystem {
     ComponentMapper<StateComponent> mState;
     ComponentMapper<HasTargetComponent> mTarget;
     ComponentMapper<PositionComponent> mPosition;
+    @Wire
     private AssetService assets;
     private Sound type1;
-//    private Sound type2;
+    private Sound type2;
 
     @Override
     protected void initialize() {
-        type1 = assets.assetManager.get(SoundFx.FIRE.path, Sound.class);
+        type1 = assets.assetManager.get(SoundFx.FIRE_TYPE_1.path, Sound.class);
+        type2 = assets.assetManager.get(SoundFx.FIRE_TYPE_2.path, Sound.class);
     }
 
     @Override
@@ -45,8 +49,13 @@ public class FiringSystem extends IteratingSystem {
         if (tower.cooldown > 0 || !target.canShoot) {
             return; // exit here if the tower cannot fire, or if it is on cooldown
         }
-        long id = type1.play(TdConfig.get().getVolume());
-        type1.setLooping(id,false);
+        if(tower.type == TYPE_1){
+            long id = type1.play(TdConfig.get().getVolume());
+            type1.setLooping(id,false);
+        }else{
+            long id = type2.play(TdConfig.get().getVolume());
+            type2.setLooping(id,false);
+        }
         StateComponent state = mState.get(entityId);
         PositionComponent position = mPosition.get(entityId);
         // create the projectile and set the position to the tower position, velocity towards the target

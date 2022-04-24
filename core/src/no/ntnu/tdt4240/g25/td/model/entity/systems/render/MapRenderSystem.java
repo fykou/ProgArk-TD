@@ -18,6 +18,7 @@ import no.ntnu.tdt4240.g25.td.model.map.MapGrid;
 import no.ntnu.tdt4240.g25.td.model.map.MapTile;
 import no.ntnu.tdt4240.g25.td.model.map.MapTileType;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.ObjectAtlas;
 import no.ntnu.tdt4240.g25.td.service.TerrainAtlas;
 
 public class MapRenderSystem extends BaseSystem {
@@ -47,7 +48,7 @@ public class MapRenderSystem extends BaseSystem {
             tileTextures.put(type, atlas.findRegion(type.regionName));
         }
         towerSubscription = world.getAspectSubscriptionManager().get(Aspect.all(TowerComponent.class, PositionComponent.class));
-        towerBase = assetService.getAtlas(AssetService.Atlas.BUILDSPOTS.path).findRegion("single");
+        towerBase = assetService.getAtlas(ObjectAtlas.BUILDSPOTS.path).findRegion("single");
     }
 
     @Override
