@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 
+import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.service.AssetService;
 
@@ -52,14 +53,13 @@ public class MenuScreen extends ScreenAdapter {
     // Music
     private final Music music;
 
-
     public MenuScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
         this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
-        //this.sound = game.getAssetManager().assetManager.get(AssetService.Sound.TOUCH.path, Sound.class);
+        this.sound = game.getAssetManager().assetManager.get(AssetService.Sound.TOUCH.path, Sound.class);
         this.music = game.getAssetManager().assetManager.get(AssetService.GameMusic.MENU.path, Music.class);
 
         // Camera
@@ -67,54 +67,48 @@ public class MenuScreen extends ScreenAdapter {
         camera = new OrthographicCamera(MENU_LOGIC_HEIGHT / aspectRatio, MENU_LOGIC_HEIGHT);
         camera.position.set(MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_HEIGHT / 2f, 0);
 
-
         // Play Button
         playButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_WIDTH / 4f)
                 .setCenter(MENU_LOGIC_WIDTH / 2f, (MENU_LOGIC_HEIGHT / 2f) + MENU_LOGIC_HEIGHT / 5f);
-
         playButtonLayout = new GlyphLayout(font, "Play", font.getColor(), playButton.width, Align.center, false);
 
         // Settings Button
         settingsButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_WIDTH / 4f)
                 .setCenter(MENU_LOGIC_WIDTH / 2f, (MENU_LOGIC_HEIGHT / 2f) - MENU_LOGIC_HEIGHT / 5f);
-
         settingsButtonLayout = new GlyphLayout(font, "Settings", Color.WHITE, settingsButton.width, Align.center, false);
 
         // Leaderboard Button
         leaderboardButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_WIDTH / 4f)
                 .setCenter(MENU_LOGIC_WIDTH / 2f, (MENU_LOGIC_HEIGHT / 2f));
-
         leaderboardButtonLayout = new GlyphLayout(font, "Leaderboard", Color.WHITE, leaderboardButton.width, Align.center, false);
-
-        //Setting sound from game object
-
-
     }
 
     @Override
     public void show() {
-        music.setVolume(.2f);
-        music.setLooping(true);
-        music.play();
+        if(TdConfig.get().getMusicEnabled()){
+            music.setVolume(TdConfig.get().getVolume());
+            music.setLooping(true);
+            music.play();
+        }
+        else{
+            music.stop();
+        }
     }
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
 
-//            long id = sound.play(1.0f);
-//            sound.setVolume(id,0.5f);
-//            sound.setPitch(id, 0.5f);
-//            sound.setLooping(id,false);
-
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-
             if (playButton.contains(inputCoordinates.x, inputCoordinates.y)) {
+                buttonTouchSound();
                 game.setScreen(new GameScreen(game, this));
             } else if (settingsButton.contains(inputCoordinates.x, inputCoordinates.y)) {
+                buttonTouchSound();
                 game.setScreen(new SettingsScreen(game, this));
             } else if (leaderboardButton.contains(inputCoordinates.x, inputCoordinates.y)) {
+                buttonTouchSound();
                 game.setScreen(new HighscoreScreen(game, this));
             }
         }
@@ -145,32 +139,24 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-
-    }
+    public void resize(int width, int height) { super.resize(width, height); }
 
     @Override
-    public void pause() {
-        super.pause();
-
-    }
+    public void pause() { super.pause(); }
 
     @Override
-    public void resume() {
-        super.resume();
-    }
+    public void resume() { super.resume(); }
 
     @Override
-    public void hide() {
-        super.hide();
-
-    }
+    public void hide() { super.hide(); }
 
     @Override
-    public void dispose() {
-        super.dispose();
-        sound.dispose();
-    }
+    public void dispose() { super.dispose(); }
 
+    public void buttonTouchSound(){
+        if(TdConfig.get().getSfxEnabled()){
+            long id = sound.play(TdConfig.get().getVolume());
+            sound.setLooping(id,false);
+        }
+    }
 }

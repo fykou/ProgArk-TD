@@ -20,7 +20,6 @@ public class TdGame extends Game {
 	    _FBIC = FBIC;
 	}
 
-
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -38,20 +37,11 @@ public class TdGame extends Game {
         setScreen(new LoadingScreen(this, null));
     }
 
-    public AssetService getAssetManager() {
-        return assetService;
-    }
+    public AssetService getAssetManager() { return assetService; }
 
-    public FirebaseInterface getDb() {
-        return _FBIC;
-    }
+    public FirebaseInterface getDb() { return _FBIC; }
 
-    public SpriteBatch getBatch() {
-        return batch;
-    }
+    public SpriteBatch getBatch() { return batch; }
 
-    public ShapeRenderer getShapeRenderer() {
-        return shapeRenderer;
-    }
-
+    public ShapeRenderer getShapeRenderer() { return shapeRenderer; }
 }
