@@ -2,11 +2,11 @@ package no.ntnu.tdt4240.g25.td.model;
 
 public enum TowerType {
 
-    TYPE_1(5000, 0,
+    TYPE_1(4, 0,
             6, 12, 18, 24, // damage for level 1, 2, 3, 4
             2f, 2.5f, 3f, 3.5f,  // firerate for level 1, 2, 3, 4
             "towers/TYPE_1.atlas"), // path to atlas in assets
-    TYPE_2(5000, 50, 3, 6, 9, 12,
+    TYPE_2(2, 50, 3, 6, 9, 12,
             2f, 2.5f, 3f, 3.5f,
             "towers/TYPE_2.atlas");
 
