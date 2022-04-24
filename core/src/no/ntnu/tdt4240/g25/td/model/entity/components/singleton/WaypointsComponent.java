@@ -8,5 +8,8 @@ import net.mostlyoriginal.api.Singleton;
 
 @Singleton
 public class WaypointsComponent extends Component {
+    /**
+     * The waypoints in tile coordinates.
+     */
     public Array<Vector2> path = new Array<>();
 }

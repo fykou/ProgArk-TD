@@ -25,8 +25,8 @@ import no.ntnu.tdt4240.g25.td.service.AssetService;
 public class GameScreen extends ScreenAdapter {
 
     // Game screen size
-    public int MENU_LOGIC_WIDTH = 720;
-    public int MENU_LOGIC_HEIGHT = 1280;
+    public static int MENU_LOGIC_WIDTH = 720;
+    public static int MENU_LOGIC_HEIGHT = 1280;
 
     private TdGame game;
     private Screen parent;
@@ -46,7 +46,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
-        this.gameWorld = new GameWorld(game.getAssetManager(), game.getBatch());
+        this.gameWorld = new GameWorld(game.getAssetManager(), game.getShapeRenderer(), game.getBatch());
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
         this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);

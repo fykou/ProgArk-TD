@@ -7,7 +7,9 @@ import com.artemis.systems.IteratingSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.components.DamageComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.PathComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
 
 @All({DamageComponent.class, MobComponent.class, StateComponent.class})
 public class DamageSystem extends IteratingSystem {
@@ -16,6 +18,8 @@ public class DamageSystem extends IteratingSystem {
     ComponentMapper<MobComponent> mMob;
     ComponentMapper<StateComponent> mState;
     ComponentMapper<ExpireComponent> mExpire;
+    ComponentMapper<PathComponent> mPath;
+    ComponentMapper<VelocityComponent> mVelocity;
 
     @Override
     protected void process(int entityId) {
@@ -24,6 +28,8 @@ public class DamageSystem extends IteratingSystem {
         StateComponent state = mState.get(entityId);
         mob.health -= damage.damage;
         if(mob.health <= 0) {
+            mPath.remove(entityId);
+            mVelocity.remove(entityId);
             ExpireComponent expire = mExpire.create(entityId);
             expire.timeLeft = 2;
             state.set(StateComponent.STATE_DYING, false);
