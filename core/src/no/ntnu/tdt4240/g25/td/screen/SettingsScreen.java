@@ -174,8 +174,9 @@ public class SettingsScreen extends ScreenAdapter {
 
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setProjectionMatrix(camera.combined);
-        sr.setColor(Color.WHITE);
+        sr.setColor(Color.ROYAL);
         sr.rect(okButton.x, okButton.y, okButton.width, okButton.height);
+
         sr.rect(sfxCheckbox.x, sfxCheckbox.y, sfxCheckbox.width, sfxCheckbox.height);
         sr.rect(musicCheckbox.x, musicCheckbox.y, musicCheckbox.width, musicCheckbox.height);
         sr.rect(volumeMinus.x, volumeMinus.y, volumeMinus.width, volumeMinus.height);
