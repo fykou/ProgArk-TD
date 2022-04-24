@@ -5,10 +5,11 @@ public enum SoundFx {
     SAVESETTINGS("sounds/UI Message Appear 01.wav"),
     HIGHSCORE_FLOURISH("sounds/Activate Glyph Forcefield.wav"),
     HIGHSCORE_CONFIRMED("sounds/DSGNStngr_Kill Confirm Metallic_02.wav"),
-    GAMESTART("sounds/UI Message Appear 01.wav");
+    GAMESTART("sounds/UI Message Appear 01.wav"),
+    FIRE("sounds/fireSounds/LASRGun_Plasma Rifle Fire_03.wav");
 //        BUILD("sounds/build.wav"),
 //        EXPLODE("sounds/explode.wav"),
-//        FIRE("sounds/fire.wav"),
+//
 //        HIT("sounds/hit.wav"),
 //        MOVE("sounds/move.wav"),
 //        SELECT("sounds/select.wav"),
