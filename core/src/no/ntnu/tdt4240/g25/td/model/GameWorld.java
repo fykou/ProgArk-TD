@@ -5,8 +5,8 @@ import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.link.EntityLinkManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import net.mostlyoriginal.api.Singleton;
 import net.mostlyoriginal.api.SingletonPlugin;
 
 import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
@@ -21,6 +21,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.systems.DamageSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.ExpireSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FindTargetSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.FiringSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.render.HealthRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.MapRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.PathingSystem;
@@ -41,9 +42,9 @@ public class GameWorld {
     World world;
 
 
-    public GameWorld(AssetService assetManager, SpriteBatch batch) {
+    public GameWorld(AssetService assetManager, ShapeRenderer renderer, SpriteBatch batch) {
         createFactories();
-        createWorld(batch, assetManager);
+        createWorld(batch, renderer, assetManager);
 
 //        towerFactory.create(1, 1, TowerType.TYPE_2, TowerLevel.MK1);
 //        towerFactory.create(3, 1, TowerType.TYPE_2, TowerLevel.MK2);
@@ -53,7 +54,7 @@ public class GameWorld {
         mobFactory.create(5, 0, MobType.TANK);
     }
 
-    protected void createWorld(SpriteBatch batch, AssetService assetManager) {
+    protected void createWorld(SpriteBatch batch, ShapeRenderer renderer, AssetService assetManager) {
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .dependsOn(
@@ -79,7 +80,8 @@ public class GameWorld {
                         // Renders
                         new MapRenderSystem(),
                         new RenderSystem(),
-                        new DebugRenderSystem(batch),
+                        new HealthRenderSystem(),
+                        new DebugRenderSystem(),
 
                         // Factories
                         towerFactory,
@@ -88,6 +90,7 @@ public class GameWorld {
                 )
                 .build()
                 .register(batch)
+                .register(renderer)
                 .register(assetManager)
                 .register(MapGrid.getTestGrid(GAME_WIDTH, GAME_HEIGHT));
 
