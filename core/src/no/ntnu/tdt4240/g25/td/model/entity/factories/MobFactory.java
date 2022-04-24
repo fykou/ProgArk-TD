@@ -30,7 +30,7 @@ public class MobFactory extends EntityFactory {
     private ComponentMapper<StateComponent> mState;
     private ComponentMapper<PathComponent> mPath;
 
-    public void create(int tileX, int tileY, MobType type) {
+    public void create(float tileX, float tileY, MobType type) {
         float x = tileX -.5f;
         float y = tileY -.5f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();

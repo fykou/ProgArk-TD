@@ -28,7 +28,7 @@ public class TowerFactory extends EntityFactory {
 
 
     // generalize the create functions defined above to use the new tower types enum, so that I can remove the above two functions
-    public void create(int tileX, int tileY, TowerType type, TowerLevel level) {
+    public void create(float tileX, float tileY, TowerType type, TowerLevel level) {
         float x = tileX - .5f;
         float y = tileY - .5f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
