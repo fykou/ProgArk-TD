@@ -3,6 +3,8 @@ package no.ntnu.tdt4240.g25.td.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,10 +16,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 
-
+import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.Font;
+import no.ntnu.tdt4240.g25.td.service.GameMusic;
+import no.ntnu.tdt4240.g25.td.service.SoundFx;
 
 /**
  * WIP
@@ -28,20 +32,26 @@ public class GameScreen extends ScreenAdapter {
     public static int MENU_LOGIC_WIDTH = 720;
     public static int MENU_LOGIC_HEIGHT = 1280;
 
-    private TdGame game;
-    private Screen parent;
-    private GameWorld gameWorld;
-    private SpriteBatch sb;
-    private ShapeRenderer sr;
-    private OrthographicCamera camera;
+    private final TdGame game;
+    private final Screen parent;
+    private final GameWorld gameWorld;
+    private final SpriteBatch sb;
+    private final ShapeRenderer sr;
+    private final OrthographicCamera camera;
 
     // Exit button
-    private Rectangle exitButton;
-    private GlyphLayout exitButtonLayout;
+    private final Rectangle exitButton;
+    private final GlyphLayout exitButtonLayout;
 
     // Fonts
-    private BitmapFont font;
+    private final BitmapFont font;
 
+    // SoundFX
+    private final Sound sound;
+//    private final Sound gameStartSound;
+
+    // Music
+    private final Music gameMusic;
 
     public GameScreen(TdGame game, Screen parent) {
         this.game = game;
@@ -49,7 +59,9 @@ public class GameScreen extends ScreenAdapter {
         this.gameWorld = new GameWorld(game.getAssetManager(), game.getShapeRenderer(), game.getBatch());
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
-        this.font = game.getAssetManager().assetManager.get(AssetService.Font.LARGE.path, BitmapFont.class);
+        this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
+        this.gameMusic = game.getAssetManager().assetManager.get(GameMusic.GAME.path);
+        this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path);
 
         exitButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 13f, MENU_LOGIC_HEIGHT / 20f)
                 .setCenter(MENU_LOGIC_WIDTH - (MENU_LOGIC_WIDTH / 13f), MENU_LOGIC_HEIGHT - MENU_LOGIC_HEIGHT / 20f);
@@ -60,22 +72,30 @@ public class GameScreen extends ScreenAdapter {
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
         camera = new OrthographicCamera(MENU_LOGIC_HEIGHT / aspectRatio, MENU_LOGIC_HEIGHT);
         camera.position.set(MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_HEIGHT / 2f, 0);
-
     }
 
     @Override
     public void show() {
+        // Play game music
+        if(TdConfig.get().getMusicEnabled()){
+            gameMusic.setVolume(TdConfig.get().getVolume());
+            gameMusic.setLooping(true);
+            gameMusic.play();
+        }
 
     }
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-
             if (exitButton.contains(inputCoordinates.x, inputCoordinates.y)) {
+                // Go back to parent screen and play sound confirmation
+                if(TdConfig.get().getSfxEnabled()){
+                    long id = sound.play(TdConfig.get().getVolume());
+                    sound.setLooping(id,false);
+                }
                 game.setScreen(parent);
             }
         }
@@ -112,25 +132,17 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
-    public void pause() {
-        super.pause();
-
-    }
+    public void pause() { super.pause(); }
 
     @Override
-    public void resume() {
-        super.resume();
-    }
+    public void resume() { super.resume(); }
 
     @Override
     public void hide() {
         super.hide();
-
+        gameMusic.stop();
     }
 
     @Override
-    public void dispose() {
-        super.dispose();
-    }
-
+    public void dispose() { super.dispose(); }
 }

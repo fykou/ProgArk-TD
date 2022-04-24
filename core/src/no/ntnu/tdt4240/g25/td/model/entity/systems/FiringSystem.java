@@ -1,16 +1,22 @@
 package no.ntnu.tdt4240.g25.td.model.entity.systems;
 
+import static no.ntnu.tdt4240.g25.td.model.TowerType.TYPE_1;
+
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
+import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.model.entity.components.HasTargetComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
+import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.service.SoundFx;
 
 @All({TowerComponent.class, StateComponent.class, HasTargetComponent.class, PositionComponent.class})
 public class FiringSystem extends IteratingSystem {
@@ -23,6 +29,16 @@ public class FiringSystem extends IteratingSystem {
     ComponentMapper<StateComponent> mState;
     ComponentMapper<HasTargetComponent> mTarget;
     ComponentMapper<PositionComponent> mPosition;
+    @Wire
+    private AssetService assets;
+    private Sound type1;
+    private Sound type2;
+
+    @Override
+    protected void initialize() {
+        type1 = assets.assetManager.get(SoundFx.FIRE_TYPE_1.path, Sound.class);
+        type2 = assets.assetManager.get(SoundFx.FIRE_TYPE_2.path, Sound.class);
+    }
 
     @Override
     protected void process(int entityId) {
@@ -32,6 +48,13 @@ public class FiringSystem extends IteratingSystem {
         tower.cooldown -= world.getDelta();
         if (tower.cooldown > 0 || !target.canShoot) {
             return; // exit here if the tower cannot fire, or if it is on cooldown
+        }
+        if(tower.type == TYPE_1){
+            long id = type1.play(TdConfig.get().getVolume());
+            type1.setLooping(id,false);
+        }else{
+            long id = type2.play(TdConfig.get().getVolume());
+            type2.setLooping(id,false);
         }
         StateComponent state = mState.get(entityId);
         PositionComponent position = mPosition.get(entityId);
