@@ -46,6 +46,10 @@ public class MenuScreen extends ScreenAdapter {
     private final Rectangle settingsButton;
     private final GlyphLayout settingsButtonLayout;
 
+    // Tutorial Button
+    private Rectangle tutorialButton;
+    private GlyphLayout tutorialButtonLayout;
+
     // Fonts
     private final BitmapFont font;
 
@@ -83,6 +87,14 @@ public class MenuScreen extends ScreenAdapter {
         leaderboardButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_WIDTH / 4f)
                 .setCenter(MENU_LOGIC_WIDTH / 2f, (MENU_LOGIC_HEIGHT / 2f));
         leaderboardButtonLayout = new GlyphLayout(font, "Leaderboard", Color.WHITE, leaderboardButton.width, Align.center, false);
+
+
+        // Tutorial Button
+        tutorialButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 3f, MENU_LOGIC_WIDTH / 6f)
+                .setCenter(MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_HEIGHT / 2f - MENU_LOGIC_HEIGHT / 2.7f);
+
+        tutorialButtonLayout = new GlyphLayout(font, "Tutorial", Color.WHITE, tutorialButton.width, Align.center, false);
+
     }
 
     @Override
@@ -112,6 +124,8 @@ public class MenuScreen extends ScreenAdapter {
             } else if (leaderboardButton.contains(inputCoordinates.x, inputCoordinates.y)) {
                 buttonTouchSound();
                 game.setScreen(new HighscoreScreen(game, this));
+            } else if (tutorialButton.contains(inputCoordinates.x, inputCoordinates.y)) {
+                game.setScreen(new TutorialScreen(game, this));
             }
         }
     }
@@ -125,23 +139,34 @@ public class MenuScreen extends ScreenAdapter {
             delta = 0.1f;
         }
         camera.update();
+
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setProjectionMatrix(camera.combined);
-        sr.setColor(Color.WHITE);
+        sr.setColor(Color.LIME);
         sr.rect(playButton.x, playButton.y, playButton.width, playButton.height);
+        sr.setColor(Color.ROYAL);
         sr.rect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height);
         sr.rect(leaderboardButton.x, leaderboardButton.y, leaderboardButton.width, leaderboardButton.height);
+        sr.setColor(Color.YELLOW);
+        sr.rect(tutorialButton.x, tutorialButton.y, tutorialButton.width, tutorialButton.height);
         sr.end();
+
         sb.begin();
         sb.setProjectionMatrix(camera.combined);
         font.draw(sb, playButtonLayout, playButton.x, (playButton.y + playButton.height / 2f) + font.getCapHeight() / 2f);
         font.draw(sb, settingsButtonLayout, settingsButton.x, (settingsButton.y + settingsButton.height / 2f) + font.getCapHeight() / 2f);
         font.draw(sb, leaderboardButtonLayout, leaderboardButton.x, (leaderboardButton.y + leaderboardButton.height / 2f) + font.getCapHeight() / 2f);
+        font.draw(sb, tutorialButtonLayout, tutorialButton.x, (tutorialButton.y + tutorialButton.height / 2f) + font.getCapHeight() / 2f);
         sb.end();
     }
 
+
     @Override
-    public void resize(int width, int height) { super.resize(width, height); }
+    public void resize(int width, int height) {
+        super.resize(width, height);
+
+    }
+
 
     @Override
     public void pause() { super.pause(); }
