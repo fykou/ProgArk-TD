@@ -71,12 +71,17 @@ public class GameScreen extends ScreenAdapter {
     public void handleInput() {
         if (Gdx.input.justTouched()) {
 
+            Vector3 clickCoordinates = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+
             // Input coordinates
-            Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            Vector3 inputCoordinates = camera.unproject(clickCoordinates.cpy());
 
 
             if (exitButton.contains(inputCoordinates.x, inputCoordinates.y)) {
                 game.setScreen(parent);
+            }
+            else {
+                gameWorld.handleInput(clickCoordinates.cpy());
             }
         }
     }
