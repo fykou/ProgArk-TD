@@ -95,6 +95,8 @@ public class MenuScreen extends ScreenAdapter {
 
         tutorialButtonLayout = new GlyphLayout(font, "Tutorial", Color.WHITE, tutorialButton.width, Align.center, false);
 
+    }
+
     @Override
     public void show() {
         if(TdConfig.get().getMusicEnabled()){
@@ -105,7 +107,6 @@ public class MenuScreen extends ScreenAdapter {
         else{
             music.stop();
         }
-
     }
 
     public void handleInput() {
@@ -159,10 +160,6 @@ public class MenuScreen extends ScreenAdapter {
         sb.end();
     }
 
-    @Override
-    public void show() {
-
-    }
 
     @Override
     public void resize(int width, int height) {
