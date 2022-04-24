@@ -3,6 +3,8 @@ package no.ntnu.tdt4240.g25.td.service;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -56,13 +58,33 @@ public class AssetService {
         for (MobType type : MobType.values()) {
             assetManager.load(type.atlasPath, TextureAtlas.class);
         }
-        for (Atlas atlas : Atlas.values()) {
-            assetManager.load(atlas.path, TextureAtlas.class);
+        for (ObjectAtlas objectAtlas : ObjectAtlas.values()) {
+            assetManager.load(objectAtlas.path, TextureAtlas.class);
         }
 
         for (TerrainAtlas atlas : TerrainAtlas.values()) {
             assetManager.load(atlas.path, TextureAtlas.class);
         }
+    }
+
+    public void loadMusic() {
+        for (GameMusic music : GameMusic.values()) {
+            assetManager.load(music.path, Music.class);
+        }
+    }
+
+    public void loadSounds(){
+        for (SoundFx soundFx : SoundFx.values()) {
+            assetManager.load(soundFx.path, com.badlogic.gdx.audio.Sound.class);
+        }
+    }
+
+    public Music getMusic(GameMusic music){
+        return assetManager.get(music.path, Music.class);
+    }
+
+    public Sound getSound(SoundFx soundFx){
+        return assetManager.get(soundFx.path, Sound.class);
     }
 
     public void loadFonts(float initialSize) {
@@ -84,52 +106,10 @@ public class AssetService {
 
     public void dispose() {
         assetManager.dispose();
-
     }
 
     public boolean update() {
         return assetManager.update();
     }
 
-    public enum Atlas {
-        BUILDSPOTS("map/buildspots.atlas"),
-        WALLS("map/walls.atlas"),
-        EXPLOSION("effects/explosion.atlas"),
-        SPARKS("effects/sparks.atlas"),
-        BULLET("projectiles/bullet.atlas"),
-        PLASMA("projectiles/plasma.atlas");
-
-        public final String path;
-
-        Atlas(String path) {
-            this.path = path;
-        }
-    }
-
-
-    public enum Font {
-        GILROY("fonts/gilroy.ttf"),
-        SMALL("small.ttf"),
-        MEDIUM("medium.ttf"),
-        LARGE("large.ttf");
-
-        public final String path;
-
-        Font(String path) {
-            this.path = path;
-        }
-    }
-
-    public enum TerrainAtlas {
-        SUMMER("map/terrain/summer.atlas"),
-        WINTER("map/terrain/winter.atlas"),
-        FALL("map/terrain/fall.atlas"),
-        SPRING("map/terrain/spring.atlas");
-      
-        public final String path;
-      
-        TerrainAtlas(String path) {
-            this.path = path;
-        }
-    }
 }
