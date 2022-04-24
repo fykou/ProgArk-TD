@@ -25,8 +25,8 @@ import no.ntnu.tdt4240.g25.td.service.AssetService;
 public class GameScreen extends ScreenAdapter {
 
     // Game screen size
-    public int MENU_LOGIC_WIDTH = 720;
-    public int MENU_LOGIC_HEIGHT = 1280;
+    public static int MENU_LOGIC_WIDTH = 720;
+    public static int MENU_LOGIC_HEIGHT = 1280;
 
     private TdGame game;
     private Screen parent;

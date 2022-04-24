@@ -15,15 +15,6 @@ import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
 
 public class WaveSystem extends BaseSystem {
 
-    final static int baseNormalEnemies = 3;
-    final static int baseTankEnemies = 1;
-    final static float waveMultiplier = 1.5f;
-
-    final static float WAVE_DURATION = 30f;
-    final static float PAUSE_DURATION = 10f;
-    final static float NORMAL_ENEMY_INTERVAL = 1f;
-    final static float TANK_ENEMY_INTERVAL = 3f;
-
     private WaveComponent wc;
     private WaypointsComponent wpc;
     private EntitySubscription aliveMobs;
@@ -44,44 +35,44 @@ public class WaveSystem extends BaseSystem {
         // Wave phase
         if (wc.active) {
             wc.time += world.delta;
-            // Wave is over, but if there are still enemies alive, wait for them to die
-            // in case there are still remaining enemies for current wave, spawn them.
-            if (wc.time >= WAVE_DURATION) {
-                if (wc.remainingNormalEnemies > 0) {
-                    createEnemy(MobType.NORMAL);
-                } else if (wc.remainingTankEnemies > 0) {
-                    createEnemy(MobType.TANK);
-                } else {
-                    if (!wc.enemiesAlive) {
-                        wc.active = false;
-                        wc.time = 0;
-                        wc.numberOfWaves++;
-                        // initalize new wave
-                    }
-                }
+            wc.normalEnemyCooldown -= world.delta;
+            wc.tankEnemyCooldown -= world.delta;
+
+            if (wc.remainingNormalEnemies <= 0 && wc.remainingTankEnemies <= 0 && !wc.enemiesAlive) {
+                wc.active = false;
+                wc.time = 0;
+                wc.numberOfWaves++;
             }
 
-            if (wc.time % NORMAL_ENEMY_INTERVAL <= 1 && wc.remainingNormalEnemies > 0) {
+            else if (wc.remainingNormalEnemies > 0 && wc.normalEnemyCooldown <= 0) {
+                if (wc.normalsSpawned < WaveComponent.NUM_NORMAL_PER_CLUSTER) {
+                    createEnemy(MobType.NORMAL);
+                    wc.normalsSpawned++;
+
+                }
                 createEnemy(MobType.NORMAL);
+                wc.normalEnemyCooldown = WaveComponent.NORMAL_ENEMY_INTERVAL;
             }
-            if (wc.time % TANK_ENEMY_INTERVAL <= 1 && wc.remainingTankEnemies > 0) {
+            if (wc.remainingTankEnemies > 0 && wc.tankEnemyCooldown <= 0) {
+
                 createEnemy(MobType.TANK);
+                wc.tankEnemyCooldown = WaveComponent.TANK_ENEMY_INTERVAL;
             }
 
             // Pause phase
         } else {
             wc.time += world.delta;
-            if (wc.time >= PAUSE_DURATION) {
-                initializeWave();
+            if (wc.time >= WaveComponent.PAUSE_DURATION) {
+                wc.remainingNormalEnemies = MathUtils.round(
+                        WaveComponent.baseNormalEnemies + (wc.numberOfWaves * WaveComponent.waveMultiplier)
+                );
+                wc.remainingTankEnemies = MathUtils.round(
+                        WaveComponent.baseTankEnemies + (wc.numberOfWaves * WaveComponent.waveMultiplier)
+                );
+                wc.time = 0;
+                wc.active = true;
             }
         }
-    }
-
-    private void initializeWave() {
-        wc.remainingNormalEnemies = MathUtils.round(baseNormalEnemies + (wc.numberOfWaves * waveMultiplier));
-        wc.remainingTankEnemies = MathUtils.round(baseTankEnemies + (wc.numberOfWaves * waveMultiplier));
-        wc.time = 0;
-        wc.active = true;
     }
 
     private void createEnemy(MobType type) {
