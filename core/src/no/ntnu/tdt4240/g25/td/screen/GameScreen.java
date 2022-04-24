@@ -52,7 +52,6 @@ public class GameScreen extends ScreenAdapter {
 
     // Music
     private final Music gameMusic;
-    private final Music menuMusic;
 
     public GameScreen(TdGame game, Screen parent) {
         this.game = game;
@@ -62,9 +61,7 @@ public class GameScreen extends ScreenAdapter {
         this.sr = game.getShapeRenderer();
         this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
         this.gameMusic = game.getAssetManager().assetManager.get(GameMusic.GAME.path);
-        this.menuMusic = game.getAssetManager().assetManager.get(GameMusic.MENU.path);
         this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path);
-//        this.gameStartSound = game.getAssetManager().assetManager.get(AssetService.Sound.GAMESTART.path);
 
         exitButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 13f, MENU_LOGIC_HEIGHT / 20f)
                 .setCenter(MENU_LOGIC_WIDTH - (MENU_LOGIC_WIDTH / 13f), MENU_LOGIC_HEIGHT - MENU_LOGIC_HEIGHT / 20f);
@@ -79,8 +76,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        // Stop menu music and play game music
-        menuMusic.stop();
+        // Play game music
         if(TdConfig.get().getMusicEnabled()){
             gameMusic.setVolume(TdConfig.get().getVolume());
             gameMusic.setLooping(true);
@@ -142,7 +138,10 @@ public class GameScreen extends ScreenAdapter {
     public void resume() { super.resume(); }
 
     @Override
-    public void hide() { super.hide(); }
+    public void hide() {
+        super.hide();
+        gameMusic.stop();
+    }
 
     @Override
     public void dispose() { super.dispose(); }
