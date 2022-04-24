@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,6 +22,7 @@ import java.util.Map;
 import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.service.Font;
+import no.ntnu.tdt4240.g25.td.service.GameMusic;
 import no.ntnu.tdt4240.g25.td.service.SoundFx;
 
 public class HighscoreScreen extends ScreenAdapter {
@@ -49,6 +51,9 @@ public class HighscoreScreen extends ScreenAdapter {
     private final Sound sound;
     private final Sound highscoreLoadSuccess;
 
+    // Music
+    private final Music music;
+
     public HighscoreScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
@@ -57,6 +62,7 @@ public class HighscoreScreen extends ScreenAdapter {
         this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
         this.highscoreLoadSuccess = game.getAssetManager().assetManager.get(SoundFx.HIGHSCORE_CONFIRMED.path);
         this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path);
+        this.music = game.getAssetManager().assetManager.get(GameMusic.MENU.path);
 
         // Camera
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
@@ -99,7 +105,11 @@ public class HighscoreScreen extends ScreenAdapter {
     }
 
     @Override
-    public void show() { }
+    public void show() {
+        music.setVolume(TdConfig.get().getVolume());
+        music.setLooping(true);
+        music.play();
+    }
 
     @Override
     public void render(float delta) {
@@ -146,7 +156,10 @@ public class HighscoreScreen extends ScreenAdapter {
     public void resume() { super.resume(); }
 
     @Override
-    public void hide() { super.hide(); }
+    public void hide() {
+        super.hide();
+        music.stop();
+    }
 
     @Override
     public void dispose() { super.dispose(); }
