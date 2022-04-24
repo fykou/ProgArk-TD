@@ -30,9 +30,8 @@ public class MobFactory extends EntityFactory {
     private ComponentMapper<StateComponent> mState;
     private ComponentMapper<PathComponent> mPath;
 
-    public void create(float tileX, float tileY, MobType type) {
-        float x = tileX -.5f;
-        float y = tileY -.5f;
+    public void create(float x, float y, MobType type) {
+        float size = type == MobType.TANK ? 1.2f : 0.75f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, type.name()))));
         animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1 / 8f, assetService.getAtlasRegionArray(type.atlasPath, type.name())));
@@ -44,7 +43,7 @@ public class MobFactory extends EntityFactory {
         mRotation.create(newId);
         mState.create(newId).set(StateComponent.STATE_IDLE, true);
         mMob.create(newId).set(type, 1f); // get wavemultiplier parameter when we have it
-        mTexture.create(newId).offsetRotation = -90f;
+        mTexture.create(newId).set(null, -90f, size);
         mAnimation.create(newId).animations = animationsMap;
     }
 }

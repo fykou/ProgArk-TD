@@ -13,8 +13,8 @@ public class WaveComponent extends Component {
 
     public final static float PAUSE_DURATION = 10f;
 
-    public final static float NORMAL_ENEMY_INTERVAL = 1f;
-    public final static float TANK_ENEMY_INTERVAL = 3f;
+    public final static float NORMAL_COOLDOWN = 1f;
+    public final static float TANK_COOLDOWN = 2f;
 
     public final static int NUM_NORMAL_PER_CLUSTER = 4;
     public final static int NUM_TANK_PER_CLUSTER = 2;
@@ -28,8 +28,8 @@ public class WaveComponent extends Component {
     public float normalEnemyCooldown = 0;
     public float tankEnemyCooldown = 0;
 
-    public float normalsSpawned = 0;
-    public float tanksSpawned = 0;
+    public float numNormal = 0;
+    public float numTank = 0;
     public int remainingNormalEnemies = 0;
     public int remainingTankEnemies = 0;
 }
