@@ -1,9 +1,9 @@
 package no.ntnu.tdt4240.g25.td.service;
 
 public enum GameMusic {
-    GAME("sounds/Race to Mars.mp3"),
-    MENU("sounds/AMBIENCE_TUNNEL_WIND_LOOP.wav"),
-    SETTINGS("sounds/AMBIENCE_HEARTBEAT_LOOP.wav");
+    GAME("sounds/Race to Mars.ogg"),
+    MENU("sounds/AMBIENCE_TUNNEL_WIND_LOOP.ogg"),
+    SETTINGS("sounds/AMBIENCE_HEARTBEAT_LOOP.ogg");
 
     public final String path;
 
