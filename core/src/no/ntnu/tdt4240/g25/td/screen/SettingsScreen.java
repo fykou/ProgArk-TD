@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
@@ -18,6 +20,7 @@ import com.badlogic.gdx.utils.Align;
 import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.service.Font;
+import no.ntnu.tdt4240.g25.td.service.GameMusic;
 import no.ntnu.tdt4240.g25.td.service.SoundFx;
 
 public class SettingsScreen extends ScreenAdapter {
@@ -51,7 +54,6 @@ public class SettingsScreen extends ScreenAdapter {
     private final GlyphLayout volumePlusLayout;
     private final Rectangle volumeMinus;
     private final GlyphLayout volumeMinusLayout;
-    private float gameVolume;
 
     // Fonts
     private final BitmapFont font;
@@ -59,6 +61,10 @@ public class SettingsScreen extends ScreenAdapter {
     // Sound
     private final Sound saveSound;
     private final Sound sound;
+
+    //Music
+    private final Music menuMusic;
+    private final Music settingsMusic;
 
     public SettingsScreen(TdGame game, Screen parent) {
         this.game = game;
@@ -68,11 +74,12 @@ public class SettingsScreen extends ScreenAdapter {
         this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
         this.saveSound = game.getAssetManager().assetManager.get(SoundFx.SAVESETTINGS.path);
         this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path);
+        this.menuMusic = game.getAssetManager().assetManager.get(GameMusic.MENU.path);
+        this.settingsMusic = game.getAssetManager().assetManager.get(GameMusic.SETTINGS.path);
 
         // Settings
         enableSFX = TdConfig.get().getSfxEnabled();
         enableMusic = TdConfig.get().getMusicEnabled();
-        gameVolume = TdConfig.get().getVolume();
 
         // Camera
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
@@ -82,7 +89,7 @@ public class SettingsScreen extends ScreenAdapter {
         // OK Button
         okButton = new Rectangle(0, 0, SETTINGS_LOGIC_WIDTH / 4f, SETTINGS_LOGIC_HEIGHT / 12f)
                 .setCenter(SETTINGS_LOGIC_WIDTH / 2f, (SETTINGS_LOGIC_HEIGHT / 7f));
-        okButtonLayout = new GlyphLayout(font, "SAVE", font.getColor(), okButton.width, Align.center, false);
+        okButtonLayout = new GlyphLayout(font, "OK", font.getColor(), okButton.width, Align.center, false);
 
         // SFX Checkbox
         sfxCheckbox = new Rectangle(0, 0, SETTINGS_LOGIC_HEIGHT / 24f, SETTINGS_LOGIC_HEIGHT / 24f)
@@ -106,14 +113,21 @@ public class SettingsScreen extends ScreenAdapter {
     }
 
     @Override
-    public void show() { }
+    public void show() {
+        if(TdConfig.get().getMusicEnabled()){
+            settingsMusic.setVolume(TdConfig.get().getVolume());
+            settingsMusic.setLooping(true);
+            settingsMusic.play();
+        }
+
+    }
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
             // Input coordinates
             Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-            // CLICK Save button
+            // CLICK Back button
             if (okButton.contains(inputCoordinates.x, inputCoordinates.y)) {
                 if(TdConfig.get().getSfxEnabled()){
                     long id = saveSound.play(TdConfig.get().getVolume());
@@ -127,6 +141,14 @@ public class SettingsScreen extends ScreenAdapter {
                 buttonSound();
                 enableMusic = !enableMusic;
                 TdConfig.get().setMusicEnabled(enableMusic);
+                // Toggle global menu and game music
+                if (!enableMusic){
+                    menuMusic.stop();
+                }else{
+                    menuMusic.setVolume(TdConfig.get().getVolume());
+                    menuMusic.setLooping(true);
+                    menuMusic.play();
+                }
                 musicCheckboxLayout.setText(font, (enableMusic ? "X" : ""), font.getColor(), musicCheckbox.width, Align.center, false);
             }
 
@@ -144,6 +166,7 @@ public class SettingsScreen extends ScreenAdapter {
                 float currentVolume = TdConfig.get().getVolume();
                 if (currentVolume > 0) {
                     TdConfig.get().setVolume(currentVolume - 0.1f);
+                    menuMusic.setVolume(TdConfig.get().getVolume());
                 }
             }
 
@@ -153,6 +176,7 @@ public class SettingsScreen extends ScreenAdapter {
                 float currentVolume = TdConfig.get().getVolume();
                 if (currentVolume < 10) {
                     TdConfig.get().setVolume(currentVolume + 0.1f);
+                    menuMusic.setVolume(TdConfig.get().getVolume());
                 }
             }
         }
@@ -192,7 +216,7 @@ public class SettingsScreen extends ScreenAdapter {
         font.draw(sb, "Volume", volumeMinus.x - 185, volumeMinus.y + 40);
         font.draw(sb, volumeMinusLayout, volumeMinus.x, (volumeMinus.y + volumeMinus.height / 2f) + font.getCapHeight() / 2f);
         font.draw(sb, volumePlusLayout, volumePlus.x, (volumePlus.y + volumePlus.height / 2f) + font.getCapHeight() / 2f);
-        font.draw(sb, String.valueOf(Math.round(TdConfig.get().getVolume() * 10)), volumeMinus.x + 75, volumeMinus.y + 35);
+        font.draw(sb, String.valueOf(MathUtils.round(TdConfig.get().getVolume() * 10)), volumeMinus.x + 75, volumeMinus.y + 35);
         sb.end();
     }
 
@@ -206,7 +230,10 @@ public class SettingsScreen extends ScreenAdapter {
     public void resume() { super.resume(); }
 
     @Override
-    public void hide() { super.hide(); }
+    public void hide() {
+        super.hide();
+        settingsMusic.stop();
+    }
 
     @Override
     public void dispose() { super.dispose(); }

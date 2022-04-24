@@ -150,7 +150,10 @@ public class MenuScreen extends ScreenAdapter {
     public void resume() { super.resume(); }
 
     @Override
-    public void hide() { super.hide(); }
+    public void hide() {
+        super.hide();
+        music.stop();
+    }
 
     @Override
     public void dispose() { super.dispose(); }
