@@ -1,5 +1,8 @@
 package no.ntnu.tdt4240.g25.td.model;
 
+import static no.ntnu.tdt4240.g25.td.model.TowerType.TYPE_1;
+import static no.ntnu.tdt4240.g25.td.model.TowerType.TYPE_2;
+
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
@@ -47,6 +50,8 @@ public class GameWorld {
     public GameWorld(AssetService assetManager, ShapeRenderer renderer, SpriteBatch batch) {
         createFactories();
         createWorld(batch, renderer, assetManager);
+        towerFactory.create(5,7,TYPE_1,TowerLevel.MK1);
+        towerFactory.create(6,9,TYPE_2,TowerLevel.MK2);
     }
 
     protected void createWorld(SpriteBatch batch, ShapeRenderer renderer, AssetService assetManager) {
