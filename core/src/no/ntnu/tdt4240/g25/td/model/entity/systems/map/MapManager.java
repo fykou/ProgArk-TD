@@ -18,8 +18,8 @@ public class MapManager extends BaseSystem {
     protected void initialize() {
         waypointsComponent.path.addAll(mapGrid.getPath());
         // convert from world coordinates to tile coordinates
-        Vector2 offset = new Vector2(-.5f, -.5f);
-        waypointsComponent.path.forEach(p -> p.sub(offset));
+        Vector2 offset = new Vector2(.5f, .5f);
+        waypointsComponent.path.forEach(p -> p.add(offset));
         setEnabled(false);
     }
 
