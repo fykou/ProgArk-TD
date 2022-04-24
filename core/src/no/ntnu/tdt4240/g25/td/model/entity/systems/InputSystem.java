@@ -9,25 +9,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
+import no.ntnu.tdt4240.g25.td.model.TowerLevel;
+import no.ntnu.tdt4240.g25.td.model.TowerType;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.BuildMenu;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.MapComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.UpgradeMenu;
+import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.map.MapTile;
 import no.ntnu.tdt4240.g25.td.model.map.MapTileType;
 
 public class InputSystem extends BaseSystem {
 
-    Vector3 lastClick;
-    MapComponent map;
-    BuildMenu build;
-    UpgradeMenu upgrade;
+    private Vector3 lastClick;
+    private MapComponent map;
+    private BuildMenu build;
+    private UpgradeMenu upgrade;
 
-    MyCameraSystem cameraSystem;
-    ComponentMapper<TowerComponent> mTower;
-    ComponentMapper<PositionComponent> mPosition;
-    EntitySubscription towerSubscription;
+    private MyCameraSystem cameraSystem;
+    private ComponentMapper<TowerComponent> mTower;
+    private ComponentMapper<PositionComponent> mPosition;
+    private EntitySubscription towerSubscription;
+
+    private TowerFactory towerFactory;
 
     @Override
     protected void initialize() {
@@ -45,6 +50,7 @@ public class InputSystem extends BaseSystem {
         else if (build.pending && lastClick != null) {
             handleClickOnMenu(lastClick);
         }
+
     }
 
     public void setLastClick(Vector3 lastClick) {
@@ -53,9 +59,9 @@ public class InputSystem extends BaseSystem {
 
     private void handleClickOnWorld(Vector3 click) {
         IntBag towerIds = towerSubscription.getEntities();
-        cameraSystem.viewport.unproject(lastClick);
-        int tileX = MathUtils.floor(lastClick.x);
-        int tileY = MathUtils.floor(lastClick.y);
+        cameraSystem.viewport.unproject(click);
+        int tileX = MathUtils.floor(click.x);
+        int tileY = MathUtils.floor(click.y);
         for (int i = 0; i < towerIds.size(); i++) {
             int towerId = towerIds.get(i);
             TowerComponent tower = mTower.get(towerId);
@@ -84,7 +90,17 @@ public class InputSystem extends BaseSystem {
     }
 
     private void handleClickOnMenu(Vector3 click) {
-        cameraSystem.guiViewport.unproject(lastClick);
+        cameraSystem.guiViewport.unproject(click);
+        if (build.cancelButton.contains(click.x, click.y)) {
+            Gdx.app.log("InputSystem", "Clicked on cancel button");
+        }
+        else if (build.type1Button.contains(click.x, click.y)) {
+            towerFactory.create(build.x, build.y, TowerType.TYPE_1, TowerLevel.MK1);
+        }
+        else if (build.type2Button.contains(click.x, click.y)) {
+            towerFactory.create(build.x, build.y, TowerType.TYPE_2, TowerLevel.MK1);
+        }
+        build.pending = false;
     }
 
 
