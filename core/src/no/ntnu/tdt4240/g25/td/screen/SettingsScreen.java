@@ -19,9 +19,11 @@ import com.badlogic.gdx.utils.Align;
 
 import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
-import no.ntnu.tdt4240.g25.td.service.Font;
-import no.ntnu.tdt4240.g25.td.service.GameMusic;
-import no.ntnu.tdt4240.g25.td.service.SoundFx;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
+import no.ntnu.tdt4240.g25.td.asset.Audio;
+import no.ntnu.tdt4240.g25.td.asset.Font;
+import no.ntnu.tdt4240.g25.td.asset.GameMusic;
+import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 
 public class SettingsScreen extends ScreenAdapter {
 
@@ -58,24 +60,14 @@ public class SettingsScreen extends ScreenAdapter {
     // Fonts
     private final BitmapFont font;
 
-    // Sound
-    private final Sound saveSound;
-    private final Sound sound;
 
-    //Music
-    private final Music menuMusic;
-    private final Music settingsMusic;
 
     public SettingsScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
-        this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
-        this.saveSound = game.getAssetManager().assetManager.get(SoundFx.SAVESETTINGS.path);
-        this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path);
-        this.menuMusic = game.getAssetManager().assetManager.get(GameMusic.MENU.path);
-        this.settingsMusic = game.getAssetManager().assetManager.get(GameMusic.SETTINGS.path);
+        this.font = Assets.getInstance().getFont(Font.LARGE);
 
         // Settings
         enableSFX = TdConfig.get().getSfxEnabled();
@@ -114,12 +106,7 @@ public class SettingsScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        if(TdConfig.get().getMusicEnabled()){
-            settingsMusic.setVolume(TdConfig.get().getVolume());
-            settingsMusic.setLooping(true);
-            settingsMusic.play();
-        }
-
+        Audio.playMusic(GameMusic.SETTINGS);
     }
 
     public void handleInput() {
@@ -129,32 +116,28 @@ public class SettingsScreen extends ScreenAdapter {
 
             // CLICK OK button
             if (okButton.contains(inputCoordinates.x, inputCoordinates.y)) {
-                if(TdConfig.get().getSfxEnabled()){
-                    long id = saveSound.play(TdConfig.get().getVolume());
-                    saveSound.setLooping(id,false);
-                }
+                Audio.playFx(SoundFx.SAVESETTINGS);
                 game.setScreen(parent);
             }
 
             // CLICK Music checkbox
             else if (musicCheckbox.contains(inputCoordinates.x, inputCoordinates.y)) {
-                buttonSound();
+                Audio.playFx(SoundFx.TOUCH);
                 enableMusic = !enableMusic;
                 TdConfig.get().setMusicEnabled(enableMusic);
                 // Toggle global menu and game music
-                if (!enableMusic){
-                    menuMusic.stop();
-                }else{
-                    menuMusic.setVolume(TdConfig.get().getVolume());
-                    menuMusic.setLooping(true);
-                    menuMusic.play();
+                if (!enableMusic) {
+                    Audio.stopMusic();
+                }
+                else {
+                    Audio.playMusic(GameMusic.MENU);
                 }
                 musicCheckboxLayout.setText(font, (enableMusic ? "X" : ""), font.getColor(), musicCheckbox.width, Align.center, false);
             }
 
             // CLICK SFX checkbox
             else if (sfxCheckbox.contains(inputCoordinates.x, inputCoordinates.y)) {
-                buttonSound();
+                Audio.playFx(SoundFx.TOUCH);
                 enableSFX = !enableSFX;
                 TdConfig.get().setSfxEnabled(enableSFX);
                 sfxCheckboxLayout.setText(font, (enableSFX ? "X" : ""), font.getColor(), sfxCheckbox.width, Align.center, false);
@@ -162,21 +145,21 @@ public class SettingsScreen extends ScreenAdapter {
 
             // Volume down
             else if (volumeMinus.contains(inputCoordinates.x, inputCoordinates.y)) {
-                buttonSound();
+                Audio.playFx(SoundFx.TOUCH);
                 float currentVolume = TdConfig.get().getVolume();
                 if (currentVolume > 0) {
                     TdConfig.get().setVolume(currentVolume - 0.1f);
-                    menuMusic.setVolume(TdConfig.get().getVolume());
+                    Audio.changeCurrentPlayingVolume(TdConfig.get().getVolume());
                 }
             }
 
             // Volume up
             else if (volumePlus.contains(inputCoordinates.x, inputCoordinates.y)) {
-                buttonSound();
+                Audio.playFx(SoundFx.TOUCH);
                 float currentVolume = TdConfig.get().getVolume();
                 if (currentVolume < 10) {
                     TdConfig.get().setVolume(currentVolume + 0.1f);
-                    menuMusic.setVolume(TdConfig.get().getVolume());
+                    Audio.changeCurrentPlayingVolume(TdConfig.get().getVolume());
                 }
             }
         }
@@ -233,16 +216,10 @@ public class SettingsScreen extends ScreenAdapter {
     @Override
     public void hide() {
         super.hide();
-        settingsMusic.stop();
+        Audio.stopMusic();
     }
 
     @Override
     public void dispose() { super.dispose(); }
 
-    public void buttonSound(){
-        if(TdConfig.get().getSfxEnabled()){
-            long id = sound.play(TdConfig.get().getVolume());
-            sound.setLooping(id,false);
-        }
-    }
 }

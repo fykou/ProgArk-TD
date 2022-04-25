@@ -15,125 +15,72 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 
 import no.ntnu.tdt4240.g25.td.TdGame;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
-import no.ntnu.tdt4240.g25.td.service.Font;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
+import no.ntnu.tdt4240.g25.td.asset.Audio;
+import no.ntnu.tdt4240.g25.td.asset.Font;
+import no.ntnu.tdt4240.g25.td.asset.GameMusic;
+import no.ntnu.tdt4240.g25.td.view.TutorialView;
+import no.ntnu.tdt4240.g25.td.view.View;
 
 public class TutorialScreen extends ScreenAdapter {
 
-    // Logic size menu
-    public int MENU_LOGIC_WIDTH = 720;
-    public int MENU_LOGIC_HEIGHT = 1280;
+    private final TdGame game;
+    private final Screen parent;
 
-    private TdGame game;
-    private Screen parent;
-    private SpriteBatch sb;
-    private ShapeRenderer sr;
-    private OrthographicCamera camera;
-
-    // Tutorial box
-    private Rectangle tutorialBox;
-
-    // Back to Menu Button
-    private Rectangle goBackButton;
-    private GlyphLayout goBackButtonLayout;
-
-    // Fonts
-    private BitmapFont font;
-    private BitmapFont fontTutorial;
+    private final TutorialView view;
 
     public TutorialScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
-        this.sb = game.getBatch();
-        this.sr = game.getShapeRenderer();
-        this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
-        this.fontTutorial = game.getAssetManager().assetManager.get(Font.MEDIUM.path, BitmapFont.class);
-
-        // Camera
-        float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
-        camera = new OrthographicCamera(MENU_LOGIC_HEIGHT / aspectRatio, MENU_LOGIC_HEIGHT);
-        camera.position.set(MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_HEIGHT / 2f, 0);
-
-        // Tutorial box
-        tutorialBox = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 1.4f, MENU_LOGIC_HEIGHT - 500)
-                .setCenter(MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_HEIGHT / 2f + 100);
-
-        // Back to Menu button
-        goBackButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 2f, MENU_LOGIC_WIDTH / 6f)
-                .setCenter(MENU_LOGIC_WIDTH / 2f, (MENU_LOGIC_HEIGHT / 2f) - MENU_LOGIC_HEIGHT / 3f);
-
-        goBackButtonLayout = new GlyphLayout(font, "Back to Menu", font.getColor(), goBackButton.width, Align.center, false);
-
-    }
-
-    public void handleInput() {
-        if (Gdx.input.justTouched()) {
-            // Input coordinates
-            Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-
-            if (goBackButton.contains(inputCoordinates.x, inputCoordinates.y)) {
-                game.setScreen(parent);
-            }
-        }
+        this.view = new TutorialView(game.getBatch(), new ViewCallbackHandler());
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        handleInput();
-        camera.update();
-
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setProjectionMatrix(camera.combined);
-        sr.setColor(Color.YELLOW);
-        sr.rect(tutorialBox.x, tutorialBox.y, tutorialBox.width, tutorialBox.height);
-        sr.setColor(Color.ROYAL);
-        sr.rect(goBackButton.x, goBackButton.y, goBackButton.width, goBackButton.height);
-        sr.end();
-
-        sb.begin();
-        sb.setProjectionMatrix(camera.combined);
-        font.draw(sb, goBackButtonLayout, goBackButton.x, (goBackButton.y + goBackButton.height / 2f) + font.getCapHeight() / 2f);
-        font.draw(sb, "HOW TO PLAY: ", 226, 1070);
-        fontTutorial.draw(sb, "" +
-                "Each round consists of a \nBuild-Phase and Wave-Phase.\n\n" +
-                "Build-Phase: Buy and upgrade \nturrets. Turrets will shoot the \nenemy mobs!\n\n" +
-                "Wave-Phase: Enemy mobs will \nspawn. Eliminate them before \nthey reach the end of the path!\n\n\n" +
-                "Strategy and planning pays off. \nSurvive as many waves as you \ncan!",
-                140, 950);
-        sb.end();
+        view.act(delta);
+        view.draw();
     }
 
     @Override
     public void show() {
-
+        Audio.playMusic(GameMusic.MENU);
+        view.show();
     }
 
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-
+        view.resize(width, height);
     }
 
     @Override
     public void pause() {
         super.pause();
-
+        view.pause();
     }
 
     @Override
     public void resume() {
         super.resume();
+        view.resume();
     }
 
     @Override
     public void hide() {
         super.hide();
-
+        view.hide();
     }
 
     @Override
     public void dispose() {
         super.dispose();
+        view.dispose();
     }
+
+    public class ViewCallbackHandler {
+        public void onBackToMenuButtonClicked() {
+            game.setScreen(parent);
+        }
+    }
+
 }

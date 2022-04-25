@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 
+import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.model.entity.components.AnimationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
@@ -14,8 +15,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
-import no.ntnu.tdt4240.g25.td.service.ObjectAtlas;
+import no.ntnu.tdt4240.g25.td.asset.ObjectAtlas;
 
 public class ProjectileFactory extends EntityFactory {
 
@@ -33,9 +33,9 @@ public class ProjectileFactory extends EntityFactory {
         // get bullet for projectile without splash, plasma for splash
         Array<TextureAtlas.AtlasRegion> regions;
         if (splashRadius != 0) {
-            regions = assetService.getAtlasRegionArray(ObjectAtlas.PLASMA.path, ObjectAtlas.PLASMA.name());
+            regions = Assets.getInstance().getAtlasRegionArray(ObjectAtlas.PLASMA.path, ObjectAtlas.PLASMA.name());
         } else { // default to bullet
-            regions = assetService.getAtlasRegionArray(ObjectAtlas.BULLET.path, ObjectAtlas.BULLET.name());
+            regions = Assets.getInstance().getAtlasRegionArray(ObjectAtlas.BULLET.path, ObjectAtlas.BULLET.name());
         }
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(regions.size / 60f, regions));
 

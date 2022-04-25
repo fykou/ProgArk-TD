@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g25.td.TdGame;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
 
 public class LoadingScreen extends ScreenAdapter {
 
@@ -18,17 +19,16 @@ public class LoadingScreen extends ScreenAdapter {
         this.parent = parent;
         sb = game.getBatch();
 
-        game.getAssetManager().loadFonts(Gdx.graphics.getHeight());
-        game.getAssetManager().assetManager.finishLoading(); // block until fonts are loaded for loading screen
-        game.getAssetManager().loadTextures();
-        game.getAssetManager().loadSounds();
-        game.getAssetManager().loadMusic();
-
+        Assets.getInstance().loadFonts(Gdx.graphics.getHeight());
+        Assets.getInstance().loadSkin();
+        Assets.getInstance().finishLoading(); // block until assets for loading screen are in
+        Assets.getInstance().loadTextures();
+        Assets.getInstance().loadSounds();
+        Assets.getInstance().loadMusic();
     }
-
     @Override
     public void render(float delta) {
-        if ( game.getAssetManager().assetManager.update() ) {
+        if (Assets.getInstance().update()) {
             game.setScreen(new MenuScreen(game, parent));
         }
     }
