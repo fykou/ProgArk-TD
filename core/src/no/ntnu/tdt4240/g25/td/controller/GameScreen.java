@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Align;
 import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.asset.Assets;
+import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
 import no.ntnu.tdt4240.g25.td.asset.Font;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
@@ -148,6 +149,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void hide() {
         super.hide();
+        Audio.stopMusic();
     }
 
     @Override
