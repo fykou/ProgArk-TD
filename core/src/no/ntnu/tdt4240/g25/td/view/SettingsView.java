@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.Locale;
@@ -17,7 +16,7 @@ import java.util.Locale;
 import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
-import no.ntnu.tdt4240.g25.td.controller.SettingsScreen;
+import no.ntnu.tdt4240.g25.td.controller.SettingsController;
 
 public class SettingsView extends AbstractView implements View {
 
@@ -30,9 +29,9 @@ public class SettingsView extends AbstractView implements View {
     private final Label volumeValue = new Label("volume", skin, "default"); //spinner
     private final Table table = new Table();
 
-    private final SettingsScreen.ViewCallbackHandler viewCallback;
+    private final SettingsController.ViewCallbackHandler viewCallback;
 
-    public SettingsView(SpriteBatch batch, SettingsScreen.ViewCallbackHandler viewCallback) {
+    public SettingsView(SpriteBatch batch, SettingsController.ViewCallbackHandler viewCallback) {
         super(viewport, batch);
         Gdx.input.setInputProcessor(this);
         this.viewCallback = viewCallback;

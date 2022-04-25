@@ -4,6 +4,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
 import com.artemis.systems.IteratingSystem;
 
+import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.HasTargetComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
@@ -21,6 +22,7 @@ public class AimingSystem extends IteratingSystem {
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<RotationComponent> mRotation;
     ComponentMapper<StateComponent> mState;
+    ComponentMapper<ExpireComponent> mExpire;
 
     @Override
     protected void process(int entityId) {
@@ -37,7 +39,14 @@ public class AimingSystem extends IteratingSystem {
             mHasTarget.remove(entityId);
             return;
         }
+        /*
+         * still getting nullpointers here, even the linker should be setting invalid entity ids to -1
+         */
         PositionComponent enemyPosition = mPosition.get(target.targetId);
+        if (enemyPosition == null) {
+            mHasTarget.remove(entityId);
+            return;
+        }
         if (position.get().dst(enemyPosition.get()) > tower.range) {
             mPosition.remove(target.targetId);
             mState.get(entityId).set(StateComponent.STATE_IDLE, false);
