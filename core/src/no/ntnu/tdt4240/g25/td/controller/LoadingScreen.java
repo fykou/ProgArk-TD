@@ -29,7 +29,8 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         if (Assets.getInstance().update()) {
-            game.setScreen(new MenuScreen(game, parent));
+            //game.setScreen(new MenuScreen(game, parent));
+            game.setScreen(new UsernameScreen(game, parent));
         }
     }
 }
