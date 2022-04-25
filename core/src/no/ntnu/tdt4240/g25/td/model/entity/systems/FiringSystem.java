@@ -15,8 +15,8 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
-import no.ntnu.tdt4240.g25.td.service.SoundFx;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
+import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 
 @All({TowerComponent.class, StateComponent.class, HasTargetComponent.class, PositionComponent.class})
 public class FiringSystem extends IteratingSystem {
@@ -29,15 +29,14 @@ public class FiringSystem extends IteratingSystem {
     ComponentMapper<StateComponent> mState;
     ComponentMapper<HasTargetComponent> mTarget;
     ComponentMapper<PositionComponent> mPosition;
-    @Wire
-    private AssetService assets;
+
     private Sound type1;
     private Sound type2;
 
     @Override
     protected void initialize() {
-        type1 = assets.assetManager.get(SoundFx.FIRE_TYPE_1.path, Sound.class);
-        type2 = assets.assetManager.get(SoundFx.FIRE_TYPE_2.path, Sound.class);
+        type1 = Assets.getInstance().getSound(SoundFx.FIRE_TYPE_1);
+        type2 = Assets.getInstance().getSound(SoundFx.FIRE_TYPE_2);
     }
 
     @Override

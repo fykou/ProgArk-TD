@@ -10,7 +10,6 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.SortedIteratingSystem;
 
 @All({PositionComponent.class, TextureComponent.class})
 public class RenderSystem extends IteratingSystem {

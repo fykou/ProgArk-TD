@@ -1,11 +1,11 @@
 package no.ntnu.tdt4240.g25.td.model.entity.factories;
 
 import com.artemis.ComponentMapper;
-import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.IntMap;
 
+import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.model.MobType;
 import no.ntnu.tdt4240.g25.td.model.entity.components.AnimationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.BoundsComponent;
@@ -16,7 +16,6 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class MobFactory extends EntityFactory {
 
@@ -33,8 +32,8 @@ public class MobFactory extends EntityFactory {
     public void create(float x, float y, MobType type) {
         float size = type == MobType.TANK ? 1.2f : 0.75f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
-        animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, type.name()))));
-        animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1 / 8f, assetService.getAtlasRegionArray(type.atlasPath, type.name())));
+        animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, Assets.getInstance().wrapRegionInArray(Assets.getInstance().getAtlasRegion(type.atlasPath, type.name()))));
+        animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1 / 8f, Assets.getInstance().getAtlasRegionArray(type.atlasPath, type.name())));
         int newId = world.create();
         mPosition.create(newId).get().set(x, y);
         mBounds.create(newId).get().set(x, y,0.8f, 0.8f);
