@@ -17,9 +17,10 @@ import no.ntnu.tdt4240.g25.td.controller.UsernameScreen;
 public class UsernameView extends AbstractView {
 
     private final Skin skin = Assets.getInstance().getSkin();
-    private final TextButton backButton = new TextButton("Back to menu", skin);
+    private final TextButton backButton = new TextButton("Save playername", skin);
     private final TextField userInput;
     private final Table table = new Table();
+    String playerName;
 
     private final UsernameScreen.ViewCallbackHandler viewCallback;
 
@@ -43,13 +44,18 @@ public class UsernameView extends AbstractView {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                String playerName = userInput.getText();
+                playerName = userInput.getText();
                 System.out.println(playerName);
-                viewCallback.updatePlayerNameInDb(playerName);
-                System.out.println("after fb method call...");
-                viewCallback.toMenu();
+                highScoreWrite();
             }
         });
+
+    }
+
+    public void highScoreWrite(){
+        viewCallback.updatePlayerNameInDb(playerName);
+        System.out.println("after fb method call...");
+        viewCallback.toMenu();
     }
 
     @Override
@@ -75,6 +81,6 @@ public class UsernameView extends AbstractView {
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
     }
 }
