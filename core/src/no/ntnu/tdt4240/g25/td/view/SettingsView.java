@@ -60,7 +60,7 @@ public class SettingsView extends AbstractView implements View {
     }
 
     public void setMusic(boolean music) {
-    	this.musicToggle.setChecked(music);
+        this.musicToggle.setChecked(music);
     }
 
     public void setSFX(boolean sfx) {
