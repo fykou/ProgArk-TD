@@ -67,12 +67,12 @@ public class HighscoreView extends AbstractView implements View {
         Label scoreLabel = new Label("Score", skin, "default");
 
         table.setFillParent(true);
-        table.add(title).padBottom(50).row();
+        table.add(title).padBottom(50).colspan(2).row();
         table.add(nameLabel).align(Align.left).padBottom(50);
         table.add(scoreLabel).align(Align.right).padBottom(50).row();
-        table.add(highscoresGroups).size(350, 270).padBottom(90).row();
-        table.add(backButton).size(350, 90).padBottom(90).row();
-        table.setSize(getWidth(), getHeight());
+        table.add(highscoresGroups).align(Align.center).size(350, 270).padBottom(90).colspan(2).row();
+        table.add(backButton).size(350, 90).colspan(2).row();
+
         getRoot().addActor(table);
     }
 
