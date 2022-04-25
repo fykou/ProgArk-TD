@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
+import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 @All({MobComponent.class, PositionComponent.class})
 public class HealthRenderSystem extends IteratingSystem {
@@ -19,7 +20,7 @@ public class HealthRenderSystem extends IteratingSystem {
     private MyCameraSystem cameraSystem;
 
     @Wire
-    private ShapeRenderer renderer;
+    private MyShapeRenderer renderer;
 
     @Override
     protected void process(int entityId) {

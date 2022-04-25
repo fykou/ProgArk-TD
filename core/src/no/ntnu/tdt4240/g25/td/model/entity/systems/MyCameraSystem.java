@@ -5,10 +5,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import net.mostlyoriginal.api.system.camera.CameraSystem;
-
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
-import no.ntnu.tdt4240.g25.td.screen.GameScreen;
+import no.ntnu.tdt4240.g25.td.controller.GameScreen;
 
 public class MyCameraSystem extends BaseSystem {
 

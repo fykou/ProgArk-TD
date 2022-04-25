@@ -2,12 +2,10 @@ package no.ntnu.tdt4240.g25.td.model.entity.systems.render;
 
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
-import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.Locale;
@@ -15,9 +13,10 @@ import java.util.Locale;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
-import no.ntnu.tdt4240.g25.td.screen.GameScreen;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
-import no.ntnu.tdt4240.g25.td.service.Font;
+import no.ntnu.tdt4240.g25.td.controller.GameScreen;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
+import no.ntnu.tdt4240.g25.td.asset.Font;
+import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 public class WidgetRenderSystem extends BaseSystem {
 
@@ -37,16 +36,15 @@ public class WidgetRenderSystem extends BaseSystem {
     @Wire
     private SpriteBatch batch;
     @Wire
-    private ShapeRenderer renderer;
-    @Wire
-    private AssetService assetService;
+    private MyShapeRenderer renderer;
+
     private BitmapFont font;
     private GlyphLayout timerLayout;
     private GlyphLayout waveLayout;
 
     @Override
     protected void initialize() {
-        font = assetService.getFont(Font.MEDIUM);
+        font = Assets.getInstance().getFont(Font.MEDIUM);
         timerLayout = new GlyphLayout(font, "");
         waveLayout = new GlyphLayout(font, "");
         font.setUseIntegerPositions(false);
@@ -58,7 +56,6 @@ public class WidgetRenderSystem extends BaseSystem {
         float waveTime = waveActive ? wave.time : WaveComponent.PAUSE_DURATION - wave.time;
         int waveNumber = wave.numberOfWaves;
         int playerLives = player.lives;
-
         timerLayout.setText(font, formatTimerLayout(waveActive, waveTime), Color.WHITE, 180, Align.center, false);
         waveLayout.setText(font, formatWaveLayout(waveNumber, waveNumber), Color.WHITE, 180, Align.center, false);
         // draw widgets in the top row, i.e at coords 0,16 (top left) to 9,16 (top right)
