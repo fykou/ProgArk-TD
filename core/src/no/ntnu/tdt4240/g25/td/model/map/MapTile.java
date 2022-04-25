@@ -12,7 +12,6 @@ public class MapTile {
         this.y = y;
         this.tile = tile;
     }
-
     public int getX() {
         return x;
     }

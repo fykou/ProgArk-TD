@@ -2,21 +2,18 @@ package no.ntnu.tdt4240.g25.td.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
-import no.ntnu.tdt4240.g25.td.controller.TutorialScreen;
+import no.ntnu.tdt4240.g25.td.controller.TutorialController;
 
 public class TutorialView extends AbstractView {
 
@@ -30,9 +27,9 @@ public class TutorialView extends AbstractView {
     private final TextButton backButton = new TextButton("Back to menu", skin);
     private final Table table = new Table();
 
-    private final TutorialScreen.ViewCallbackHandler viewCallback;
+    private final TutorialController.ViewCallbackHandler viewCallback;
 
-    public TutorialView(SpriteBatch batch, TutorialScreen.ViewCallbackHandler viewCallback) {
+    public TutorialView(SpriteBatch batch, TutorialController.ViewCallbackHandler viewCallback) {
         super(viewport, batch);
         Gdx.input.setInputProcessor(this);
         this.viewCallback = viewCallback;
