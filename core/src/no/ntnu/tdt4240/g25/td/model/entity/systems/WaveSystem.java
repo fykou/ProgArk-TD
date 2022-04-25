@@ -10,13 +10,13 @@ import no.ntnu.tdt4240.g25.td.model.MobType;
 import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
-import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaypointsComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.MapComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
 
 public class WaveSystem extends BaseSystem {
 
     private WaveComponent wc;
-    private WaypointsComponent wpc;
+    private MapComponent wpc;
     private EntitySubscription aliveMobs;
     private MobFactory mobFactory;
 

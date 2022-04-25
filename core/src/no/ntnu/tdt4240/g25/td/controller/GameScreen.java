@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g25.td.screen;
+package no.ntnu.tdt4240.g25.td.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,10 +18,12 @@ import com.badlogic.gdx.utils.Align;
 
 import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
-import no.ntnu.tdt4240.g25.td.service.Font;
-import no.ntnu.tdt4240.g25.td.service.GameMusic;
-import no.ntnu.tdt4240.g25.td.service.SoundFx;
+import no.ntnu.tdt4240.g25.td.asset.Font;
+import no.ntnu.tdt4240.g25.td.asset.GameMusic;
+import no.ntnu.tdt4240.g25.td.asset.SoundFx;
+import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 /**
  * WIP
@@ -36,7 +38,7 @@ public class GameScreen extends ScreenAdapter {
     private final Screen parent;
     private final GameWorld gameWorld;
     private final SpriteBatch sb;
-    private final ShapeRenderer sr;
+    private final MyShapeRenderer sr;
     private final OrthographicCamera camera;
 
     // Exit button
@@ -56,12 +58,12 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
-        this.gameWorld = new GameWorld(game.getAssetManager(), game.getShapeRenderer(), game.getBatch());
+        this.gameWorld = new GameWorld(game.getShapeRenderer(), game.getBatch());
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
-        this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
-        this.gameMusic = game.getAssetManager().assetManager.get(GameMusic.GAME.path);
-        this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path);
+        this.font = Assets.getInstance().getFont(Font.LARGE);
+        this.gameMusic = Assets.getInstance().getMusic(GameMusic.GAME);
+        this.sound = Assets.getInstance().getSound(SoundFx.TOUCH);
 
         exitButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 13f, MENU_LOGIC_HEIGHT / 20f)
                 .setCenter(MENU_LOGIC_WIDTH - (MENU_LOGIC_WIDTH / 13f), MENU_LOGIC_HEIGHT - MENU_LOGIC_HEIGHT / 20f);
@@ -87,9 +89,8 @@ public class GameScreen extends ScreenAdapter {
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-            // Input coordinates
-            Vector3 inputCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-
+            Vector3 clickCoordinates = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            Vector3 inputCoordinates = camera.unproject(clickCoordinates.cpy());
             if (exitButton.contains(inputCoordinates.x, inputCoordinates.y)) {
                 // Go back to parent screen and play sound confirmation
                 if(TdConfig.get().getSfxEnabled()){
@@ -97,6 +98,9 @@ public class GameScreen extends ScreenAdapter {
                     sound.setLooping(id,false);
                 }
                 game.setScreen(parent);
+            }
+            else {
+                gameWorld.handleInput(clickCoordinates.cpy());
             }
         }
     }
@@ -132,17 +136,22 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
-    public void pause() { super.pause(); }
+    public void pause() {
+        super.pause();
+    }
 
     @Override
-    public void resume() { super.resume(); }
+    public void resume() {
+        super.resume();
+    }
 
     @Override
     public void hide() {
         super.hide();
-        gameMusic.stop();
     }
 
     @Override
-    public void dispose() { super.dispose(); }
+    public void dispose() {
+        super.dispose();
+    }
 }

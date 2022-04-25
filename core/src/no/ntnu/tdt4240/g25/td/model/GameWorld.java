@@ -1,14 +1,11 @@
 package no.ntnu.tdt4240.g25.td.model;
 
-import static no.ntnu.tdt4240.g25.td.model.TowerType.TYPE_1;
-import static no.ntnu.tdt4240.g25.td.model.TowerType.TYPE_2;
-
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.link.EntityLinkManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 
 import net.mostlyoriginal.api.SingletonPlugin;
 
@@ -16,6 +13,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AimingSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.InputSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.WaveSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.map.MapManager;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.AnimationSystem;
@@ -30,11 +28,12 @@ import no.ntnu.tdt4240.g25.td.model.entity.systems.render.MapRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.PathingSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.render.MenuRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.RenderSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.debug.DebugRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.WidgetRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.map.MapGrid;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
+import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 public class GameWorld {
 
@@ -47,14 +46,12 @@ public class GameWorld {
     World world;
 
 
-    public GameWorld(AssetService assetManager, ShapeRenderer renderer, SpriteBatch batch) {
+    public GameWorld(MyShapeRenderer renderer, SpriteBatch batch) {
         createFactories();
-        createWorld(batch, renderer, assetManager);
-        towerFactory.create(5,7,TYPE_1,TowerLevel.MK1);
-        towerFactory.create(5,5,TYPE_2,TowerLevel.MK2);
+        createWorld(batch, renderer);
     }
 
-    protected void createWorld(SpriteBatch batch, ShapeRenderer renderer, AssetService assetManager) {
+    protected void createWorld(SpriteBatch batch, MyShapeRenderer renderer) {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .dependsOn(
                         EntityLinkManager.class,
@@ -74,6 +71,7 @@ public class GameWorld {
                         new FiringSystem(),
                         new DamageSystem(),
                         new ExpireSystem(),
+                        new InputSystem(),
 
                         // Renders
                         new MyCameraSystem(GAME_WIDTH, GAME_HEIGHT),
@@ -82,6 +80,7 @@ public class GameWorld {
                         new RenderSystem(),
                         new HealthRenderSystem(),
                         new WidgetRenderSystem(),
+                        new MenuRenderSystem(),
                         //new DebugRenderSystem(),
 
                         // Factories
@@ -92,7 +91,6 @@ public class GameWorld {
                 .build()
                 .register(batch)
                 .register(renderer)
-                .register(assetManager)
                 .register(MapGrid.getTestGrid(GAME_WIDTH, GAME_HEIGHT));
 
         this.world = new World(config);
@@ -112,5 +110,9 @@ public class GameWorld {
 
     public void resize(int width, int height) {
         world.getSystem(MyCameraSystem.class).updateViewports(width, height);
+    }
+
+    public void handleInput(Vector3 inputCoordinates) {
+        world.getSystem(InputSystem.class).setLastClick(inputCoordinates);
     }
 }
