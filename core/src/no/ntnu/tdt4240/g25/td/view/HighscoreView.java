@@ -28,9 +28,9 @@ public class HighscoreView extends AbstractView implements View {
     private final Table table = new Table();
     private final VerticalGroup highscoresGroups = new VerticalGroup();
 
-    private final HighscoreScreen.ViewCallBackHandler viewCallback;
+    private final HighscoreScreen.ViewCallbackHandler viewCallback;
 
-    public HighscoreView(SpriteBatch batch, HighscoreScreen.ViewCallBackHandler viewCallback) {
+    public HighscoreView(SpriteBatch batch, HighscoreScreen.ViewCallbackHandler viewCallback) {
         super(viewport, batch);
         Gdx.input.setInputProcessor(this);
         this.viewCallback = viewCallback;

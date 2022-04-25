@@ -25,7 +25,7 @@ public class HighscoreScreen extends ScreenAdapter {
     public HighscoreScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
-        this.view = new HighscoreView(game.getBatch(), new ViewCallBackHandler());
+        this.view = new HighscoreView(game.getBatch(), new ViewCallbackHandler());
     }
 
 
@@ -71,7 +71,7 @@ public class HighscoreScreen extends ScreenAdapter {
             view.dispose();
     }
 
-    public class ViewCallBackHandler {
+    public class ViewCallbackHandler {
 
         ArrayList<Map<String, String>> highscores;
 
