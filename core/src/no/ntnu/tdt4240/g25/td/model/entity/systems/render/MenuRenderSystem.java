@@ -12,7 +12,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.BuildMenu;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.UpgradeMenu;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
+import no.ntnu.tdt4240.g25.td.asset.Font;
 import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 public class MenuRenderSystem extends BaseSystem {
@@ -21,8 +22,6 @@ public class MenuRenderSystem extends BaseSystem {
     private SpriteBatch batch;
     @Wire
     private MyShapeRenderer shapeRenderer;
-    @Wire
-    private AssetService assetService;
 
     private BuildMenu buildMenu;
     private UpgradeMenu upgradeMenu;
@@ -41,9 +40,9 @@ public class MenuRenderSystem extends BaseSystem {
 
     @Override
     protected void initialize() {
-        largeFont = assetService.getFont(AssetService.Font.LARGE);
-        mediumFont = assetService.getFont(AssetService.Font.MEDIUM);
-        smallFont = assetService.getFont(AssetService.Font.SMALL);
+        largeFont = Assets.getInstance().getFont(Font.LARGE);
+        mediumFont = Assets.getInstance().getFont(Font.MEDIUM);
+        smallFont = Assets.getInstance().getFont(Font.SMALL);
         buyLayout = new GlyphLayout(largeFont, "BUY");
         sellLayout = new GlyphLayout(largeFont, "SELL");
         upgradeLayout = new GlyphLayout(largeFont, "UPGRADE");
@@ -73,8 +72,6 @@ public class MenuRenderSystem extends BaseSystem {
         shapeRenderer.roundedRect(buildMenu.cancelButton.x, buildMenu.cancelButton.y, buildMenu.cancelButton.width, buildMenu.cancelButton.height, 15);
         shapeRenderer.end();
         batch.setProjectionMatrix(cameraSystem.guiViewport.getCamera().combined);
-
-
     }
 
     private void drawUpgradeMenu() {

@@ -1,29 +1,43 @@
-package no.ntnu.tdt4240.g25.td.service;
+package no.ntnu.tdt4240.g25.td.asset;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 import no.ntnu.tdt4240.g25.td.model.MobType;
 import no.ntnu.tdt4240.g25.td.model.TowerType;
 
-public class AssetService {
+public class Assets {
 
-    public final AssetManager assetManager;
+    private final AssetManager assetManager;
+    private static Assets instance;
 
-    public AssetService() {
+    public static Assets getInstance() {
+        if (instance == null) {
+            instance = new Assets();
+        }
+        return instance;
+    }
+
+    private Assets() {
         assetManager = new AssetManager();
         FileHandleResolver resolver = new InternalFileHandleResolver();
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+    }
+
+    public Texture getTexture(String name) {
+        return assetManager.get(name, Texture.class);
     }
 
     public TextureAtlas getAtlas(String name) {
@@ -44,8 +58,24 @@ public class AssetService {
         return regions;
     }
 
+    public Skin getSkin() {
+        return assetManager.get("scene2d/sgx-ui.json", Skin.class);
+    }
+
+    public Music getMusic(GameMusic music){
+        return assetManager.get(music.path, Music.class);
+    }
+
+    public Sound getSound(SoundFx soundFx){
+        return assetManager.get(soundFx.path, Sound.class);
+    }
+
     public BitmapFont getFont(Font font) {
         return assetManager.get(font.path, BitmapFont.class);
+    }
+
+    public void finishLoading() {
+        assetManager.finishLoading();
     }
 
     public void loadTextures(){
@@ -65,6 +95,7 @@ public class AssetService {
         for (TerrainAtlas atlas : TerrainAtlas.values()) {
             assetManager.load(atlas.path, TextureAtlas.class);
         }
+        assetManager.load("screens/backdrop.png", Texture.class);
     }
 
     public void loadMusic() {
@@ -79,12 +110,8 @@ public class AssetService {
         }
     }
 
-    public Music getMusic(GameMusic music){
-        return assetManager.get(music.path, Music.class);
-    }
-
-    public Sound getSound(SoundFx soundFx){
-        return assetManager.get(soundFx.path, Sound.class);
+    public void loadSkin(){
+        assetManager.load("scene2d/sgx-ui.json", Skin.class);
     }
 
     public void loadFonts(float initialSize) {

@@ -6,7 +6,6 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.link.EntityLinkManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import net.mostlyoriginal.api.SingletonPlugin;
 
@@ -31,10 +30,9 @@ import no.ntnu.tdt4240.g25.td.model.entity.systems.PathingSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.MenuRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.RenderSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.debug.DebugRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.WidgetRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.map.MapGrid;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 public class GameWorld {
@@ -48,12 +46,12 @@ public class GameWorld {
     World world;
 
 
-    public GameWorld(AssetService assetManager, MyShapeRenderer renderer, SpriteBatch batch) {
+    public GameWorld(MyShapeRenderer renderer, SpriteBatch batch) {
         createFactories();
-        createWorld(batch, renderer, assetManager);
+        createWorld(batch, renderer);
     }
 
-    protected void createWorld(SpriteBatch batch, MyShapeRenderer renderer, AssetService assetManager) {
+    protected void createWorld(SpriteBatch batch, MyShapeRenderer renderer) {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .dependsOn(
                         EntityLinkManager.class,
@@ -93,7 +91,6 @@ public class GameWorld {
                 .build()
                 .register(batch)
                 .register(renderer)
-                .register(assetManager)
                 .register(MapGrid.getTestGrid(GAME_WIDTH, GAME_HEIGHT));
 
         this.world = new World(config);

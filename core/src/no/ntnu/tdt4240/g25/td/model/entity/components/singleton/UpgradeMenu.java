@@ -1,12 +1,11 @@
 package no.ntnu.tdt4240.g25.td.model.entity.components.singleton;
 
 import com.artemis.Component;
-import com.artemis.annotations.EntityId;
 import com.badlogic.gdx.math.Rectangle;
 
 import net.mostlyoriginal.api.Singleton;
 
-import no.ntnu.tdt4240.g25.td.screen.GameScreen;
+import no.ntnu.tdt4240.g25.td.controller.GameScreen;
 
 @Singleton
 public class UpgradeMenu extends Component {

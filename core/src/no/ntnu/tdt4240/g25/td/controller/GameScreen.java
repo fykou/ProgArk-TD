@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g25.td.screen;
+package no.ntnu.tdt4240.g25.td.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,11 +18,11 @@ import com.badlogic.gdx.utils.Align;
 
 import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
-import no.ntnu.tdt4240.g25.td.service.Font;
-import no.ntnu.tdt4240.g25.td.service.GameMusic;
-import no.ntnu.tdt4240.g25.td.service.SoundFx;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.asset.Font;
+import no.ntnu.tdt4240.g25.td.asset.GameMusic;
+import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 /**
@@ -58,12 +58,12 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
-        this.gameWorld = new GameWorld(game.getAssetManager(), game.getShapeRenderer(), game.getBatch());
+        this.gameWorld = new GameWorld(game.getShapeRenderer(), game.getBatch());
         this.sb = game.getBatch();
         this.sr = game.getShapeRenderer();
-        this.font = game.getAssetManager().assetManager.get(Font.LARGE.path, BitmapFont.class);
-        this.gameMusic = game.getAssetManager().assetManager.get(GameMusic.GAME.path);
-        this.sound = game.getAssetManager().assetManager.get(SoundFx.TOUCH.path);
+        this.font = Assets.getInstance().getFont(Font.LARGE);
+        this.gameMusic = Assets.getInstance().getMusic(GameMusic.GAME);
+        this.sound = Assets.getInstance().getSound(SoundFx.TOUCH);
 
         exitButton = new Rectangle(0, 0, MENU_LOGIC_WIDTH / 13f, MENU_LOGIC_HEIGHT / 20f)
                 .setCenter(MENU_LOGIC_WIDTH - (MENU_LOGIC_WIDTH / 13f), MENU_LOGIC_HEIGHT - MENU_LOGIC_HEIGHT / 20f);

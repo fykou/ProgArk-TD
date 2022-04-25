@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import net.mostlyoriginal.api.Singleton;
 
-import no.ntnu.tdt4240.g25.td.screen.GameScreen;
+import no.ntnu.tdt4240.g25.td.controller.GameScreen;
 
 @Singleton
 public class BuildMenu extends Component {
