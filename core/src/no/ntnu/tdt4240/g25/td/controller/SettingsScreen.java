@@ -31,8 +31,7 @@ public class SettingsScreen extends ScreenAdapter {
 
         public void toggleMusic() {
             Audio.playFx(SoundFx.TOUCH);
-            enableMusic = !enableMusic;
-            System.out.println("Music: " + enableMusic);
+            enableMusic = !TdConfig.get().getMusicEnabled();
             TdConfig.get().setMusicEnabled(enableMusic);
             // Toggle global menu and game music
             if (enableMusic) {
@@ -44,7 +43,7 @@ public class SettingsScreen extends ScreenAdapter {
 
         public void toggleSFX() {
             Audio.playFx(SoundFx.TOUCH);
-            enableSFX = !enableSFX;
+            enableSFX = !TdConfig.get().getSfxEnabled();
             TdConfig.get().setSfxEnabled(enableSFX);
         }
 
