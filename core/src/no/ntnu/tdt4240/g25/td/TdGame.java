@@ -18,7 +18,6 @@ public class TdGame extends Game {
     public final static int WORLD_HEIGHT = 16;
 
 	private SpriteBatch batch;
-	private AssetService assetService;
 	private final FirebaseInterface _FBIC;
 	private MyShapeRenderer shapeRenderer;
 
