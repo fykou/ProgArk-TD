@@ -2,10 +2,14 @@ package no.ntnu.tdt4240.g25.td.controller;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 
+import no.ntnu.tdt4240.g25.td.TdConfig;
 import no.ntnu.tdt4240.g25.td.TdGame;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
+import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 import no.ntnu.tdt4240.g25.td.view.TutorialView;
 
 public class TutorialScreen extends ScreenAdapter {
@@ -14,11 +18,13 @@ public class TutorialScreen extends ScreenAdapter {
     private final Screen parent;
 
     private final TutorialView view;
+    private final Sound sound;
 
     public TutorialScreen(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.view = new TutorialView(game.getBatch(), new ViewCallbackHandler());
+        this.sound = Assets.getInstance().getSound(SoundFx.TOUCH);
     }
 
     @Override
@@ -65,6 +71,10 @@ public class TutorialScreen extends ScreenAdapter {
 
     public class ViewCallbackHandler {
         public void onBackToMenuButtonClicked() {
+            if(TdConfig.get().getSfxEnabled()){
+                long id = sound.play(TdConfig.get().getVolume());
+                sound.setLooping(id,false);
+            }
             game.setScreen(parent);
         }
     }

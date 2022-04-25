@@ -34,6 +34,7 @@ public class Audio {
 
     public static void stopMusic() {
         Assets.getInstance().getMusic(GameMusic.MENU).stop();
+        Assets.getInstance().getMusic(GameMusic.SETTINGS).stop();
         Assets.getInstance().getMusic(GameMusic.GAME).stop();
     }
 
