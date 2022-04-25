@@ -47,6 +47,7 @@ public class MainMenuView extends AbstractView implements View {
         settingsButton.getLabel().setFontScale(2);
         highScoreButton.getLabel().setFontScale(2);
         tutorialButton.getLabel().setFontScale(2);
+        quitButton.getLabel().setFontScale(2);
 
         table.setFillParent(true);
         table.add(title).padBottom(200).row();
