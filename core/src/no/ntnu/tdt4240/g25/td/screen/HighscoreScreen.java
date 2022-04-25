@@ -134,8 +134,8 @@ public class HighscoreScreen extends ScreenAdapter {
         sb.setProjectionMatrix(camera.combined);
         font.draw(sb, goBackButtonLayout, goBackButton.x, (goBackButton.y + goBackButton.height / 2f) + font.getCapHeight() / 2f);
         font.draw(sb, "LEADERBOARD", MENU_LOGIC_WIDTH / 4f + 40, MENU_LOGIC_HEIGHT - 200);
-        font.draw(sb, "Name", MENU_LOGIC_WIDTH / 5f, MENU_LOGIC_HEIGHT - 360);
-        font.draw(sb, "Score", MENU_LOGIC_WIDTH / 5f + 330, MENU_LOGIC_HEIGHT - 360);
+        font.draw(sb, "Player", MENU_LOGIC_WIDTH / 5f, MENU_LOGIC_HEIGHT - 360);
+        font.draw(sb, "Waves", MENU_LOGIC_WIDTH / 5f + 310, MENU_LOGIC_HEIGHT - 360);
 
         // Loop through database payload and populate top 5 highscores to screen
         for (int i = 0; i < highscores.size(); i++) {
