@@ -1,12 +1,12 @@
 package no.ntnu.tdt4240.g25.td.model.entity.factories;
 
 import com.artemis.ComponentMapper;
-import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 
+import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.model.TowerLevel;
 import no.ntnu.tdt4240.g25.td.model.TowerType;
 import no.ntnu.tdt4240.g25.td.model.entity.components.AnimationComponent;
@@ -15,7 +15,6 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
 
 public class TowerFactory extends EntityFactory {
 
@@ -31,7 +30,7 @@ public class TowerFactory extends EntityFactory {
         float x = tileX + .5f;
         float y = tileY + .5f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
-        animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, assetService.wrapRegionInArray(assetService.getAtlasRegion(type.atlasPath, level.name()))));
+        animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, Assets.getInstance().wrapRegionInArray(Assets.getInstance().getAtlasRegion(type.atlasPath, level.name()))));
         animationsMap.put(StateComponent.STATE_ATTACKING, getAnimation(type, level));
         int newId = world.create();
         mPosition.create(newId).get().set(x, y);
@@ -43,7 +42,7 @@ public class TowerFactory extends EntityFactory {
     }
 
     public Animation<TextureAtlas.AtlasRegion> getAnimation(TowerType type, TowerLevel level) {
-        Array<TextureAtlas.AtlasRegion> regions = assetService.getAtlasRegionArray(type.atlasPath, level.name());
+        Array<TextureAtlas.AtlasRegion> regions = Assets.getInstance().getAtlasRegionArray(type.atlasPath, level.name());
         float frameDuration = 1 / 30f;
         return new Animation<>(frameDuration, regions);
     }

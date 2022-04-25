@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g25.td.service;
+package no.ntnu.tdt4240.g25.td.asset;
 
 public enum SoundFx {
     TOUCH("sounds/BUTTON_03.ogg"),

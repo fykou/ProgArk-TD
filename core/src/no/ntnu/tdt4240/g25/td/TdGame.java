@@ -1,18 +1,24 @@
 package no.ntnu.tdt4240.g25.td;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import no.ntnu.tdt4240.g25.td.firebase.FirebaseInterface;
-import no.ntnu.tdt4240.g25.td.screen.LoadingScreen;
-import no.ntnu.tdt4240.g25.td.service.AssetService;
+import no.ntnu.tdt4240.g25.td.controller.LoadingScreen;
+import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 public class TdGame extends Game {
 
+    public final static int UI_WIDTH = 720;
+    public final static int UI_HEIGHT = 1280;
+    public final static int WORLD_WIDTH = 9;
+    public final static int WORLD_HEIGHT = 16;
+
 	private SpriteBatch batch;
-	private AssetService assetService;
+	private Assets assets;
 	private final FirebaseInterface _FBIC;
 	private MyShapeRenderer shapeRenderer;
 
@@ -25,7 +31,6 @@ public class TdGame extends Game {
     public void create() {
         batch = new SpriteBatch();
         shapeRenderer = new MyShapeRenderer();
-        assetService = new AssetService();
 
 //      Need to set name and highscore on _FBIC object.
 //      These fields will be used to send data to Firestore
@@ -38,8 +43,12 @@ public class TdGame extends Game {
         setScreen(new LoadingScreen(this, null));
     }
 
-    public AssetService getAssetManager() {
-        return assetService;
+    @Override
+    public void render() {
+        Gdx.gl.glClearColor( 0, 0, 0, 1 );
+        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+
+        super.render();
     }
 
     public FirebaseInterface getDb() {
