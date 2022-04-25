@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
-import no.ntnu.tdt4240.g25.td.controller.GameScreen;
+import no.ntnu.tdt4240.g25.td.controller.GameController;
 
 public class MyCameraSystem extends BaseSystem {
 
@@ -20,11 +20,11 @@ public class MyCameraSystem extends BaseSystem {
     protected void setupViewport( int width, int height) {
 
         OrthographicCamera camera = new OrthographicCamera();
-        viewport = new FitViewport(GameWorld.GAME_WIDTH, GameWorld.GAME_HEIGHT, camera);
+        viewport = new FitViewport(GameWorld.WORLD_WIDTH, GameWorld.WORLD_HEIGHT, camera);
         viewport.update(width, height, true);
 
         OrthographicCamera guiCamera = new OrthographicCamera();
-        guiViewport = new FitViewport(GameScreen.MENU_LOGIC_WIDTH, GameScreen.MENU_LOGIC_HEIGHT, guiCamera);
+        guiViewport = new FitViewport(GameController.MENU_LOGIC_WIDTH, GameController.MENU_LOGIC_HEIGHT, guiCamera);
         guiViewport.update(width, height, true);
     }
 

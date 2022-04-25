@@ -7,14 +7,14 @@ import com.badlogic.gdx.ScreenAdapter;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.view.MainMenuView;
 
-public class MenuScreen extends ScreenAdapter {
+public class MenuController extends ScreenAdapter {
 
     private final TdGame game;
     private final Screen parent;
 
     private final MainMenuView view;
 
-    public MenuScreen(TdGame game, Screen parent) {
+    public MenuController(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.view = new MainMenuView(game.getBatch(), new ViewCallbackHandler());
@@ -64,16 +64,16 @@ public class MenuScreen extends ScreenAdapter {
 
     public class ViewCallbackHandler {
         public void toGame() {
-            game.setScreen(new GameScreen(game, MenuScreen.this));
+            game.setScreen(new GameController(game, MenuController.this));
         }
         public void toSettings() {
-            game.setScreen(new SettingsScreen(game, MenuScreen.this));
+            game.setScreen(new SettingsController(game, MenuController.this));
         }
         public void toHighScore() {
-            game.setScreen(new HighscoreScreen(game, MenuScreen.this));
+            game.setScreen(new HighscoreController(game, MenuController.this));
         }
         public void toTutorial() {
-            game.setScreen(new TutorialScreen(game, MenuScreen.this));
+            game.setScreen(new TutorialController(game, MenuController.this));
         }
         public void quit() {
             Gdx.app.exit();

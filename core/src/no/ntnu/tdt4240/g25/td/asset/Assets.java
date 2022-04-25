@@ -96,6 +96,7 @@ public class Assets {
             assetManager.load(atlas.path, TextureAtlas.class);
         }
         assetManager.load("screens/backdrop.png", Texture.class);
+        // tower textures to skin
     }
 
     public void loadMusic() {
@@ -112,6 +113,12 @@ public class Assets {
 
     public void loadSkin(){
         assetManager.load("scene2d/sgx-ui.json", Skin.class);
+    }
+
+    public void addSpritesToSkin(Skin skin){
+        for (TowerType type : TowerType.values()) {
+            skin.add(type.atlasPath, assetManager.get(type.atlasPath, TextureAtlas.class));
+        }
     }
 
     public void loadFonts(float initialSize) {
