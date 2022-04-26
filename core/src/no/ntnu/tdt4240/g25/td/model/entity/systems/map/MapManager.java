@@ -32,7 +32,7 @@ public class MapManager extends BaseSystem {
         waypoints.getObjects().getByType(RectangleMapObject.class)
                 .forEach(points::add);
         // get height and width of map
-        map.getLayers().get("waypoints")
+        map.getLayers().get("waypoints");
         int width = map.getProperties().get("width", Integer.class);
         int height = map.getProperties().get("height", Integer.class);
         points.sort(Comparator.comparingInt(a -> a.getProperties().get("id", Integer.class)));
