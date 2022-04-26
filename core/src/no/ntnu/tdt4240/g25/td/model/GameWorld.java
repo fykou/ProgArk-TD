@@ -96,8 +96,7 @@ public class GameWorld {
                 .build()
                 .register(view)
                 .register(batch)
-                .register(renderer)
-                .register(MapGrid.getTestGrid(TdGame.UI_WIDTH, TdGame.UI_HEIGHT));
+                .register(renderer);
 
         this.world = new World(config);
         // set world for the factories to be able to create entities
@@ -118,7 +117,7 @@ public class GameWorld {
         world.getSystem(MyCameraSystem.class).updateViewports(width, height);
     }
 
-    public InputSystem getInputProcessor() {
+    public InputProcessor getInputProcessor() {
         return world.getSystem(InputSystem.class);
     }
     public TowerFactory getTowerFactory() {
