@@ -45,9 +45,10 @@ public class FiringSystem extends IteratingSystem {
         TowerComponent tower = mTower.get(entityId);
 
         tower.cooldown -= world.getDelta();
-        if (tower.cooldown > 0 || !target.canShoot) {
-            return; // exit here if the tower cannot fire, or if it is on cooldown
-        }
+        // target is dead, but hasn't been removed by the EntityManager yet
+        // exit here if the tower cannot fire, or if it is on cooldown
+        if (target.targetId == -1 || tower.cooldown > 0 || !target.canShoot) return;
+
         if(tower.type == TYPE_1){
             long id = type1.play(TdConfig.get().getVolume());
             type1.setLooping(id,false);

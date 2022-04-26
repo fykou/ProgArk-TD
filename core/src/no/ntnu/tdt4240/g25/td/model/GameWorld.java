@@ -7,21 +7,18 @@ import com.artemis.link.EntityLinkManager;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 
 import net.mostlyoriginal.api.SingletonPlugin;
 
 import no.ntnu.tdt4240.g25.td.TdGame;
-import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AimingSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.InputSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.ViewManager;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.WaveSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.debug.DebugRenderSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.map.MapManager;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.MapManager;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.AnimationSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.BoundsSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.CollisionSystem;
@@ -36,7 +33,6 @@ import no.ntnu.tdt4240.g25.td.model.entity.systems.PathingSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.RenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.WidgetRenderSystem;
-import no.ntnu.tdt4240.g25.td.model.map.MapGrid;
 import no.ntnu.tdt4240.g25.td.view.GameView;
 
 public class GameWorld {
@@ -82,11 +78,13 @@ public class GameWorld {
                         // Renders
                         new MyCameraSystem(TdGame.UI_WIDTH, TdGame.UI_HEIGHT),
                         new AnimationSystem(),
+
+                        // Renders
                         new MapRenderSystem(),
                         new RenderSystem(),
                         new HealthRenderSystem(),
                         new WidgetRenderSystem(),
-                        //new DebugRenderSystem(),
+                        new DebugRenderSystem(),
 
                         // Factories
                         towerFactory,

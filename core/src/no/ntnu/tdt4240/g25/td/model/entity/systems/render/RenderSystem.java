@@ -2,22 +2,16 @@ package no.ntnu.tdt4240.g25.td.model.entity.systems.render;
 
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
-import com.artemis.annotations.Exclude;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-import no.ntnu.tdt4240.g25.td.asset.Assets;
-import no.ntnu.tdt4240.g25.td.asset.ObjectAtlas;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
-import no.ntnu.tdt4240.g25.td.model.entity.components.TileComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
 
 @All({PositionComponent.class, TextureComponent.class})
-@Exclude({TileComponent.class})
 public class RenderSystem extends IteratingSystem {
 
     ComponentMapper<TextureComponent> mTexture;

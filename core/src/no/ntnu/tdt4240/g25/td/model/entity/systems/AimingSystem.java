@@ -48,7 +48,7 @@ public class AimingSystem extends IteratingSystem {
             return;
         }
         if (position.get().dst(enemyPosition.get()) > tower.range) {
-            mPosition.remove(target.targetId);
+            mHasTarget.remove(entityId);
             mState.get(entityId).set(StateComponent.STATE_IDLE, false);
             return;
         }
