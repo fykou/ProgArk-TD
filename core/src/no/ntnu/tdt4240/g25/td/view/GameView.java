@@ -31,13 +31,18 @@ public class GameView extends AbstractView {
     private final TextButton cancelButton = new TextButton("Cancel", skin);
     private final Image type1Image = new Image(Assets.getInstance().getAtlasRegion(TowerType.TYPE_1.atlasPath, TowerLevel.MK1.name()));
     private final Image type2Image = new Image(Assets.getInstance().getAtlasRegion(TowerType.TYPE_2.atlasPath, TowerLevel.MK1.name()));
-
     private boolean openModal = false;
+
+    private final Label numLivesLabel = new Label("123", skin);
+    private final Label numCashLabel = new Label("123", skin);
+
 
     public GameView(SpriteBatch batch, GameController.ViewCallbackHandler viewCallback) {
         super(viewport, batch);
         this.viewCallback = viewCallback;
         buildBuyDialogue();
+        buildTopBar();
+        setDebugAll(true);
     }
 
 
@@ -63,6 +68,15 @@ public class GameView extends AbstractView {
     @Override
     public void hide() {
 
+    }
+
+    private void buildTopBar() {
+        Table topBar = new Table(skin);
+        topBar.setFillParent(true);
+        topBar.align(Align.top);
+        topBar.add(numCashLabel).align(Align.left);
+        topBar.add(numLivesLabel).align(Align.right);
+        this.addActor(topBar);
     }
 
 
@@ -103,9 +117,6 @@ public class GameView extends AbstractView {
             }
         });
         openModal = true;
-
-
-
     }
 
     public void buildBuyDialogue() {
