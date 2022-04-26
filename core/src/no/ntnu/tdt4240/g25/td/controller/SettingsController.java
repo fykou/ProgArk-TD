@@ -26,7 +26,6 @@ public class SettingsController extends ScreenAdapter {
         this.view = new SettingsView(game.getBatch(), new ViewCallbackHandler());
     }
 
-
     public class ViewCallbackHandler {
 
         public void toggleMusic() {
