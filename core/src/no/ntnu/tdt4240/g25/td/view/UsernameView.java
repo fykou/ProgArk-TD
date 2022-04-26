@@ -7,20 +7,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import no.ntnu.tdt4240.g25.td.asset.Assets;
+import no.ntnu.tdt4240.g25.td.asset.Audio;
+import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 import no.ntnu.tdt4240.g25.td.controller.UsernameScreen;
 
 public class UsernameView extends AbstractView {
 
     private final Skin skin = Assets.getInstance().getSkin();
-    private final TextButton backButton = new TextButton("Save playername", skin);
+    private final TextButton playButton = new TextButton("Play", skin);
     private final TextField userInput;
     private final Table table = new Table();
-    String playerName;
+    private String playerName;
 
     private final UsernameScreen.ViewCallbackHandler viewCallback;
 
@@ -28,39 +29,38 @@ public class UsernameView extends AbstractView {
         super(viewport, batch);
         Gdx.input.setInputProcessor(this);
         this.viewCallback = viewCallback;
-        table.setFillParent(true);
-        table.align(Align.center).add();
-        Window tutorialWindow = new Window("Tutorial", skin);
-        tutorialWindow.getTitleLabel().setAlignment(Align.center);
-        tutorialWindow.getTitleLabel().setText("USERNAME: ");
-        tutorialWindow.setMovable(false);
-        table.add(tutorialWindow).align(Align.center).row();
-        table.add(backButton).align(Align.center);
-
         userInput = new TextField("", skin);
-        table.add(userInput).align(Align.center);
-        addActor(table);
 
-        backButton.addListener(new ClickListener() {
+        playButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 playerName = userInput.getText();
-                System.out.println(playerName);
-                highScoreWrite();
+                setPlayerName();
             }
         });
-
     }
 
-    public void highScoreWrite(){
-        viewCallback.updatePlayerNameInDb(playerName);
-        System.out.println("after fb method call...");
+    public void setPlayerName(){
+        Audio.playFx(SoundFx.TOUCH);
+        viewCallback.setPlayerNameOnFirebaseObject(playerName);
         viewCallback.toMenu();
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
+        // NEW table
+        Label title = new Label("Enter username", skin, "default");
+        title.setFontScale(3);
+        table.setFillParent(true);
+        table.add(title).padBottom(50).colspan(2).row();
+        table.add(userInput).align(Align.center).size(400, 75).padBottom(25).colspan(2).row();
+        table.add(playButton).size(350, 90).colspan(2).row();
+
+        // Adjust sizes
+        playButton.getLabel().setFontScale(2);
+
+        getRoot().addActor(table);
     }
 
     @Override

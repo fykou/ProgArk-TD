@@ -4,20 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import no.ntnu.tdt4240.g25.td.TdGame;
-import no.ntnu.tdt4240.g25.td.asset.Audio;
-import no.ntnu.tdt4240.g25.td.asset.SoundFx;
-import no.ntnu.tdt4240.g25.td.view.MainMenuView;
 import no.ntnu.tdt4240.g25.td.view.UsernameView;
 
 public class UsernameScreen extends ScreenAdapter {
 
     private final TdGame game;
     private final Screen parent;
-
     private final UsernameView view;
 
     public UsernameScreen(TdGame game, Screen parent) {
@@ -72,17 +65,8 @@ public class UsernameScreen extends ScreenAdapter {
         public void toMenu() {
             game.setScreen(new MenuScreen(game, parent));
         }
-        public void updatePlayerNameInDb(String playerName) {
+        public void setPlayerNameOnFirebaseObject(String playerName) {
             game.getDb().setName(playerName);
-            game.getDb().setHighScore(33);
-
-            game.getDb().getTopFiveHighScores((ArrayList<Map<String, String>> topFiveHighScoresList) -> {
-                System.out.println("READ FROM DB");
-            });
-
-            game.getDb().UpdateHighScoreInFirestore(highScoreDbSuccessful -> {
-            System.out.println("This boolean returns true if highscore was successfully written to Firestore DB: "+ highScoreDbSuccessful);
-            });
         }
     }
 
