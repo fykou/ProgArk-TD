@@ -9,6 +9,8 @@ import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
 import no.ntnu.tdt4240.g25.td.view.GameView;
 
 /**
@@ -98,6 +100,8 @@ public class GameController extends ScreenAdapter {
         public GameWorld getWorld() {
             return gameWorld;
         }
+//        public WaveComponent getWave(){return gameWorld.wave;}
+//        public PlayerComponent getPlayer(){return player;}
     }
 
 }

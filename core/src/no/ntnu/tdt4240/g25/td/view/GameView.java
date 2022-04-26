@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g25.td.view;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,6 +17,8 @@ import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.controller.GameController;
 import no.ntnu.tdt4240.g25.td.model.TowerLevel;
 import no.ntnu.tdt4240.g25.td.model.TowerType;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
 
 public class GameView extends AbstractView {
 
@@ -33,18 +36,22 @@ public class GameView extends AbstractView {
     private final Image type2Image = new Image(Assets.getInstance().getAtlasRegion(TowerType.TYPE_2.atlasPath, TowerLevel.MK1.name()));
     private boolean openModal = false;
 
-    private final Label numLivesLabel = new Label("123", skin);
-    private final Label numCashLabel = new Label("123", skin);
+    // Top bar game stats
+    // Use buttons bcs background color
+    private final TextButton numLivesLeft = new TextButton("", skin);
+    private final TextButton numCashTotal = new TextButton("", skin);
+    private final TextButton waveTimer = new TextButton("", skin);
+    private final TextButton waveScore = new TextButton("", skin);
 
+    private WaveComponent wave;
+    private PlayerComponent player;
 
     public GameView(SpriteBatch batch, GameController.ViewCallbackHandler viewCallback) {
         super(viewport, batch);
         this.viewCallback = viewCallback;
         buildBuyDialogue();
         buildTopBar();
-        setDebugAll(true);
     }
-
 
     @Override
     public void show() {
@@ -74,11 +81,38 @@ public class GameView extends AbstractView {
         Table topBar = new Table(skin);
         topBar.setFillParent(true);
         topBar.align(Align.top);
-        topBar.add(numCashLabel).align(Align.left);
-        topBar.add(numLivesLabel).align(Align.right);
+
+        // From WidgetRenderSystem
+//        boolean waveActive = wave.active;
+//        float waveTime = waveActive ? wave.time : WaveComponent.PAUSE_DURATION - wave.time;
+//        int waveNumber = wave.numberOfWaves;
+//        int playerLives = player.lives;
+
+        boolean waveActive = true;
+        String playerLives = "3";
+        String cashPoints = "17";
+        String waveNumber = "4";
+        String waveTime = "3.2";
+
+        String waveOrPauseString = waveActive ? "Wave" : "Next wave";
+
+        numLivesLeft.getLabel().setText("Lives\n" + playerLives);
+        numCashTotal.getLabel().setText("Cash\n" + cashPoints);
+        waveScore.getLabel().setText("Waves survived\n" + waveNumber);
+        waveTimer.getLabel().setText(waveOrPauseString + "\n" + waveTime);
+
+        numCashTotal.getLabel().setFontScale(1.5f);
+        numLivesLeft.getLabel().setFontScale(1.5f);
+        waveScore.getLabel().setFontScale(1.5f);
+        waveTimer.getLabel().setFontScale(1.5f);
+
+        topBar.add(waveScore).align(Align.center).pad(10);
+        topBar.add(waveTimer).align(Align.center).pad(10);
+        topBar.add(numCashTotal).align(Align.center).pad(10);
+        topBar.add(numLivesLeft).align(Align.center).pad(10);
+        topBar.setTouchable(Touchable.disabled);
         this.addActor(topBar);
     }
-
 
     public void triggerBuyDialogue(float tileX, float tileY, int cash) {
         if (openModal) {
@@ -153,5 +187,4 @@ public class GameView extends AbstractView {
         buy2Button.setText("Buy");
         cancelButton.setText("Cancel");
     }
-
 }
