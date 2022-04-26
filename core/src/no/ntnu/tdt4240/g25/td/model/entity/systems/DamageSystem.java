@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g25.td.model.entity.systems;
 
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
+import com.artemis.annotations.Exclude;
 import com.artemis.systems.IteratingSystem;
 
 import no.ntnu.tdt4240.g25.td.asset.Audio;
@@ -14,6 +15,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
 
 @All({DamageComponent.class, MobComponent.class, StateComponent.class})
+@Exclude({ExpireComponent.class})
 public class DamageSystem extends IteratingSystem {
 
     ComponentMapper<DamageComponent> mDamage;

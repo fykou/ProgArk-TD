@@ -1,6 +1,7 @@
-package no.ntnu.tdt4240.g25.td.model.entity.systems.map;
+package no.ntnu.tdt4240.g25.td.model.entity.systems;
 
 import com.artemis.BaseSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -24,23 +25,24 @@ public class MapManager extends BaseSystem {
 
     protected void initialize() {
         OrthographicCamera camera = new OrthographicCamera();
-        camera.setToOrtho(true, GameWorld.WORLD_WIDTH, GameWorld.WORLD_HEIGHT);
+        camera.setToOrtho(false, GameWorld.WORLD_WIDTH, GameWorld.WORLD_HEIGHT);
         TiledMap map = new TmxMapLoader().load("levels/level1.tmx");
         Array<RectangleMapObject> points = new Array<>();
         MapLayer waypoints = map.getLayers().get("waypoints");
         //waypoints
         waypoints.getObjects().getByType(RectangleMapObject.class)
                 .forEach(points::add);
-        // get height and width of map
-        map.getLayers().get("waypoints");
-        int width = map.getProperties().get("width", Integer.class);
-        int height = map.getProperties().get("height", Integer.class);
+        // need mapheight and tilesize before computing waypoints to world coordinates
+        int mapHeight = map.getProperties().get("height", Integer.class);
+        int tileSize = map.getProperties().get("tilewidth", Integer.class);
         points.sort(Comparator.comparingInt(a -> a.getProperties().get("id", Integer.class)));
         points.forEach(point -> {
-                Vector3 test = camera.unproject(new Vector3(point.getRectangle().x, point.getRectangle().y, 0));
-                Vector2 projected = new Vector2(test.x, test.y );
-                mapComponent.path.add(projected);
-                System.out.println(projected);
+            Vector2 test = new Vector2(point.getRectangle().x, point.getRectangle().y);
+            float unitScale = 1f/tileSize;
+            float x = test.x * unitScale;
+            float y = test.y * unitScale;
+            mapComponent.path.add(new Vector2(x, y));
+            System.out.println(point.getProperties().get("id")+"\t"+"x: " + x + "\t\ty: " + y);
         });
         mapComponent.map = map;
     }

@@ -24,7 +24,7 @@ public class MainMenuView extends AbstractView implements View {
     private final TextButton highScoreButton = new TextButton("Highscores", skin, "big");
     private final TextButton tutorialButton = new TextButton("Tutorial", skin, "big");
     private final TextButton quitButton = new TextButton("Quit", skin, "big");
-    private final Table table = new Table();
+    private final Table table = new Table(skin);
 
     private final MenuController.ViewCallbackHandler viewCallback;
 

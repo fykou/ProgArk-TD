@@ -6,13 +6,15 @@ import com.artemis.EntitySubscription;
 import com.artemis.annotations.All;
 import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 
 import no.ntnu.tdt4240.g25.td.model.entity.components.BoundsComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.DamageComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.ProjectileComponent;
-import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
 
 @All({ProjectileComponent.class, PositionComponent.class})
 public class CollisionSystem extends IteratingSystem {
@@ -31,7 +33,7 @@ public class CollisionSystem extends IteratingSystem {
         mobSubscription =
                 world.getAspectSubscriptionManager().get(Aspect.all(
                         MobComponent.class, PositionComponent.class, BoundsComponent.class // Using texture compo for now
-                ));
+                ).exclude(ExpireComponent.class));
     }
 
     @Override
@@ -55,10 +57,13 @@ public class CollisionSystem extends IteratingSystem {
                         int nearbyMob = mobIds.get(j);
                         if (nearbyMob == mob) continue;
                         PositionComponent nearbyMobPosition = mPosition.get(nearbyMob);
+
                         if (nearbyMobPosition.get().dst(mobPosition.get()) > POSITION_CHECK_THRESHOLD) continue;
                         if (nearbyMobPosition.get().dst(position.get()) > projectile.radius) continue;
+
                         BoundsComponent nearbyMobBounds = mBounds.get(nearbyMob);
-                        if (nearbyMobBounds != null && overlaps(nearbyMobPosition, nearbyMobBounds)) {
+                        Circle splashArea = new Circle(position.get(), projectile.radius);
+                        if (nearbyMobBounds != null && overlaps(splashArea, nearbyMobBounds)) {
                             applyDamage(nearbyMob, projectile.damage);
                         }
                     }
@@ -75,5 +80,8 @@ public class CollisionSystem extends IteratingSystem {
 
     private boolean overlaps(PositionComponent projectile, BoundsComponent mobBounds) {
         return mobBounds.get().contains(projectile.get());
+    }
+    private boolean overlaps(Circle projectile, BoundsComponent mobBounds) {
+        return Intersector.overlaps(projectile, mobBounds.get());
     }
 }

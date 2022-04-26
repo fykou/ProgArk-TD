@@ -6,7 +6,7 @@ public enum TowerType {
             6, 12, 18, 24, // damage for level 1, 2, 3, 4
             1f, 1.5f, 2f, 2f,  // firerate for level 1, 2, 3, 4
             "towers/TYPE_1.atlas"), // path to atlas in assets
-    TYPE_2(35,2, 2, 3, 6, 9, 12,
+    TYPE_2(35,2, 1, 3, 6, 9, 12,
             1.33f, 1.5f, 1.8f, 2.1f,
             "towers/TYPE_2.atlas");
 
