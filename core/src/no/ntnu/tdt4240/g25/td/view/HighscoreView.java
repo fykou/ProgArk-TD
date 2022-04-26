@@ -3,12 +3,10 @@ package no.ntnu.tdt4240.g25.td.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
@@ -26,7 +24,6 @@ public class HighscoreView extends AbstractView implements View {
     private final Skin skin = Assets.getInstance().getSkin();
     private final TextButton backButton = new TextButton("Back to Menu", skin, "big");
     private final Table table = new Table();
-    private final VerticalGroup highscoresGroups = new VerticalGroup();
 
     private final HighscoreScreen.ViewCallbackHandler viewCallback;
 
@@ -35,19 +32,31 @@ public class HighscoreView extends AbstractView implements View {
         Gdx.input.setInputProcessor(this);
         this.viewCallback = viewCallback;
         viewCallback.getHighscores();
-        buildTable();
         attachListeners();
     }
 
     public void highscoreUpdated(ArrayList<Map<String, String>> newHighscores) {
+        Label title = new Label("Leaderboard", skin, "title");
+        Label nameLabel = new Label("Player", skin, "default");
+        Label scoreLabel = new Label("Waves", skin, "default");
+
+        table.setFillParent(true);
+        table.add(title).padBottom(45).colspan(3).row();
+        nameLabel.setFontScale(2.5f);
+        scoreLabel.setFontScale(2.5f);
+        table.add(nameLabel).align(Align.left).padBottom(40);
+        table.add(scoreLabel).align(Align.right).padBottom(40).row();
         for (Map<String, String> highscore : newHighscores) {
             Label name = new Label(highscore.get("name"), skin);
             Label score = new Label(highscore.get("highScore"), skin);
-            HorizontalGroup hsRecord = new HorizontalGroup();
-            hsRecord.addActor(name);
-            hsRecord.addActor(score);
-            this.highscoresGroups.addActor(hsRecord);
+            name.setFontScale(1.8f);
+            score.setFontScale(1.8f);
+            table.add(name).align(Align.left).padBottom(30);
+            table.add(score).align(Align.right).padBottom(30).row();
         }
+        table.add(backButton).size(400, 90).colspan(2).padTop(45).row();
+        backButton.getLabel().setFontScale(2);
+        getRoot().addActor(table);
     }
 
     private void attachListeners() {
@@ -59,23 +68,6 @@ public class HighscoreView extends AbstractView implements View {
             }
         });
     }
-
-    private void buildTable() {
-
-        Label title = new Label("Leaderboard", skin, "title");
-        Label nameLabel = new Label("Name", skin, "default");
-        Label scoreLabel = new Label("Score", skin, "default");
-
-        table.setFillParent(true);
-        table.add(title).padBottom(50).colspan(2).row();
-        table.add(nameLabel).align(Align.left).padBottom(50);
-        table.add(scoreLabel).align(Align.right).padBottom(50).row();
-        table.add(highscoresGroups).align(Align.center).size(350, 270).padBottom(90).colspan(2).row();
-        table.add(backButton).size(350, 90).colspan(2).row();
-
-        getRoot().addActor(table);
-    }
-
 
     @Override
     public void show() {
