@@ -11,7 +11,7 @@ public class WaveComponent extends Component {
     public final static int baseTankEnemies = 1;
     public final static float waveMultiplier = 1.5f;
 
-    public final static float PAUSE_DURATION = 10f;
+    public final static float PAUSE_DURATION = 1f;
 
     public final static float NORMAL_COOLDOWN = 1f;
     public final static float TANK_COOLDOWN = 2f;
