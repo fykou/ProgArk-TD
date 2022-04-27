@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="9" height="15" tilewidth="128" tileheight="128" infinite="0" nextlayerid="6" nextobjectid="85">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-up" width="9" height="15" tilewidth="128" tileheight="128" infinite="0" nextlayerid="6" nextobjectid="85">
  <tileset firstgid="1" source="terrain.tsx"/>
  <layer id="1" name="base" width="9" height="15">
   <data encoding="csv">
