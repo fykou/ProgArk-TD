@@ -53,9 +53,7 @@ public class RenderSystem extends IteratingSystem {
 
     @Override
     protected void begin() {
-
         batch.setProjectionMatrix(cameraSystem.viewport.getCamera().combined);
-        batch.enableBlending();
         batch.begin();
     }
 

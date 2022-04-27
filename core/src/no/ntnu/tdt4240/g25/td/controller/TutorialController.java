@@ -12,7 +12,7 @@ import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 import no.ntnu.tdt4240.g25.td.view.TutorialView;
 
-public class TutorialScreen extends ScreenAdapter {
+public class TutorialController extends ScreenAdapter {
 
     private final TdGame game;
     private final Screen parent;
@@ -20,7 +20,7 @@ public class TutorialScreen extends ScreenAdapter {
     private final TutorialView view;
     private final Sound sound;
 
-    public TutorialScreen(TdGame game, Screen parent) {
+    public TutorialController(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.view = new TutorialView(game.getBatch(), new ViewCallbackHandler());

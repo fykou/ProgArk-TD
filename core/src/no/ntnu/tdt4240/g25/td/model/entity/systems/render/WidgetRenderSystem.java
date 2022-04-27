@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.Locale;
@@ -13,21 +14,20 @@ import java.util.Locale;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
-import no.ntnu.tdt4240.g25.td.controller.GameScreen;
+import no.ntnu.tdt4240.g25.td.controller.GameController;
 import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.asset.Font;
-import no.ntnu.tdt4240.g25.td.utils.MyShapeRenderer;
 
 public class WidgetRenderSystem extends BaseSystem {
 
-    public static final float TIMER_POS_X = (GameScreen.MENU_LOGIC_WIDTH / 9f) * 0f;
-    public static final float TIMER_POS_Y = GameScreen.MENU_LOGIC_HEIGHT - (GameScreen.MENU_LOGIC_WIDTH / 16f);
+    public static final float TIMER_POS_X = (GameController.MENU_LOGIC_WIDTH / 9f) * 0f;
+    public static final float TIMER_POS_Y = GameController.MENU_LOGIC_HEIGHT - (GameController.MENU_LOGIC_WIDTH / 16f);
 
-    public static final float WAVE_POS_X = (GameScreen.MENU_LOGIC_WIDTH / 9f) * 3f;
-    public static final float WAVE_POS_Y = GameScreen.MENU_LOGIC_HEIGHT - (GameScreen.MENU_LOGIC_WIDTH / 16f);
+    public static final float WAVE_POS_X = (GameController.MENU_LOGIC_WIDTH / 9f) * 3f;
+    public static final float WAVE_POS_Y = GameController.MENU_LOGIC_HEIGHT - (GameController.MENU_LOGIC_WIDTH / 16f);
 
-    public static final float HEALTH_POS_X = (GameScreen.MENU_LOGIC_WIDTH / 9f) * 6f;
-    public static final float HEALTH_POS_Y = GameScreen.MENU_LOGIC_HEIGHT - (GameScreen.MENU_LOGIC_WIDTH / 16f);
+    public static final float HEALTH_POS_X = (GameController.MENU_LOGIC_WIDTH / 9f) * 6f;
+    public static final float HEALTH_POS_Y = GameController.MENU_LOGIC_HEIGHT - (GameController.MENU_LOGIC_WIDTH / 16f);
 
     private WaveComponent wave;
     private PlayerComponent player;
@@ -36,7 +36,7 @@ public class WidgetRenderSystem extends BaseSystem {
     @Wire
     private SpriteBatch batch;
     @Wire
-    private MyShapeRenderer renderer;
+    private ShapeRenderer renderer;
 
     private BitmapFont font;
     private GlyphLayout timerLayout;

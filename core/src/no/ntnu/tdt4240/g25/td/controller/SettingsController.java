@@ -10,7 +10,7 @@ import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 import no.ntnu.tdt4240.g25.td.view.SettingsView;
 
-public class SettingsScreen extends ScreenAdapter {
+public class SettingsController extends ScreenAdapter {
 
     private final TdGame game;
     private final Screen parent;
@@ -20,7 +20,7 @@ public class SettingsScreen extends ScreenAdapter {
 
     private final SettingsView view;
 
-    public SettingsScreen(TdGame game, Screen parent) {
+    public SettingsController(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.view = new SettingsView(game.getBatch(), new ViewCallbackHandler());

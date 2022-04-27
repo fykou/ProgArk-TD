@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g25.td.model.entity.systems;
 
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
+import com.artemis.annotations.Exclude;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
 
@@ -14,6 +15,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.MapComponent;
 
 @All({VelocityComponent.class, PositionComponent.class, MobComponent.class, PathComponent.class})
+@Exclude({ExpireComponent.class})
 public class PathingSystem extends IteratingSystem {
     ComponentMapper<PositionComponent> mPosition;
     ComponentMapper<VelocityComponent> mVelocity;
@@ -58,80 +60,5 @@ public class PathingSystem extends IteratingSystem {
 
         velocity.get().set(direction).setLength(mob.speed);
 
-        /*if (path.getRight()) {
-            if (path.previousCoordinate < path.currentCheckpoint && path.currentCheckpoint <= position.get().x) {
-                position.get().set(checkpoints[path.checkpointNumber]);
-                path.checkpointNumber++;
-                path.currentCheckpoint = (checkpoints[path.checkpointNumber].y);
-                if (position.get().y - path.currentCheckpoint < 0) {
-                    path.setUp(true);
-                    velocity.get().set(up);
-                }
-                else {
-                    path.setDown(true);
-                    velocity.get().set(down);
-                }
-                path.setLeft(false);
-                path.setRight(false);
-            }
-            path.setPreviousCoordinate(position.get().x);
-        }
-
-        if(path.getLeft()) {
-            if (path.previousCoordinate > path.currentCheckpoint && path.currentCheckpoint >= position.get().x) {
-                position.get().set(checkpoints[path.checkpointNumber]);
-                path.checkpointNumber++;
-                path.currentCheckpoint = checkpoints[path.checkpointNumber].y;
-                if (position.get().y - path.currentCheckpoint < 0) {
-                    path.setUp(true);
-                    velocity.get().set(up);
-                } else {
-                    path.setDown(true);
-                    velocity.get().set(down);
-                }
-                path.setLeft(false);
-                path.setRight(false);
-            }
-            path.setPreviousCoordinate(position.get().x);
-        }
-
-
-        if (path.getUp()) {
-            if (path.previousCoordinate < path.currentCheckpoint && path.currentCheckpoint <= position.get().y) {
-                position.get().set(checkpoints[path.checkpointNumber]);
-                path.checkpointNumber++;
-                path.currentCheckpoint = checkpoints[path.checkpointNumber].x;
-                if (position.get().x - path.currentCheckpoint < 0) {
-                    path.setRight(true);
-                    velocity.get().set(right);
-                }
-                else {
-                    path.setLeft(true);
-                    velocity.get().set(left);
-                }
-                path.setUp(false);
-                path.setDown(false);
-            }
-            path.setPreviousCoordinate(position.get().y);
-        }
-
-        if(path.getDown()) {
-            if (path.previousCoordinate > path.currentCheckpoint && path.currentCheckpoint >= position.get().y) {
-                position.get().set(checkpoints[path.checkpointNumber]);
-                path.checkpointNumber++;
-                path.currentCheckpoint = checkpoints[path.checkpointNumber].x;
-                if (position.get().x - path.currentCheckpoint < 0) {
-                    path.setRight(true);
-                    velocity.get().set(right);
-                }
-                else {
-                    path.setLeft(true);
-                    velocity.get().set(left);
-                }
-                path.setUp(false);
-                path.setDown(false);
-            }
-            path.setPreviousCoordinate(position.get().y);
-        }*/
     }
 }
