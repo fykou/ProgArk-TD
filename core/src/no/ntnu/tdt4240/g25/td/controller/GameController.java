@@ -122,7 +122,7 @@ public class GameController extends ScreenAdapter {
 
     public class GameWorldCallback {
         public void onGameOver() {
-            game.setScreen(new GameOverController(game, parent));
+            game.setScreen(new GameOverController(game, GameController.this, gameWorld.getScore()));
         }
     }
 

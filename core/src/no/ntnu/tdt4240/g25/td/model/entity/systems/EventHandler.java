@@ -86,4 +86,8 @@ public class EventHandler extends BaseSystem {
             view.toggleNewTowerWindow(player.cash);
         }
     }
+
+    public int getScore() {
+        return wave.numberOfWaves;
+    }
 }

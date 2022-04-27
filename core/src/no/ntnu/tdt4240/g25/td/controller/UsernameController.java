@@ -63,7 +63,8 @@ public class UsernameController extends ScreenAdapter {
 
     public class ViewCallbackHandler {
         public void toMenu() {
-            game.setScreen(new MenuController(game, parent));
+            game.setScreen(new MainMenuController(game, parent));
+            //game.setScreen(new GameOverController(game, parent, 69));
         }
         public void setPlayerNameOnFirebaseObject(String playerName) {
             game.getDb().setName(playerName);
