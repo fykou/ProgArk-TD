@@ -27,24 +27,19 @@ public class GameController extends ScreenAdapter {
     private boolean paused;
     private final GameView view;
 
-    private final InputMultiplexer inputMultiplexer;
-
     public GameController(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.view = new GameView(game.getBatch(), new ViewCallbackHandler());
-        this.gameWorld = new GameWorld(game.getShapeRenderer(), game.getBatch(), view);
-        inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(view);
-        inputMultiplexer.addProcessor(gameWorld.getInputProcessor());
-        Gdx.input.setInputProcessor(inputMultiplexer);
+        this.gameWorld = new GameWorld(game.getShapeRenderer(), game.getBatch(), view.getTopBarCallback());
+        Gdx.input.setInputProcessor(view);
     }
 
     @Override
     public void show() {
         // Play game music
         Audio.playMusic(GameMusic.GAME);
-        Gdx.input.setInputProcessor(inputMultiplexer);
+        Gdx.input.setInputProcessor(view);
     }
 
     @Override
@@ -88,6 +83,10 @@ public class GameController extends ScreenAdapter {
     }
 
     public class ViewCallbackHandler {
+        public void onWorldClick(int screenX, int screenY) {
+            System.out.println("Clicked at " + screenX + ", " + screenY);
+            gameWorld.clickOnWorld(screenX, screenY);
+        }
         public void onBackPressed() {
             game.setScreen(parent);
         }
@@ -102,18 +101,19 @@ public class GameController extends ScreenAdapter {
         }
 
         public void onUpgradeButtonClicked() {
+            gameWorld.upgradeSelectedTower();
         }
 
         public void onBuy1ButtonClicked() {
+            gameWorld.createTower1();
         }
 
         public void onBuy2ButtonClicked() {
+            gameWorld.createTower2();
         }
 
         public void onCancelButtonClicked() {
         }
-//        public WaveComponent getWave(){return gameWorld.wave;}
-//        public PlayerComponent getPlayer(){return player;}
     }
 
 }
