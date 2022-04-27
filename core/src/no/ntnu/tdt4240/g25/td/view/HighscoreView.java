@@ -71,6 +71,7 @@ public class HighscoreView extends AbstractView {
 
     @Override
     public void show() {
+        super.show();
         Audio.playMusic(GameMusic.MENU);
     }
 

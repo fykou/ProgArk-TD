@@ -90,6 +90,9 @@ public class GameController extends AbstractController {
             paused = false;
         }
 
+        public void onSettings() {
+            game.setScreen(new SettingsController(game, GameController.this));
+        }
         public void onUpgradeButtonClicked() {
             gameWorld.upgradeSelectedTower();
         }
