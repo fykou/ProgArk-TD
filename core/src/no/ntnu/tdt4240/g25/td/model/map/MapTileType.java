@@ -17,7 +17,8 @@ public enum MapTileType {
     }
     public static MapTileType getTileTypeById(int id) {
         // the id modulo 7 is used to get the tile type
-        // from the id.
+        // from the id. If the result of id -1 mod 7 is higher than the number of tile types,
+        // return null
         return MapTileType.values()[(id - 1) % 7];
     }
 }

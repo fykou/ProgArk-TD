@@ -14,6 +14,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.MapComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.map.MapTileType;
 import no.ntnu.tdt4240.g25.td.view.GameView;
@@ -23,6 +24,7 @@ public class InputSystem extends BaseSystem implements InputProcessor {
     private Vector3 lastClick;
     private MapComponent map;
     private PlayerComponent player;
+    private WaveComponent wave;
 
     private MyCameraSystem cameraSystem;
     private ComponentMapper<TowerComponent> mTower;
@@ -32,16 +34,22 @@ public class InputSystem extends BaseSystem implements InputProcessor {
 
     @Wire
     private GameView gameView;
+    private GameView.TopBarCallback topBarCallback;
 
     @Override
     protected void initialize() {
         towerSubscription = world.getAspectSubscriptionManager().get(Aspect.all(TowerComponent.class, PositionComponent.class));
+        topBarCallback = gameView.getTopBarCallback();
     }
 
 
 
     @Override
     protected void processSystem() {
+        topBarCallback.setCash(player.cash);
+        topBarCallback.setLives(player.lives);
+        topBarCallback.setWave(wave.numberOfWaves);
+        topBarCallback.setWaveTime(wave.active ? wave.time : WaveComponent.PAUSE_DURATION - wave.time, wave.active);
     }
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -65,7 +73,6 @@ public class InputSystem extends BaseSystem implements InputProcessor {
                 }
             }
         }
-        gameView.triggerBuyDialogue(tileX, tileY, player.cash);
         return true;
     }
 
