@@ -19,11 +19,11 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 @Exclude(HasTargetComponent.class)
 public class FindTargetSystem extends IntervalIteratingSystem {
 
-    ComponentMapper<TowerComponent> mTower;
-    ComponentMapper<PositionComponent> mPosition;
-    ComponentMapper<HasTargetComponent> mTarget;
-    ComponentMapper<StateComponent> mState;
-    EntitySubscription enemySubscription;
+    private ComponentMapper<TowerComponent> mTower;
+    private ComponentMapper<PositionComponent> mPosition;
+    private ComponentMapper<HasTargetComponent> mTarget;
+    private ComponentMapper<StateComponent> mState;
+    private EntitySubscription enemySubscription;
 
     /**
      * Creates a new IntervalEntityProcessingSystem.

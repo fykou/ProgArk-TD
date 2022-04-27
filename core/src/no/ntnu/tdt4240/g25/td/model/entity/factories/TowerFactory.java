@@ -1,6 +1,7 @@
 package no.ntnu.tdt4240.g25.td.model.entity.factories;
 
 import com.artemis.ComponentMapper;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
@@ -30,8 +31,8 @@ public class TowerFactory extends EntityFactory {
         float x = tileX + .5f;
         float y = tileY + .5f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
-        animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, Assets.getInstance().wrapRegionInArray(Assets.getInstance().getAtlasRegion(type.atlasPath, level.name()))));
-        animationsMap.put(StateComponent.STATE_ATTACKING, getAnimation(type, level));
+        animationsMap.put(StateComponent.STATE_IDLE, getIdleAnim(type, level));
+        animationsMap.put(StateComponent.STATE_ATTACKING, getAtkAnim(type, level));
         int newId = world.create();
         mPosition.create(newId).get().set(x, y);
         mRotation.create(newId).get();
@@ -41,9 +42,38 @@ public class TowerFactory extends EntityFactory {
         mAnimation.create(newId).animations = animationsMap;
     }
 
-    public Animation<TextureAtlas.AtlasRegion> getAnimation(TowerType type, TowerLevel level) {
-        Array<TextureAtlas.AtlasRegion> regions = Assets.getInstance().getAtlasRegionArray(type.atlasPath, level.name());
+    public void upgradeTower(int towerId) {
+        TowerComponent tower = mTower.get(towerId);
+        TowerLevel level = null;
+        switch (tower.level) {
+            case MK1:
+                level = TowerLevel.MK2;
+                break;
+            case MK2:
+                level = TowerLevel.MK3;
+                break;
+            case MK3:
+                level = TowerLevel.MK4;
+                break;
+            case MK4:
+                Gdx.app.log("TowerFactory", "Tower is already at max level");
+        }
+        tower.set(tower.type, level);
+        AnimationComponent animation = mAnimation.get(towerId);
+        assert level != null;
+        animation.animations.put(StateComponent.STATE_ATTACKING, getAtkAnim(tower.type, level));
+        animation.animations.put(StateComponent.STATE_IDLE, getIdleAnim(tower.type, level));
+    }
+
+    public Animation<TextureAtlas.AtlasRegion> getAtkAnim(TowerType type, TowerLevel level) {
+        Array<TextureAtlas.AtlasRegion> attack = Assets.getInstance().getAtlasRegionArray(type.atlasPath, level.name());
         float frameDuration = 1 / 30f;
-        return new Animation<>(frameDuration, regions);
+        return new Animation<>(frameDuration, attack);
+    }
+
+    public Animation<TextureAtlas.AtlasRegion> getIdleAnim(TowerType type, TowerLevel level) {
+        Array<TextureAtlas.AtlasRegion> idle =  Assets.getInstance().wrapRegionInArray(Assets.getInstance().getAtlasRegion(type.atlasPath, level.name()));
+        float frameDuration = 1;
+        return new Animation<>(frameDuration, idle);
     }
 }

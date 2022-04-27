@@ -24,11 +24,11 @@ public class FiringSystem extends IteratingSystem {
     public static int PROJECTILE_SPEED = 7;
 
     @Wire
-    ProjectileFactory projectileFactory;
-    ComponentMapper<TowerComponent> mTower;
-    ComponentMapper<StateComponent> mState;
-    ComponentMapper<HasTargetComponent> mTarget;
-    ComponentMapper<PositionComponent> mPosition;
+    private ProjectileFactory projectileFactory;
+    private ComponentMapper<TowerComponent> mTower;
+    private ComponentMapper<StateComponent> mState;
+    private ComponentMapper<HasTargetComponent> mTarget;
+    private ComponentMapper<PositionComponent> mPosition;
 
     private Sound type1;
     private Sound type2;

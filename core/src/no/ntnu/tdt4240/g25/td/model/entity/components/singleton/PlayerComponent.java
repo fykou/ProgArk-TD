@@ -6,15 +6,13 @@ import net.mostlyoriginal.api.Singleton;
 
 @Singleton
 public class PlayerComponent extends Component {
-    public int lives = 20;
-    public int cash = 50;
-
-    public boolean buying = false;
+    public int lives = 10;
+    public int cash = 100;
 
     public void enemyKilledReward() {
-        cash += 10;
+        cash += 5;
     }
     public void waveClearReward() {
-        cash += 50;
+        cash += 25;
     }
 }

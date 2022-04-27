@@ -1,7 +1,6 @@
 package no.ntnu.tdt4240.g25.td.controller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 
@@ -25,24 +24,24 @@ public class GameController extends ScreenAdapter {
     private boolean paused;
     private final GameView view;
 
-    private final InputMultiplexer inputMultiplexer;
-
     public GameController(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
-        this.view = new GameView(game.getBatch(), new ViewCallbackHandler());
-        this.gameWorld = new GameWorld(game.getShapeRenderer(), game.getBatch(), view);
-        inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(view);
-        inputMultiplexer.addProcessor(gameWorld.getInputProcessor());
-        Gdx.input.setInputProcessor(inputMultiplexer);
+        this.view = new GameView(game.getBatch(), new ViewCallback());
+        this.gameWorld = new GameWorld(
+                game.getShapeRenderer(),
+                game.getBatch(),
+                new GameWorldCallback(),
+                view.getTopBarCallback()
+        );
+        Gdx.input.setInputProcessor(view);
     }
 
     @Override
     public void show() {
         // Play game music
         Audio.playMusic(GameMusic.GAME);
-        Gdx.input.setInputProcessor(inputMultiplexer);
+        Gdx.input.setInputProcessor(view);
     }
 
     @Override
@@ -76,6 +75,7 @@ public class GameController extends ScreenAdapter {
     public void hide() {
         super.hide();
         view.hide();
+        Gdx.input.setInputProcessor(null);
         Audio.stopMusic();
     }
 
@@ -83,9 +83,14 @@ public class GameController extends ScreenAdapter {
     public void dispose() {
         super.dispose();
         view.dispose();
+        gameWorld.dispose();
     }
 
-    public class ViewCallbackHandler {
+    public class ViewCallback {
+        public void onWorldClick(int screenX, int screenY) {
+            System.out.println("Clicked at " + screenX + ", " + screenY);
+            gameWorld.clickOnWorld(screenX, screenY);
+        }
         public void onBackPressed() {
             game.setScreen(parent);
         }
@@ -97,6 +102,27 @@ public class GameController extends ScreenAdapter {
         }
         public GameWorld getWorld() {
             return gameWorld;
+        }
+
+        public void onUpgradeButtonClicked() {
+            gameWorld.upgradeSelectedTower();
+        }
+
+        public void onBuy1ButtonClicked() {
+            gameWorld.createTower1();
+        }
+
+        public void onBuy2ButtonClicked() {
+            gameWorld.createTower2();
+        }
+
+        public void onCancelButtonClicked() {
+        }
+    }
+
+    public class GameWorldCallback {
+        public void onGameOver() {
+            game.setScreen(new GameOverController(game, GameController.this, gameWorld.getScore()));
         }
     }
 

@@ -40,6 +40,7 @@ public class UsernameView extends AbstractView {
                     return;
                 }
                 playerName = userInput.getText();
+                userInput.clearSelection();
                 setPlayerName();
             }
         });

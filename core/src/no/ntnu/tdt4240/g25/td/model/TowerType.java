@@ -2,17 +2,18 @@ package no.ntnu.tdt4240.g25.td.model;
 
 public enum TowerType {
 
-    TYPE_1(25,4, 0,
-            6, 12, 18, 24, // damage for level 1, 2, 3, 4
-            1f, 1.5f, 2f, 2f,  // firerate for level 1, 2, 3, 4
+    TYPE_1(25,2, 0,
+            6, 7, 8, 9, // damage for level 1, 2, 3, 4
+            1f, 1.5f, 2f, 2.5f,  // firerate for level 1, 2, 3, 4
             "towers/TYPE_1.atlas"), // path to atlas in assets
-    TYPE_2(35,2, 1, 3, 6, 9, 12,
-            1.33f, 1.5f, 1.8f, 2.1f,
+    TYPE_2(35,2, 1.4f,
+            2, 3, 4, 5,
+            1.33f, 1.33f, 1.66f, 1.66f,
             "towers/TYPE_2.atlas");
 
     public final int baseCost;
     public final int range;
-    public final int splashRadius;
+    public final float splashRadius;
     public final int mk1Damage;
     public final int mk2Damage;
     public final int mk3Damage;
@@ -25,7 +26,7 @@ public enum TowerType {
 
 
     TowerType(
-            int baseCost, int range, int splashRadius, int mk1Damage, int mk2Damage, int mk3Damage, int mk4Damage,
+            int baseCost, int range, float splashRadius, int mk1Damage, int mk2Damage, int mk3Damage, int mk4Damage,
             float mk1FireRate, float mk2FireRate, float mk3FireRate, float mk4FireRate,
             String atlasPath) {
         this.baseCost = baseCost;

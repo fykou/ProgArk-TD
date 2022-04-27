@@ -21,11 +21,11 @@ public class CollisionSystem extends IteratingSystem {
 
     public static int POSITION_CHECK_THRESHOLD = 3;
 
-    ComponentMapper<ProjectileComponent> mProjectile;
-    ComponentMapper<PositionComponent> mPosition;
-    ComponentMapper<BoundsComponent> mBounds;
-    ComponentMapper<DamageComponent> mDamage;
-    EntitySubscription mobSubscription;
+    private ComponentMapper<ProjectileComponent> mProjectile;
+    private ComponentMapper<PositionComponent> mPosition;
+    private ComponentMapper<BoundsComponent> mBounds;
+    private ComponentMapper<DamageComponent> mDamage;
+    private EntitySubscription mobSubscription;
 
     @Override
     protected void initialize() {

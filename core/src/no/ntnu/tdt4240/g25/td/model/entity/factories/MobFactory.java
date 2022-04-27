@@ -16,6 +16,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.RotationComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TextureComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
 
 public class MobFactory extends EntityFactory {
 
@@ -29,8 +30,11 @@ public class MobFactory extends EntityFactory {
     private ComponentMapper<StateComponent> mState;
     private ComponentMapper<PathComponent> mPath;
 
+    private WaveComponent waveComponent;
+
     public void create(float x, float y, MobType type) {
-        float size = type == MobType.TANK ? 1.2f : 0.75f;
+        float healthMultiplier = 1 + (waveComponent.numberOfWaves / 3f);
+        float size = type == MobType.TANK ? 1.2f : 1f;
         IntMap<Animation<TextureAtlas.AtlasRegion>> animationsMap = new IntMap<>();
         animationsMap.put(StateComponent.STATE_IDLE, new Animation<>(1, Assets.getInstance().wrapRegionInArray(Assets.getInstance().getAtlasRegion(type.atlasPath, type.name()))));
         animationsMap.put(StateComponent.STATE_MOVING, new Animation<>(1 / 8f, Assets.getInstance().getAtlasRegionArray(type.atlasPath, type.name())));
@@ -41,7 +45,7 @@ public class MobFactory extends EntityFactory {
         mPath.create(newId).currentCheckpoint = 0;
         mRotation.create(newId);
         mState.create(newId).set(StateComponent.STATE_IDLE, true);
-        mMob.create(newId).set(type, 1f); // get wavemultiplier parameter when we have it
+        mMob.create(newId).set(type, healthMultiplier); // get wavemultiplier parameter when we have it
         mTexture.create(newId).set(null, -90f, size);
         mAnimation.create(newId).animations = animationsMap;
     }
