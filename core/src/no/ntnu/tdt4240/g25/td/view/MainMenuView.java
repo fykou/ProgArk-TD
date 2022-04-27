@@ -14,7 +14,7 @@ import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
-import no.ntnu.tdt4240.g25.td.controller.MenuScreen;
+import no.ntnu.tdt4240.g25.td.controller.MenuController;
 
 public class MainMenuView extends AbstractView implements View {
 
@@ -24,12 +24,12 @@ public class MainMenuView extends AbstractView implements View {
     private final TextButton highScoreButton = new TextButton("Highscores", skin, "big");
     private final TextButton tutorialButton = new TextButton("Tutorial", skin, "big");
     private final TextButton quitButton = new TextButton("Quit", skin, "big");
-    private final Table table = new Table();
+    private final Table table = new Table(skin);
 
-    private final MenuScreen.ViewCallbackHandler viewCallback;
+    private final MenuController.ViewCallbackHandler viewCallback;
 
 
-    public MainMenuView(SpriteBatch batch, MenuScreen.ViewCallbackHandler viewCallback) {
+    public MainMenuView(SpriteBatch batch, MenuController.ViewCallbackHandler viewCallback) {
         super(viewport, batch);
         Gdx.input.setInputProcessor(this);
         this.viewCallback = viewCallback;
@@ -109,7 +109,8 @@ public class MainMenuView extends AbstractView implements View {
 
     @Override
     public void pause() {
-        Audio.playMusic(GameMusic.MENU);
+        Audio.stopMusic();
+
     }
 
     @Override

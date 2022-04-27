@@ -17,7 +17,7 @@ import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
-import no.ntnu.tdt4240.g25.td.controller.HighscoreScreen;
+import no.ntnu.tdt4240.g25.td.controller.HighscoreController;
 
 public class HighscoreView extends AbstractView implements View {
 
@@ -25,9 +25,9 @@ public class HighscoreView extends AbstractView implements View {
     private final TextButton backButton = new TextButton("Back to Menu", skin, "big");
     private final Table table = new Table();
 
-    private final HighscoreScreen.ViewCallbackHandler viewCallback;
+    private final HighscoreController.ViewCallbackHandler viewCallback;
 
-    public HighscoreView(SpriteBatch batch, HighscoreScreen.ViewCallbackHandler viewCallback) {
+    public HighscoreView(SpriteBatch batch, HighscoreController.ViewCallbackHandler viewCallback) {
         super(viewport, batch);
         Gdx.input.setInputProcessor(this);
         this.viewCallback = viewCallback;
