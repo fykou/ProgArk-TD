@@ -122,22 +122,33 @@ public class GameView extends AbstractView {
         Table pauseTable = new Table(skin);
         pauseTable.setFillParent(true);
 
+        TextButton settingsButton = new TextButton("Settings", skin);
         TextButton resume = new TextButton("Resume", skin);
         TextButton quit = new TextButton("Quit", skin);
+        settingsButton.getLabel().setFontScale(1.5f);
+        resume.getLabel().setFontScale(1.5f);
+        quit.getLabel().setFontScale(1.5f);
+
+        pauseTable.add(resume).size(buttonWidth, buttonHeight).pad(10).padTop(25).align(Align.center);
         pauseTable.add().row();
         pauseTable.add().row();
-        pauseTable.add(resume).size(buttonWidth, buttonHeight).pad(10).align(Align.center);
+        pauseTable.add(settingsButton).size(buttonWidth, buttonHeight).pad(10);
         pauseTable.row();
         pauseTable.add(quit).size(buttonWidth, buttonHeight).pad(10).align(Align.center);
         pauseWindow.addActor(pauseTable);
         pauseWindow.pack();
-
-        pauseWindow.setSize(TdGame.UI_WIDTH / 2f, TdGame.UI_HEIGHT / 4f);
+        pauseWindow.setSize(TdGame.UI_WIDTH / 2f, TdGame.UI_HEIGHT / 3f);
         pauseWindow.setPosition(TdGame.UI_WIDTH / 4f, TdGame.UI_HEIGHT / 4f);
         pauseWindow.setMovable(false);
         pauseWindow.setModal(true);
         pauseWindow.setVisible(false);
         pauseWindow.setTouchable(Touchable.enabled);
+        settingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                viewCallback.onSettings();
+            }
+        });
 
         resume.addListener(new ClickListener() {
             @Override
@@ -146,6 +157,7 @@ public class GameView extends AbstractView {
                 viewCallback.onResume();
             }
         });
+
         quit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -154,6 +166,8 @@ public class GameView extends AbstractView {
             }
         });
         this.addActor(pauseWindow);
+
+        // now add the pause button to the world view
         TextButton pause = new TextButton("Pause", skin);
         pause.getLabel().setFontScale(1.5f);
         pause.setSize(buttonWidth, buttonHeight);
