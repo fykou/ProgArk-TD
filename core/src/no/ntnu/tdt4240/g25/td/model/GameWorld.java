@@ -10,12 +10,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import net.mostlyoriginal.api.SingletonPlugin;
 
 import no.ntnu.tdt4240.g25.td.TdGame;
+import no.ntnu.tdt4240.g25.td.controller.GameController;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AimingSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.BuyUpgradeManager;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.ViewHandler;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.EventHandler;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.WaveSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MapManager;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.AnimationSystem;
@@ -43,13 +44,23 @@ public class GameWorld {
     private ProjectileFactory projectileFactory;
     World world;
 
+    private final GameController.GameWorldCallback controller;
+    private final GameView.GameViewCallback view;
 
-    public GameWorld(ShapeRenderer renderer, SpriteBatch batch, GameView.GameViewCallback view) {
+    public GameWorld(
+            ShapeRenderer renderer,
+            SpriteBatch batch,
+            GameController.GameWorldCallback controller,
+            GameView.GameViewCallback view
+    ) {
+        this.controller = controller;
+        this.view = view;
+
         createFactories();
-        createWorld(batch, renderer, view);
+        createWorld(batch, renderer);
     }
 
-    protected void createWorld(SpriteBatch batch, ShapeRenderer renderer, GameView.GameViewCallback view) {
+    protected void createWorld(SpriteBatch batch, ShapeRenderer renderer) {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .dependsOn(
                         EntityLinkManager.class,
@@ -57,7 +68,7 @@ public class GameWorld {
                 .with(
                         // Managers who need to initialize Singleton Components etc.
                         new MapManager(),
-                        new ViewHandler(),
+                        new EventHandler(),
                         new BuyUpgradeManager(),
 
                         // Game systems
@@ -90,6 +101,7 @@ public class GameWorld {
                         projectileFactory
                 )
                 .build()
+                .register(controller)
                 .register(view)
                 .register(batch)
                 .register(renderer);
@@ -109,20 +121,26 @@ public class GameWorld {
         world.process();
     }
 
+    public void dispose() {
+        world.dispose();
+    }
+
     public void resize(int width, int height) {
         world.getSystem(MyCameraSystem.class).updateViewports(width, height);
     }
-    public void clickOnWorld(int screenX, int screenY) {
-        world.getSystem(ViewHandler.class).receiveClick(screenX, screenY);
-    }
 
+    public void clickOnWorld(int screenX, int screenY) {
+        world.getSystem(EventHandler.class).receiveClick(screenX, screenY);
+    }
     // There's probably a better way to do this with enums, but I'm not sure how to do it
     public void createTower1() {
         world.getSystem(BuyUpgradeManager.class).buyTower1();
     }
+
     public void createTower2() {
         world.getSystem(BuyUpgradeManager.class).buyTower2();
     }
+
     public void upgradeSelectedTower() {
         world.getSystem(BuyUpgradeManager.class).upgradeTower();
     }
