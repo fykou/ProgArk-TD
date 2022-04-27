@@ -4,7 +4,6 @@ import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.link.EntityLinkManager;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -15,9 +14,9 @@ import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.ProjectileFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.AimingSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.InputSystem;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.BuyUpgradeManager;
+import no.ntnu.tdt4240.g25.td.model.entity.systems.ViewHandler;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.WaveSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.debug.DebugRenderSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MapManager;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.AnimationSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.BoundsSystem;
@@ -32,7 +31,6 @@ import no.ntnu.tdt4240.g25.td.model.entity.systems.MovementSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.PathingSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.MyCameraSystem;
 import no.ntnu.tdt4240.g25.td.model.entity.systems.render.RenderSystem;
-import no.ntnu.tdt4240.g25.td.model.entity.systems.render.WidgetRenderSystem;
 import no.ntnu.tdt4240.g25.td.view.GameView;
 
 public class GameWorld {
@@ -46,12 +44,12 @@ public class GameWorld {
     World world;
 
 
-    public GameWorld(ShapeRenderer renderer, SpriteBatch batch, GameView view) {
+    public GameWorld(ShapeRenderer renderer, SpriteBatch batch, GameView.GameViewCallback view) {
         createFactories();
         createWorld(batch, renderer, view);
     }
 
-    protected void createWorld(SpriteBatch batch, ShapeRenderer renderer, GameView view) {
+    protected void createWorld(SpriteBatch batch, ShapeRenderer renderer, GameView.GameViewCallback view) {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .dependsOn(
                         EntityLinkManager.class,
@@ -59,8 +57,8 @@ public class GameWorld {
                 .with(
                         // Managers who need to initialize Singleton Components etc.
                         new MapManager(),
-                        new InputSystem(),
-
+                        new ViewHandler(),
+                        new BuyUpgradeManager(),
 
                         // Game systems
                         new WaveSystem(),
@@ -83,8 +81,8 @@ public class GameWorld {
                         new MapRenderSystem(),
                         new RenderSystem(),
                         new HealthRenderSystem(),
-                        new WidgetRenderSystem(),
-                        new DebugRenderSystem(),
+                        //new WidgetRenderSystem(),
+                        //new DebugRenderSystem(),
 
                         // Factories
                         towerFactory,
@@ -114,11 +112,18 @@ public class GameWorld {
     public void resize(int width, int height) {
         world.getSystem(MyCameraSystem.class).updateViewports(width, height);
     }
-
-    public InputProcessor getInputProcessor() {
-        return world.getSystem(InputSystem.class);
+    public void clickOnWorld(int screenX, int screenY) {
+        world.getSystem(ViewHandler.class).receiveClick(screenX, screenY);
     }
-    public TowerFactory getTowerFactory() {
-        return towerFactory;
+
+    // There's probably a better way to do this with enums, but I'm not sure how to do it
+    public void createTower1() {
+        world.getSystem(BuyUpgradeManager.class).buyTower1();
+    }
+    public void createTower2() {
+        world.getSystem(BuyUpgradeManager.class).buyTower2();
+    }
+    public void upgradeSelectedTower() {
+        world.getSystem(BuyUpgradeManager.class).upgradeTower();
     }
 }

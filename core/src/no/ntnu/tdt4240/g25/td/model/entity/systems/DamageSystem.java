@@ -13,10 +13,13 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PathComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
 
 @All({DamageComponent.class, MobComponent.class, StateComponent.class})
 @Exclude({ExpireComponent.class})
 public class DamageSystem extends IteratingSystem {
+
+    PlayerComponent player;
 
     ComponentMapper<DamageComponent> mDamage;
     ComponentMapper<MobComponent> mMob;
@@ -32,6 +35,7 @@ public class DamageSystem extends IteratingSystem {
         StateComponent state = mState.get(entityId);
         mob.health -= damage.damage;
         if(mob.health <= 0) {
+            player.enemyKilledReward();
             Audio.playFx(SoundFx.EXPLODE);
             mPath.remove(entityId);
             mVelocity.remove(entityId);

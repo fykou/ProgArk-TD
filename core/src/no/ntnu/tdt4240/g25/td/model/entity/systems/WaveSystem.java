@@ -9,12 +9,14 @@ import com.badlogic.gdx.math.MathUtils;
 import no.ntnu.tdt4240.g25.td.model.MobType;
 import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.MapComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.MobFactory;
 
 public class WaveSystem extends BaseSystem {
 
+    private PlayerComponent player;
     private WaveComponent wc;
     private MapComponent wpc;
     private EntitySubscription aliveMobs;
@@ -42,6 +44,7 @@ public class WaveSystem extends BaseSystem {
                 wc.active = false;
                 wc.time = 0;
                 wc.numberOfWaves++;
+                player.waveClearReward();
                 return;
             }
 
