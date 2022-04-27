@@ -6,8 +6,11 @@ import com.artemis.ComponentMapper;
 import com.artemis.EntitySubscription;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.IntBag;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 
 import no.ntnu.tdt4240.g25.td.asset.Assets;
@@ -21,6 +24,8 @@ public class MapRenderSystem extends BaseSystem {
 
     @Wire
     private SpriteBatch batch;
+    @Wire
+    private ShapeRenderer renderer;
 
     private MapComponent mapComponent;
     private MyCameraSystem cameraSystem;
@@ -49,5 +54,11 @@ public class MapRenderSystem extends BaseSystem {
             batch.draw(towerBase, position.get().x, position.get().y);
         }
         batch.end();
+        renderer.setProjectionMatrix(cameraSystem.camera.combined);
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.GREEN);
+        Gdx.gl.glLineWidth(2);
+        renderer.rect(mapComponent.selectedTile.x, mapComponent.selectedTile.y, 1, 1);
+        renderer.end();
     }
 }

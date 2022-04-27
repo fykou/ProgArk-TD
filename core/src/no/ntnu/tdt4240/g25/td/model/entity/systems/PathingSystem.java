@@ -13,17 +13,21 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.PathComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.MapComponent;
+import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
 
 @All({VelocityComponent.class, PositionComponent.class, MobComponent.class, PathComponent.class})
 @Exclude({ExpireComponent.class})
 public class PathingSystem extends IteratingSystem {
-    ComponentMapper<PositionComponent> mPosition;
-    ComponentMapper<VelocityComponent> mVelocity;
-    ComponentMapper<PathComponent> mPath;
-    ComponentMapper<MobComponent> mMob;
-    ComponentMapper<ExpireComponent> mExpire;
 
-    MapComponent waypoints;
+    private PlayerComponent player;
+
+    private ComponentMapper<PositionComponent> mPosition;
+    private ComponentMapper<VelocityComponent> mVelocity;
+    private ComponentMapper<PathComponent> mPath;
+    private ComponentMapper<MobComponent> mMob;
+    private ComponentMapper<ExpireComponent> mExpire;
+
+    private MapComponent waypoints;
 
     @Override
     protected void process(int entityId) {
@@ -52,9 +56,8 @@ public class PathingSystem extends IteratingSystem {
         if (path.currentCheckpoint >= waypoints.path.size - 1) {
             ExpireComponent expire = mExpire.create(entityId);
             expire.timeLeft = 0;
-            // TODO: subtract life
+            player.lives--;
         }
-
         Vector2 nextCheckpoint = waypoints.path.get(path.currentCheckpoint).cpy();
         Vector2 direction = nextCheckpoint.sub(position.get());
 

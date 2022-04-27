@@ -1,14 +1,16 @@
 package no.ntnu.tdt4240.g25.td.view;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.Locale;
@@ -24,13 +26,19 @@ public class GameView extends AbstractView {
 
     private final Skin skin = Assets.getInstance().getSkin();
     private final GameController.ViewCallbackHandler viewCallback;
-    private final Table upgradeTable = new Table(skin);
-    private final Table buyTable1 = new Table(skin);
-    private final Table buyTable2 = new Table(skin);
-    private final Table mainTable = new Table(skin);
+
+    // UI elements
+    private final TextButton upgradeButton = new TextButton("Upgrade", skin);
+    private final TextButton buy1Button = new TextButton("Buy", skin, "emphasis");
+    private final TextButton buy2Button = new TextButton("Buy", skin, "emphasis");
+    private final Window newTowerWindow = new Window("", skin);
+    private final Window upgradeWindow = new Window("Upgrade tower", skin);
+
+    private final Label upgradeCostLabel = new Label("", skin);
+
     private final Image type1Image = new Image(Assets.getInstance().getAtlasRegion(TowerType.TYPE_1.atlasPath, TowerLevel.MK1.name()));
     private final Image type2Image = new Image(Assets.getInstance().getAtlasRegion(TowerType.TYPE_2.atlasPath, TowerLevel.MK1.name()));
-    private boolean openModal = false;
+    private final Image upgradeImage = new Image(Assets.getInstance().getAtlasRegion(TowerType.TYPE_1.atlasPath, TowerLevel.MK1.name()));
 
     // Top bar game stats
     // Use buttons bcs background color
@@ -45,8 +53,31 @@ public class GameView extends AbstractView {
     public GameView(SpriteBatch batch, GameController.ViewCallbackHandler viewCallback) {
         super(viewport, batch);
         this.viewCallback = viewCallback;
-        buildBuyDialogue();
+        setDebugAll(true);
         buildTopBar();
+        buildBuyDialogue();
+        buildUpgradeDialogue();
+
+    }
+
+    /**
+     * Override the corresponding method in AbstractView -> Stage in order to
+     * capture clicks not handled by the ui, and pass them to the controller
+     * so the game world can be updated accordingly.
+     * @param screenX x coordinate of the click
+     * @param screenY y coordinate of the click
+     * @param pointer the pointer that was used to click
+     * @param button the button that was used to click
+     * @return true if the click was handled by the ui, false otherwise
+     */
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        boolean handled = super.touchUp(screenX, screenY, pointer, button);
+        if (!handled) {
+            viewCallback.onWorldClick(screenX, screenY);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -73,6 +104,9 @@ public class GameView extends AbstractView {
 
     }
 
+    /**
+     * Builds the top bar with game stats
+     */
     private void buildTopBar() {
         Table topBar = new Table(skin);
         topBar.setFillParent(true);
@@ -83,6 +117,11 @@ public class GameView extends AbstractView {
         waveScore.getLabel().setText("");
         waveTimer.getLabel().setText("");
 
+        numLivesLeft.setTouchable(Touchable.disabled);
+        numCashTotal.setTouchable(Touchable.disabled);
+        waveScore.setTouchable(Touchable.disabled);
+        waveTimer.setTouchable(Touchable.disabled);
+
         numCashTotal.getLabel().setFontScale(1.5f);
         numLivesLeft.getLabel().setFontScale(1.5f);
         waveScore.getLabel().setFontScale(1.5f);
@@ -92,81 +131,139 @@ public class GameView extends AbstractView {
         topBar.add(waveTimer).align(Align.center).pad(10);
         topBar.add(numCashTotal).align(Align.center).pad(10);
         topBar.add(numLivesLeft).align(Align.center).pad(10);
-        topBar.setTouchable(Touchable.disabled);
         this.addActor(topBar);
     }
 
+
+    /**
+     * Builds the buy dialogue, should only be called once
+     */
     private void buildBuyDialogue() {
 
-        final TextButton upgradeButton = new TextButton("Upgrade", skin);
-        final TextButton buy1Button = new TextButton("Buy", skin);
-        final TextButton buy2Button = new TextButton("Buy", skin);
-        final TextButton cancelButton = new TextButton("Cancel", skin);
+        final TextButton cancelButton = new TextButton("Cancel", skin, "emphasis");
 
-        upgradeTable.setFillParent(true);
-        upgradeTable.align(Align.top);
-        upgradeTable.setTouchable(Touchable.disabled);
+        final Table buyTable1 = new Table(skin);
+        final Table buyTable2 = new Table(skin);
+        final Table mainTable = new Table(skin);
 
-        buyTable1.setFillParent(true);
-        buyTable1.align(Align.top);
-        buyTable1.setTouchable(Touchable.disabled);
+        int buttonWidth = 250;
+        int buttonHeight = 90;
+        buy1Button.getLabel().setFontScale(1.5f);
+        buy2Button.getLabel().setFontScale(1.5f);
 
-        buyTable2.setFillParent(true);
-        buyTable2.align(Align.top);
-        buyTable2.setTouchable(Touchable.disabled);
+        buyTable1.add(new Label("Single target", skin)).align(Align.center).pad(10);
+        buyTable1.row();
+        buyTable1.add(type1Image).size(200, 200).align(Align.center).pad(10);
+        buyTable1.row();
+        buyTable1.add(new Label("Cost: " + TowerType.TYPE_1.baseCost, skin)).size(buttonWidth, buttonHeight).align(Align.center).pad(10);
+        buyTable1.row();
+        buyTable1.add(buy1Button).size(250, 90).align(Align.center).pad(10);
+        buyTable1.row();
 
-        mainTable.setFillParent(true);
-        mainTable.align(Align.top);
-        mainTable.setTouchable(Touchable.disabled);
 
-        upgradeButton.addListener(new ClickListener() {
+        buyTable2.add(new Label("AoE", skin)).align(Align.center).pad(10);
+        buyTable2.row();
+        buyTable2.add(type2Image).size(200, 200).align(Align.center).pad(10);
+        buyTable2.row();
+        buyTable2.add(new Label("Cost: " + TowerType.TYPE_2.baseCost, skin)).size(buttonWidth, buttonHeight).align(Align.center).pad(10);
+        buyTable2.row();
+        buyTable2.add(buy2Button).size(buttonWidth, 90).align(Align.center).pad(10);
+        buyTable2.row();
+
+        mainTable.add(buyTable1).align(Align.center).pad(10);
+        mainTable.add(buyTable2).align(Align.center).pad(10);
+        mainTable.row();
+        mainTable.add(cancelButton).size(buttonWidth, buttonHeight).colspan(2).align(Align.center).pad(10);
+
+        upgradeButton.addListener(new ChangeListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void changed(ChangeEvent event, Actor actor) {
                 viewCallback.onUpgradeButtonClicked();
             }
         });
 
-        buy1Button.addListener(new ClickListener() {
+        buy1Button.addListener(new ChangeListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void changed(ChangeEvent event, Actor actor) {
                 viewCallback.onBuy1ButtonClicked();
+                newTowerWindow.setVisible(false);
             }
         });
 
-        buy2Button.addListener(new ClickListener() {
+        buy2Button.addListener(new ChangeListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void changed(ChangeEvent event, Actor actor) {
                 viewCallback.onBuy2ButtonClicked();
+                newTowerWindow.setVisible(false);
             }
         });
 
-        cancelButton.addListener(new ClickListener() {
+        cancelButton.addListener(new ChangeListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                viewCallback.onCancelButtonClicked();
+            public void changed(ChangeEvent event, Actor actor) {
+                newTowerWindow.setVisible(false);
+            }
+        });
+        newTowerWindow.add(mainTable).align(Align.center);
+        newTowerWindow.pack();
+        newTowerWindow.setMovable(false);
+        newTowerWindow.setModal(true);
+        // center the window
+        newTowerWindow.setPosition(GameView.viewport.getWorldWidth() / 2 - newTowerWindow.getWidth() / 2,
+                GameView.viewport.getWorldHeight() / 2 - newTowerWindow.getHeight() / 2);
+        newTowerWindow.setVisible(false);
+        this.addActor(newTowerWindow);
+    }
+
+    /**
+     * Creates the upgrade window, should be called only once.
+     */
+    private void buildUpgradeDialogue() {
+        final Table upgradeTable = new Table();
+        final TextButton cancelButton = new TextButton("Cancel", skin);
+
+        int buttonWidth = 250;
+        int buttonHeight = 90;
+
+        upgradeCostLabel.setFontScale(1.5f);
+
+        upgradeTable.add(upgradeImage).size(200, 200).align(Align.center).pad(10);
+        upgradeTable.row();
+        upgradeTable.add(upgradeCostLabel).align(Align.center).pad(10);
+        upgradeTable.row();
+        upgradeTable.add(upgradeButton).size(buttonWidth, buttonHeight).align(Align.center).pad(10);
+        upgradeTable.row();
+        upgradeTable.add(cancelButton).size(buttonWidth, buttonHeight).align(Align.center).pad(10);
+
+        upgradeButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                viewCallback.onUpgradeButtonClicked();
+                upgradeWindow.setVisible(false);
             }
         });
 
-        upgradeTable.add(upgradeButton).align(Align.center).pad(10);
-        upgradeTable.row();
-        upgradeTable.add(cancelButton).align(Align.center).pad(10);
+        cancelButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                upgradeWindow.setVisible(false);
+            }
+        });
 
-        buyTable1.add(buy1Button).align(Align.center).pad(10);
-        buyTable1.row();
-        buyTable1.add(cancelButton).align(Align.center).pad(10);
-
-        buyTable2.add(buy2Button).align(Align.center).pad(10);
-        mainTable.add(buyTable1).align(Align.center).pad(10);
-        mainTable.row();
-        mainTable.add(buyTable2).align(Align.center).pad(10);
-        mainTable.row();
-        mainTable.add(upgradeTable).align(Align.center).pad(10);
-
-        this.addActor(mainTable);
+        upgradeTable.setFillParent(true);
+        upgradeWindow.setMovable(false);
+        upgradeWindow.setModal(true);
+        upgradeWindow.add(upgradeTable).align(Align.center);
+        upgradeWindow.pack();
+        // center the window
+        upgradeWindow.setPosition(GameView.viewport.getWorldWidth() / 2 - newTowerWindow.getWidth() / 2,
+                GameView.viewport.getWorldHeight() / 2 - newTowerWindow.getHeight() / 2);
+        upgradeWindow.setVisible(false);
+        this.addActor(upgradeWindow);
     }
 
 
-    public class TopBarCallback {
+    public class GameViewCallback {
         public void setCash(int cash) {
             numCashTotal.getLabel().setText("Cash\n" + cash);
         }
@@ -179,16 +276,30 @@ public class GameView extends AbstractView {
         public void setWaveTime(float time, boolean active) {
             String text;
             if (active) {
-                text = String.format(Locale.ENGLISH,"   Wave:   \n%.1f", time);
-            }
-            else {
-                text = String.format(Locale.ENGLISH,"Next wave:\n%.1f", time);
+                text = String.format(Locale.ENGLISH, "   Wave:   \n%.1f", time);
+            } else {
+                text = String.format(Locale.ENGLISH, "Next wave:\n%.1f", time);
             }
             waveTimer.getLabel().setText(text);
         }
+        public void toggleUpgradeWindow(int cash, TowerType type, TowerLevel level) {
+            TowerLevel nextLevel = level.nextLevel();
+            if (nextLevel == null) {
+                return;
+            }
+            upgradeImage.setDrawable(new TextureRegionDrawable(Assets.getInstance().getAtlasRegion(type.atlasPath, nextLevel.name())));
+            upgradeWindow.setVisible(!upgradeWindow.isVisible());
+            upgradeCostLabel.setText("Cost: " + type.baseCost * level.level);
+            upgradeButton.setDisabled(type.baseCost * level.level > cash);
+        }
+        public void toggleNewTowerWindow(int cash) {
+            newTowerWindow.setVisible(!newTowerWindow.isVisible());
+            buy1Button.setDisabled(cash < TowerType.TYPE_1.baseCost);
+            buy2Button.setDisabled(cash < TowerType.TYPE_2.baseCost);
+        }
     }
 
-    public TopBarCallback getTopBarCallback() {
-        return new TopBarCallback();
+    public GameViewCallback getTopBarCallback() {
+        return new GameViewCallback();
     }
 }
