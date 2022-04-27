@@ -10,7 +10,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 @All({ExpireComponent.class})
 public class ExpireSystem extends IteratingSystem {
 
-    ComponentMapper<ExpireComponent> mExpire;
+    private ComponentMapper<ExpireComponent> mExpire;
 
     @Override
     protected void process(int entityId) {

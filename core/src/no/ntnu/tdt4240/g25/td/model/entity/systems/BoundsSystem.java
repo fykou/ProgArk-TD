@@ -10,8 +10,8 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 @All({BoundsComponent.class, PositionComponent.class})
 public class BoundsSystem extends IteratingSystem {
 
-    ComponentMapper<BoundsComponent> mBounds;
-    ComponentMapper<PositionComponent> mPosition;
+    private ComponentMapper<BoundsComponent> mBounds;
+    private ComponentMapper<PositionComponent> mPosition;
 
     @Override
     protected void process(int entityId) {
