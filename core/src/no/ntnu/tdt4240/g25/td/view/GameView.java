@@ -25,7 +25,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
 public class GameView extends AbstractView {
 
     private final Skin skin = Assets.getInstance().getSkin();
-    private final GameController.ViewCallbackHandler viewCallback;
+    private final GameController.ViewCallback viewCallback;
 
     // UI elements
     private final TextButton upgradeButton = new TextButton("Upgrade", skin);
@@ -50,7 +50,7 @@ public class GameView extends AbstractView {
     private WaveComponent wave;
     private PlayerComponent player;
 
-    public GameView(SpriteBatch batch, GameController.ViewCallbackHandler viewCallback) {
+    public GameView(SpriteBatch batch, GameController.ViewCallback viewCallback) {
         super(viewport, batch);
         this.viewCallback = viewCallback;
         setDebugAll(true);
@@ -150,6 +150,7 @@ public class GameView extends AbstractView {
         int buttonHeight = 90;
         buy1Button.getLabel().setFontScale(1.5f);
         buy2Button.getLabel().setFontScale(1.5f);
+        cancelButton.getLabel().setFontScale(1.5f);
 
         buyTable1.add(new Label("Single target", skin)).align(Align.center).pad(10);
         buyTable1.row();
@@ -226,6 +227,7 @@ public class GameView extends AbstractView {
         int buttonHeight = 90;
 
         upgradeCostLabel.setFontScale(1.5f);
+        cancelButton.getLabel().setFontScale(1.5f);
 
         upgradeTable.add(upgradeImage).size(200, 200).align(Align.center).pad(10);
         upgradeTable.row();
