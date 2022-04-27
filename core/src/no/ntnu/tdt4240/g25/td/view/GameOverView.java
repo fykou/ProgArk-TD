@@ -32,7 +32,7 @@ public class GameOverView extends AbstractView {
         buildTable();
     }
 
-    public void buildTable() {
+    private void buildTable() {
 
         String message = String.format(Locale.ENGLISH, "You survived %d waves!", controller.getScore());
 

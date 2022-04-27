@@ -31,7 +31,7 @@ public class TutorialView extends AbstractView {
         buildTable();
     }
 
-    public void buildTable() {
+    private void buildTable() {
         Table table = new Table();
         table.setFillParent(true);
         table.align(Align.center).add().row();

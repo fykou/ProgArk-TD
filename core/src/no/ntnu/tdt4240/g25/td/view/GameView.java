@@ -116,7 +116,7 @@ public class GameView extends AbstractView {
         this.addActor(topBar);
     }
 
-    public void buildPauseWindow() {
+    private void buildPauseWindow() {
         int buttonWidth = 250;
         int buttonHeight = 90;
         Table pauseTable = new Table(skin);

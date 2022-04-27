@@ -47,13 +47,13 @@ public class UsernameView extends AbstractView {
         buildTable();
     }
 
-    public void setPlayerName() {
+    private void setPlayerName() {
         Audio.playFx(SoundFx.TOUCH);
         viewCallback.setPlayerNameOnFirebaseObject(playerName);
         viewCallback.toMenu();
     }
 
-    public void buildTable() {
+    private void buildTable() {
         Label title = new Label("Enter username", skin, "default");
 
         table.setFillParent(true);
@@ -70,7 +70,7 @@ public class UsernameView extends AbstractView {
         errorLabel.setFontScale(2);
         getRoot().addActor(table);
     }
-    public void showError(String error) {
+    private void showError(String error) {
         errorLabel.setText(error);
         errorLabel.setVisible(true);
     }
