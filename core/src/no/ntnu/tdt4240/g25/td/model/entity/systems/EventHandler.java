@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import no.ntnu.tdt4240.g25.td.controller.GameController;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.BuyUpgradeComponent;
@@ -20,7 +21,7 @@ import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
 import no.ntnu.tdt4240.g25.td.model.map.MapTileType;
 import no.ntnu.tdt4240.g25.td.view.GameView;
 
-public class ViewHandler extends BaseSystem {
+public class EventHandler extends BaseSystem {
 
     private Vector3 lastClick;
     private MapComponent map;
@@ -34,10 +35,10 @@ public class ViewHandler extends BaseSystem {
     private EntitySubscription towerSubscription;
     private TowerFactory towerFactory;
 
-
-
     @Wire
     private GameView.GameViewCallback view;
+    @Wire
+    private GameController.GameWorldCallback controller;
 
     @Override
     protected void initialize() {
@@ -51,6 +52,9 @@ public class ViewHandler extends BaseSystem {
         view.setLives(player.lives);
         view.setWave(wave.numberOfWaves);
         view.setWaveTime(wave.active ? wave.time : WaveComponent.PAUSE_DURATION - wave.time, wave.active);
+        if (player.lives <= 0) {
+            controller.onGameOver();
+        }
     }
 
     public void receiveClick(int screenX, int screenY) {

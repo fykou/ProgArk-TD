@@ -1,7 +1,6 @@
 package no.ntnu.tdt4240.g25.td.controller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 
@@ -9,8 +8,6 @@ import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
-import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
-import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.WaveComponent;
 import no.ntnu.tdt4240.g25.td.view.GameView;
 
 /**
@@ -30,8 +27,13 @@ public class GameController extends ScreenAdapter {
     public GameController(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
-        this.view = new GameView(game.getBatch(), new ViewCallbackHandler());
-        this.gameWorld = new GameWorld(game.getShapeRenderer(), game.getBatch(), view.getTopBarCallback());
+        this.view = new GameView(game.getBatch(), new ViewCallback());
+        this.gameWorld = new GameWorld(
+                game.getShapeRenderer(),
+                game.getBatch(),
+                new GameWorldCallback(),
+                view.getTopBarCallback()
+        );
         Gdx.input.setInputProcessor(view);
     }
 
@@ -73,6 +75,7 @@ public class GameController extends ScreenAdapter {
     public void hide() {
         super.hide();
         view.hide();
+        Gdx.input.setInputProcessor(null);
         Audio.stopMusic();
     }
 
@@ -80,9 +83,10 @@ public class GameController extends ScreenAdapter {
     public void dispose() {
         super.dispose();
         view.dispose();
+        gameWorld.dispose();
     }
 
-    public class ViewCallbackHandler {
+    public class ViewCallback {
         public void onWorldClick(int screenX, int screenY) {
             System.out.println("Clicked at " + screenX + ", " + screenY);
             gameWorld.clickOnWorld(screenX, screenY);
@@ -113,6 +117,12 @@ public class GameController extends ScreenAdapter {
         }
 
         public void onCancelButtonClicked() {
+        }
+    }
+
+    public class GameWorldCallback {
+        public void onGameOver() {
+            game.setScreen(new GameOverController(game, parent));
         }
     }
 
