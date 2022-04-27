@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Scaling;
 
 import java.util.Locale;
 
@@ -41,15 +42,31 @@ public class SettingsView extends AbstractView implements View {
 
     private void buildTable() {
         Label title = new Label("Settings", skin, "title");
-
+        title.setFontScale(1.8f);
         table.setFillParent(true);
         table.add(title).padBottom(50).colspan(3).row();
-        table.add(musicToggle).pad(10).colspan(3).row();
-        table.add(SFXToggle).pad(10).colspan(3).row();
-        table.add(volumeDown).padBottom(10).padTop(10);
+
+        musicToggle.getImage().setScaling(Scaling.fill);
+        musicToggle.getImageCell().size(50);
+        musicToggle.getLabelCell().padLeft(60);
+        musicToggle.getLabel().setFontScale(2);
+        musicToggle.padBottom(20);
+        table.add(musicToggle).width(100).colspan(3).row();
+
+        SFXToggle.getImage().setScaling(Scaling.fill);
+        SFXToggle.getImageCell().size(50);
+        SFXToggle.getLabelCell().padLeft(60);
+        SFXToggle.getLabel().setFontScale(2);
+        SFXToggle.padBottom(20);
+        table.add(SFXToggle).width(100).colspan(3).row();
+
+        table.add(volumeDown).size(60, 50).padBottom(10).padTop(10);
+        volumeValue.setFontScale(1.5f);
         table.add(volumeValue).width(30).pad(10);
-        table.add(volumeUp).padBottom(10).padTop(10).row();
-        table.add(backButton).pad(10).colspan(3).row();
+        table.add(volumeUp).size(60, 50).padBottom(10).padTop(10).row();
+
+        backButton.getLabel().setFontScale(2);
+        table.add(backButton).size(350, 90).pad(10).colspan(3).row();
 
         getRoot().addActor(table);
     }
