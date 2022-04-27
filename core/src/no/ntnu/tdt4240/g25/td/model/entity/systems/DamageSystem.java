@@ -19,14 +19,14 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
 @Exclude({ExpireComponent.class})
 public class DamageSystem extends IteratingSystem {
 
-    PlayerComponent player;
+    private PlayerComponent player;
 
-    ComponentMapper<DamageComponent> mDamage;
-    ComponentMapper<MobComponent> mMob;
-    ComponentMapper<StateComponent> mState;
-    ComponentMapper<ExpireComponent> mExpire;
-    ComponentMapper<PathComponent> mPath;
-    ComponentMapper<VelocityComponent> mVelocity;
+    private ComponentMapper<DamageComponent> mDamage;
+    private ComponentMapper<MobComponent> mMob;
+    private ComponentMapper<StateComponent> mState;
+    private ComponentMapper<ExpireComponent> mExpire;
+    private ComponentMapper<PathComponent> mPath;
+    private ComponentMapper<VelocityComponent> mVelocity;
 
     @Override
     protected void process(int entityId) {
