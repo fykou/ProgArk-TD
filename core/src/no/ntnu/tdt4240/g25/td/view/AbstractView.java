@@ -12,6 +12,6 @@ public abstract class AbstractView extends Stage implements View {
     public static final Viewport viewport = new FitViewport(TdGame.UI_WIDTH, TdGame.UI_HEIGHT, new OrthographicCamera());
 
     public AbstractView(Viewport fitViewport, SpriteBatch batch) {
-        super(viewport, batch);
+        super(fitViewport, batch);
     }
 }
