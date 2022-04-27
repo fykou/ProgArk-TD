@@ -10,7 +10,7 @@ import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 import no.ntnu.tdt4240.g25.td.view.SettingsView;
 
-public class SettingsScreen extends ScreenAdapter {
+public class SettingsController extends ScreenAdapter {
 
     private final TdGame game;
     private final Screen parent;
@@ -20,7 +20,7 @@ public class SettingsScreen extends ScreenAdapter {
 
     private final SettingsView view;
 
-    public SettingsScreen(TdGame game, Screen parent) {
+    public SettingsController(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.view = new SettingsView(game.getBatch(), new ViewCallbackHandler());
@@ -31,8 +31,7 @@ public class SettingsScreen extends ScreenAdapter {
 
         public void toggleMusic() {
             Audio.playFx(SoundFx.TOUCH);
-            enableMusic = !enableMusic;
-            System.out.println("Music: " + enableMusic);
+            enableMusic = !TdConfig.get().getMusicEnabled();
             TdConfig.get().setMusicEnabled(enableMusic);
             // Toggle global menu and game music
             if (enableMusic) {
@@ -44,7 +43,7 @@ public class SettingsScreen extends ScreenAdapter {
 
         public void toggleSFX() {
             Audio.playFx(SoundFx.TOUCH);
-            enableSFX = !enableSFX;
+            enableSFX = !TdConfig.get().getSfxEnabled();
             TdConfig.get().setSfxEnabled(enableSFX);
         }
 

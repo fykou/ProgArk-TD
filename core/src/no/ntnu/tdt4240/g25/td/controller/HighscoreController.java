@@ -12,7 +12,7 @@ import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 import no.ntnu.tdt4240.g25.td.view.HighscoreView;
 
-public class HighscoreScreen extends ScreenAdapter {
+public class HighscoreController extends ScreenAdapter {
 
     private final TdGame game;
     private final Screen parent;
@@ -22,7 +22,7 @@ public class HighscoreScreen extends ScreenAdapter {
     // Highscores
     private ArrayList<Map<String, String>> highscores;
 
-    public HighscoreScreen(TdGame game, Screen parent) {
+    public HighscoreController(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.view = new HighscoreView(game.getBatch(), new ViewCallbackHandler());
@@ -91,5 +91,4 @@ public class HighscoreScreen extends ScreenAdapter {
             });
         }
     }
-
 }

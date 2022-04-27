@@ -8,6 +8,7 @@ import com.artemis.annotations.Exclude;
 import com.artemis.systems.IntervalIteratingSystem;
 import com.artemis.utils.IntBag;
 
+import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.HasTargetComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.MobComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.StateComponent;
@@ -38,7 +39,8 @@ public class FindTargetSystem extends IntervalIteratingSystem {
     public void initialize() {
         super.initialize();
         enemySubscription = world.getAspectSubscriptionManager()
-                .get(Aspect.all(MobComponent.class, PositionComponent.class, StateComponent.class));
+                .get(Aspect.all(MobComponent.class, PositionComponent.class, StateComponent.class)
+                        .exclude(ExpireComponent.class));
     }
 
 
