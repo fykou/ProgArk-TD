@@ -99,6 +99,10 @@ public class Assets {
         // tower textures to skin
     }
 
+    public Texture getBackdrop(){
+        return assetManager.get("screens/backdrop.png", Texture.class);
+    }
+
     public void loadMusic() {
         for (GameMusic music : GameMusic.values()) {
             assetManager.load(music.path, Music.class);

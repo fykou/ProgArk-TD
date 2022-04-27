@@ -1,8 +1,11 @@
 package no.ntnu.tdt4240.g25.td.view;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -10,11 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.Locale;
 
+import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.controller.GameController;
 import no.ntnu.tdt4240.g25.td.model.TowerLevel;
@@ -33,6 +39,7 @@ public class GameView extends AbstractView {
     private final TextButton buy2Button = new TextButton("Buy", skin, "emphasis");
     private final Window newTowerWindow = new Window("", skin);
     private final Window upgradeWindow = new Window("Upgrade tower", skin);
+    private final Window pauseWindow = new Window("Pause", skin);
 
     private final Label upgradeCostLabel = new Label("", skin);
 
@@ -56,6 +63,7 @@ public class GameView extends AbstractView {
         buildTopBar();
         buildBuyDialogue();
         buildUpgradeDialogue();
+        buildPauseWindow();
 
     }
 
@@ -108,6 +116,64 @@ public class GameView extends AbstractView {
         this.addActor(topBar);
     }
 
+    public void buildPauseWindow() {
+        int buttonWidth = 250;
+        int buttonHeight = 90;
+        Table pauseTable = new Table(skin);
+        pauseTable.setFillParent(true);
+
+        TextButton resume = new TextButton("Resume", skin);
+        TextButton quit = new TextButton("Quit", skin);
+        pauseTable.add().row();
+        pauseTable.add().row();
+        pauseTable.add(resume).size(buttonWidth, buttonHeight).pad(10).align(Align.center);
+        pauseTable.row();
+        pauseTable.add(quit).size(buttonWidth, buttonHeight).pad(10).align(Align.center);
+        pauseWindow.addActor(pauseTable);
+        pauseWindow.pack();
+
+        pauseWindow.setSize(TdGame.UI_WIDTH / 2f, TdGame.UI_HEIGHT / 4f);
+        pauseWindow.setPosition(TdGame.UI_WIDTH / 4f, TdGame.UI_HEIGHT / 4f);
+        pauseWindow.setMovable(false);
+        pauseWindow.setModal(true);
+        pauseWindow.setVisible(false);
+        pauseWindow.setTouchable(Touchable.enabled);
+
+        resume.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                pauseWindow.setVisible(false);
+                viewCallback.onResume();
+            }
+        });
+        quit.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                pauseWindow.setVisible(false);
+                viewCallback.onQuit();
+            }
+        });
+        this.addActor(pauseWindow);
+        TextButton pause = new TextButton("Pause", skin);
+        pause.getLabel().setFontScale(1.5f);
+        pause.setSize(buttonWidth, buttonHeight);
+        Container<TextButton> pauseContainer = new Container<>(pause);
+        pauseContainer.pack();
+        // set the pause button to the bottom right corner
+        pauseContainer.setPosition(TdGame.UI_WIDTH - pauseContainer.getWidth() - 10,
+                        pauseContainer.getHeight() + 10);
+        pauseContainer.setTouchable(Touchable.enabled);
+        pause.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                pauseWindow.setVisible(true);
+                viewCallback.onPause();
+            }
+        });
+
+        this.addActor(pauseContainer);
+    }
+
 
     /**
      * Builds the buy dialogue, should only be called once
@@ -132,7 +198,7 @@ public class GameView extends AbstractView {
         buyTable1.row();
         buyTable1.add(new Label("Cost: " + TowerType.TYPE_1.baseCost, skin)).size(buttonWidth, buttonHeight).align(Align.center).pad(10);
         buyTable1.row();
-        buyTable1.add(buy1Button).size(250, 90).align(Align.center).pad(10);
+        buyTable1.add(buy1Button).size(buttonWidth, buttonHeight).align(Align.center).pad(10);
         buyTable1.row();
 
 
@@ -142,7 +208,7 @@ public class GameView extends AbstractView {
         buyTable2.row();
         buyTable2.add(new Label("Cost: " + TowerType.TYPE_2.baseCost, skin)).size(buttonWidth, buttonHeight).align(Align.center).pad(10);
         buyTable2.row();
-        buyTable2.add(buy2Button).size(buttonWidth, 90).align(Align.center).pad(10);
+        buyTable2.add(buy2Button).size(buttonWidth, buttonHeight).align(Align.center).pad(10);
         buyTable2.row();
 
         mainTable.add(buyTable1).align(Align.center).pad(10);

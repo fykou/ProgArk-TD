@@ -38,7 +38,7 @@ public class MainMenuView extends AbstractView {
     }
 
     private void buildTable() {
-        Image background = new Image(Assets.getInstance().getTexture("screens/backdrop.png"));
+        Image background = new Image(Assets.getInstance().getBackdrop());
         background.setFillParent(true);
         addActor(background);
         Label title = new Label("Tower Defense", skin, "title");

@@ -79,8 +79,9 @@ public class GameController extends AbstractController {
             System.out.println("Clicked at " + screenX + ", " + screenY);
             gameWorld.clickOnWorld(screenX, screenY);
         }
-        public void onBackPressed() {
+        public void onQuit() {
             game.setScreen(parent);
+            dispose();
         }
         public void onPause() {
             paused = true;
