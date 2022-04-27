@@ -17,12 +17,12 @@ public class AimingSystem extends IteratingSystem {
     public static final int MAX_ANGLE_DIFF_TO_FIRE = 1;
     public static final int TURN_RATE_DEGREES = 180;
 
-    ComponentMapper<TowerComponent> mTower;
-    ComponentMapper<HasTargetComponent> mHasTarget;
-    ComponentMapper<PositionComponent> mPosition;
-    ComponentMapper<RotationComponent> mRotation;
-    ComponentMapper<StateComponent> mState;
-    ComponentMapper<ExpireComponent> mExpire;
+    private ComponentMapper<TowerComponent> mTower;
+    private ComponentMapper<HasTargetComponent> mHasTarget;
+    private ComponentMapper<PositionComponent> mPosition;
+    private ComponentMapper<RotationComponent> mRotation;
+    private ComponentMapper<StateComponent> mState;
+    private ComponentMapper<ExpireComponent> mExpire;
 
     @Override
     protected void process(int entityId) {
@@ -53,6 +53,10 @@ public class AimingSystem extends IteratingSystem {
             return;
         }
 
+        rotation.set(enemyPosition.get().cpy().sub(position.get()).angleDeg());
+        target.canShoot = true;
+
+        /* turns out rotating towers isn't fun, so we'll just use the target's position instead
         // first, if the tower can rotate, aim towards the target, setting rotation to within +/- MAX_ANGLE_DIFF_TO_FIRE
         // of the target position, rotating at a rate of 180 degrees per second.
         float goalAngle = enemyPosition.get().cpy().sub(position.get()).angleDeg();
@@ -73,6 +77,9 @@ public class AimingSystem extends IteratingSystem {
             // if the difference is less than MAX_ANGLE_DIFF_TO_FIRE, allow the tower to fire
             target.canShoot = true;
         }
+        */
+
+
     }
 }
 
