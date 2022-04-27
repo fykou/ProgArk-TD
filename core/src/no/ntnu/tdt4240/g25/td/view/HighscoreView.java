@@ -23,7 +23,7 @@ public class HighscoreView extends AbstractView implements View {
 
     private final Skin skin = Assets.getInstance().getSkin();
     private final TextButton backButton = new TextButton("Back to Menu", skin, "big");
-    private final Table table = new Table();
+    private final Table table = new Table(skin);
 
     private final HighscoreController.ViewCallbackHandler viewCallback;
 

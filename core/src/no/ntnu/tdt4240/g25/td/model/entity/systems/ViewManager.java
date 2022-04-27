@@ -5,17 +5,13 @@ import com.artemis.BaseSystem;
 import com.artemis.ComponentMapper;
 import com.artemis.EntitySubscription;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.math.Vector3;
 
-import no.ntnu.tdt4240.g25.td.model.entity.components.ExpireComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.PositionComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.TowerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.UpgradeComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.MapComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.components.singleton.PlayerComponent;
 import no.ntnu.tdt4240.g25.td.model.entity.factories.TowerFactory;
-import no.ntnu.tdt4240.g25.td.model.map.MapTile;
-import no.ntnu.tdt4240.g25.td.model.map.MapTileType;
 import no.ntnu.tdt4240.g25.td.view.GameView;
 
 public class ViewManager extends BaseSystem {
