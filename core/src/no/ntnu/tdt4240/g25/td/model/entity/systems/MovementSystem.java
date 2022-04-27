@@ -11,9 +11,9 @@ import no.ntnu.tdt4240.g25.td.model.entity.components.VelocityComponent;
 
 @All({VelocityComponent.class, PositionComponent.class})
 public class MovementSystem extends IteratingSystem {
-    ComponentMapper<PositionComponent> mPosition;
-    ComponentMapper<VelocityComponent> mVelocity;
-    ComponentMapper<RotationComponent> mRotation;
+    private ComponentMapper<PositionComponent> mPosition;
+    private ComponentMapper<VelocityComponent> mVelocity;
+    private ComponentMapper<RotationComponent> mRotation;
 
     @Override
     protected void process(int entityId) {
