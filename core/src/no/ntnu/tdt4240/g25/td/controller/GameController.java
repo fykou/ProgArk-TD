@@ -100,6 +100,18 @@ public class GameController extends ScreenAdapter {
         public GameWorld getWorld() {
             return gameWorld;
         }
+
+        public void onUpgradeButtonClicked() {
+        }
+
+        public void onBuy1ButtonClicked() {
+        }
+
+        public void onBuy2ButtonClicked() {
+        }
+
+        public void onCancelButtonClicked() {
+        }
 //        public WaveComponent getWave(){return gameWorld.wave;}
 //        public PlayerComponent getPlayer(){return player;}
     }
