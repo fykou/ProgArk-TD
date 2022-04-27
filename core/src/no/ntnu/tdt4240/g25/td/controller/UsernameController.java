@@ -7,13 +7,13 @@ import com.badlogic.gdx.ScreenAdapter;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.view.UsernameView;
 
-public class UsernameScreen extends ScreenAdapter {
+public class UsernameController extends ScreenAdapter {
 
     private final TdGame game;
     private final Screen parent;
     private final UsernameView view;
 
-    public UsernameScreen(TdGame game, Screen parent) {
+    public UsernameController(TdGame game, Screen parent) {
         this.game = game;
         this.parent = parent;
         this.view = new UsernameView(game.getBatch(), new ViewCallbackHandler());
@@ -63,7 +63,7 @@ public class UsernameScreen extends ScreenAdapter {
 
     public class ViewCallbackHandler {
         public void toMenu() {
-            game.setScreen(new MenuScreen(game, parent));
+            game.setScreen(new MenuController(game, parent));
         }
         public void setPlayerNameOnFirebaseObject(String playerName) {
             game.getDb().setName(playerName);
