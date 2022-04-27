@@ -1,12 +1,12 @@
-package no.ntnu.tdt4240.g25.td.controller;
+package no.ntnu.tdt4240.g25.td;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.asset.Assets;
+import no.ntnu.tdt4240.g25.td.controller.MenuController;
 
 public class LoadingScreen extends ScreenAdapter {
 
@@ -29,7 +29,6 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         if (Assets.getInstance().update()) {
-            //game.setScreen(new MenuScreen(game, parent));
             game.setScreen(new UsernameScreen(game, parent));
         }
     }
