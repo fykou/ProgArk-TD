@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g25.td.asset.Assets;
+import no.ntnu.tdt4240.g25.td.controller.GameOverController;
 import no.ntnu.tdt4240.g25.td.controller.UsernameController;
 
 public class LoadingScreen extends ScreenAdapter {

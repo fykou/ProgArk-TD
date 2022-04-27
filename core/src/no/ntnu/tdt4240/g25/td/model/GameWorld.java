@@ -39,9 +39,6 @@ public class GameWorld {
     public final static int WORLD_WIDTH = 9;
     public final static int WORLD_HEIGHT = 16;
 
-    private TowerFactory towerFactory;
-    private MobFactory mobFactory;
-    private ProjectileFactory projectileFactory;
     World world;
 
     private final GameController.GameWorldCallback controller;
@@ -55,8 +52,6 @@ public class GameWorld {
     ) {
         this.controller = controller;
         this.view = view;
-
-        createFactories();
         createWorld(batch, renderer);
     }
 
@@ -96,9 +91,9 @@ public class GameWorld {
                         //new DebugRenderSystem(),
 
                         // Factories
-                        towerFactory,
-                        mobFactory,
-                        projectileFactory
+                        new TowerFactory(),
+                        new MobFactory(),
+                        new ProjectileFactory()
                 )
                 .build()
                 .register(controller)
@@ -108,12 +103,6 @@ public class GameWorld {
 
         this.world = new World(config);
         // set world for the factories to be able to create entities
-    }
-
-    protected void createFactories() {
-        towerFactory = new TowerFactory();
-        mobFactory = new MobFactory();
-        projectileFactory = new ProjectileFactory();
     }
 
     public void update(float delta) {
@@ -143,5 +132,9 @@ public class GameWorld {
 
     public void upgradeSelectedTower() {
         world.getSystem(BuyUpgradeManager.class).upgradeTower();
+    }
+
+    public int getScore() {
+        return world.getSystem(EventHandler.class).getScore();
     }
 }

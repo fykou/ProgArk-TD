@@ -53,7 +53,6 @@ public class GameView extends AbstractView {
     public GameView(SpriteBatch batch, GameController.ViewCallback viewCallback) {
         super(viewport, batch);
         this.viewCallback = viewCallback;
-        setDebugAll(true);
         buildTopBar();
         buildBuyDialogue();
         buildUpgradeDialogue();
