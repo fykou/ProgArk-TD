@@ -19,7 +19,7 @@ import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.controller.SettingsController;
 
-public class SettingsView extends AbstractView implements View {
+public class SettingsView extends AbstractView {
 
     private final Skin skin = Assets.getInstance().getSkin();
     private final CheckBox musicToggle = new CheckBox("Music", skin, "switch");
@@ -124,31 +124,15 @@ public class SettingsView extends AbstractView implements View {
     @Override
     public void show() {
         Audio.playMusic(GameMusic.SETTINGS);
+        super.show();
         viewCallback.getVolume();
         viewCallback.getMusic();
         viewCallback.getSFX();
-        Gdx.input.setInputProcessor(this);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
     }
 
     @Override
     public void hide() {
         Audio.stopMusic();
-        Gdx.input.setInputProcessor(null);
-
+        super.hide();
     }
 }

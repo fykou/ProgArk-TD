@@ -16,7 +16,7 @@ import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 import no.ntnu.tdt4240.g25.td.controller.MainMenuController;
 
-public class MainMenuView extends AbstractView implements View {
+public class MainMenuView extends AbstractView {
 
     private final Skin skin = Assets.getInstance().getSkin();
     private final TextButton playButton = new TextButton("Play", skin, "big");
@@ -110,7 +110,6 @@ public class MainMenuView extends AbstractView implements View {
     @Override
     public void pause() {
         Audio.stopMusic();
-
     }
 
     @Override

@@ -8,62 +8,37 @@ import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
+import no.ntnu.tdt4240.g25.td.view.AbstractView;
 import no.ntnu.tdt4240.g25.td.view.SettingsView;
 
-public class SettingsController extends ScreenAdapter {
+public class SettingsController extends AbstractController {
 
-    private final TdGame game;
-    private final Screen parent;
 
     private final SettingsView view;
 
+
     public SettingsController(TdGame game, Screen parent) {
-        this.game = game;
-        this.parent = parent;
+        super(game, parent);
         this.view = new SettingsView(game.getBatch(), new ViewCallbackHandler());
+
+    }
+
+    @Override
+    protected AbstractView getView() {
+        return view;
     }
 
     @Override
     public void show() {
+        super.show();
         Audio.playMusic(GameMusic.SETTINGS);
-        view.show();
     }
 
-    @Override
-    public void render(float delta) {
-        view.act(delta);
-        view.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-        view.resize(width, height);
-    }
-
-    @Override
-    public void pause() {
-        super.pause();
-        view.pause();
-    }
-
-    @Override
-    public void resume() {
-        super.resume();
-        view.resume();
-    }
 
     @Override
     public void hide() {
         super.hide();
-        view.hide();
         Audio.stopMusic();
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        view.dispose();
     }
 
     public class ViewCallbackHandler {
@@ -108,6 +83,7 @@ public class SettingsController extends ScreenAdapter {
             Audio.playFx(SoundFx.SAVESETTINGS);
             Audio.playFx(SoundFx.TOUCH);
             game.setScreen(parent);
+            SettingsController.this.dispose();
         }
 
         public void getVolume() {

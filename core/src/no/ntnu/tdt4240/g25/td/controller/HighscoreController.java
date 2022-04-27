@@ -10,65 +10,31 @@ import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
+import no.ntnu.tdt4240.g25.td.view.AbstractView;
 import no.ntnu.tdt4240.g25.td.view.HighscoreView;
 
-public class HighscoreController extends ScreenAdapter {
-
-    private final TdGame game;
-    private final Screen parent;
+public class HighscoreController extends AbstractController {
 
     private final HighscoreView view;
 
     // Highscores
     private ArrayList<Map<String, String>> highscores;
 
+    @Override
+    protected AbstractView getView() {
+        return view;
+    }
+
     public HighscoreController(TdGame game, Screen parent) {
-        this.game = game;
-        this.parent = parent;
+        super(game, parent);
         this.view = new HighscoreView(game.getBatch(), new ViewCallbackHandler());
     }
 
 
     @Override
     public void show() {
+        super.show();
         Audio.playMusic(GameMusic.MENU);
-        view.show();
-    }
-
-    @Override
-    public void render(float delta) {
-        view.act(delta);
-        view.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-        view.resize(width, height);
-    }
-
-    @Override
-    public void pause() {
-        super.pause();
-        view.pause();
-    }
-
-    @Override
-    public void resume() {
-        super.resume();
-        view.resume();
-    }
-
-    @Override
-    public void hide() {
-        super.hide();
-        view.hide();
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-            view.dispose();
     }
 
     public class ViewCallbackHandler {
@@ -78,6 +44,7 @@ public class HighscoreController extends ScreenAdapter {
         public void goBackToMenu() {
             Audio.playFx(SoundFx.TOUCH);
             game.setScreen(parent);
+            HighscoreController.this.dispose();
         }
         public void getHighscores() {
             // Top five high scores

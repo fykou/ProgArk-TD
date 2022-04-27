@@ -44,6 +44,7 @@ public class UsernameView extends AbstractView {
                 setPlayerName();
             }
         });
+        buildTable();
     }
 
     public void setPlayerName() {
@@ -52,10 +53,7 @@ public class UsernameView extends AbstractView {
         viewCallback.toMenu();
     }
 
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(this);
-        // NEW table
+    public void buildTable() {
         Label title = new Label("Enter username", skin, "default");
 
         table.setFillParent(true);
@@ -72,29 +70,8 @@ public class UsernameView extends AbstractView {
         errorLabel.setFontScale(2);
         getRoot().addActor(table);
     }
-
     public void showError(String error) {
         errorLabel.setText(error);
         errorLabel.setVisible(true);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        this.getViewport().update(width, height, true);
-    }
-
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-        Gdx.input.setInputProcessor(null);
     }
 }

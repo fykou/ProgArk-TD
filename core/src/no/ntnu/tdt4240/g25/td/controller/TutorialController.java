@@ -10,63 +10,31 @@ import no.ntnu.tdt4240.g25.td.asset.Assets;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
+import no.ntnu.tdt4240.g25.td.view.AbstractView;
 import no.ntnu.tdt4240.g25.td.view.TutorialView;
 
-public class TutorialController extends ScreenAdapter {
+public class TutorialController extends AbstractController {
 
-    private final TdGame game;
-    private final Screen parent;
 
     private final TutorialView view;
     private final Sound sound;
 
+
     public TutorialController(TdGame game, Screen parent) {
-        this.game = game;
-        this.parent = parent;
+        super(game, parent);
         this.view = new TutorialView(game.getBatch(), new ViewCallbackHandler());
         this.sound = Assets.getInstance().getSound(SoundFx.TOUCH);
     }
 
     @Override
-    public void render(float delta) {
-        view.act(delta);
-        view.draw();
+    protected AbstractView getView() {
+        return view;
     }
 
     @Override
     public void show() {
+        super.show();
         Audio.playMusic(GameMusic.MENU);
-        view.show();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-        view.resize(width, height);
-    }
-
-    @Override
-    public void pause() {
-        super.pause();
-        view.pause();
-    }
-
-    @Override
-    public void resume() {
-        super.resume();
-        view.resume();
-    }
-
-    @Override
-    public void hide() {
-        super.hide();
-        view.hide();
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        view.dispose();
     }
 
     public class ViewCallbackHandler {
@@ -76,6 +44,7 @@ public class TutorialController extends ScreenAdapter {
                 sound.setLooping(id,false);
             }
             game.setScreen(parent);
+            TutorialController.this.dispose();
         }
     }
 

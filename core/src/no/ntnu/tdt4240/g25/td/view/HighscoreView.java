@@ -19,7 +19,7 @@ import no.ntnu.tdt4240.g25.td.asset.GameMusic;
 import no.ntnu.tdt4240.g25.td.asset.SoundFx;
 import no.ntnu.tdt4240.g25.td.controller.HighscoreController;
 
-public class HighscoreView extends AbstractView implements View {
+public class HighscoreView extends AbstractView {
 
     private final Skin skin = Assets.getInstance().getSkin();
     private final TextButton backButton = new TextButton("Back to Menu", skin, "big");
@@ -72,27 +72,22 @@ public class HighscoreView extends AbstractView implements View {
     @Override
     public void show() {
         Audio.playMusic(GameMusic.MENU);
-        Gdx.input.setInputProcessor(this);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        this.getViewport().update(width, height, true);
     }
 
     @Override
     public void pause() {
+        super.pause();
         Audio.stopMusic();
     }
 
     @Override
     public void resume() {
+        super.resume();
         Audio.playMusic(GameMusic.MENU);
     }
 
     @Override
     public void hide() {
         Audio.stopMusic();
-        Gdx.input.setInputProcessor(null);
     }
 }

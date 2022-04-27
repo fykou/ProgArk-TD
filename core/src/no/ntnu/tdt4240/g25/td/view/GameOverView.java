@@ -72,24 +72,4 @@ public class GameOverView extends AbstractView {
         submittedScore.setText("Score submitted!");
     }
 
-    @Override
-    public void show() {
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
 }

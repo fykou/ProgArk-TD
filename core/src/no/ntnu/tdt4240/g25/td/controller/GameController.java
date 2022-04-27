@@ -8,25 +8,23 @@ import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.asset.Audio;
 import no.ntnu.tdt4240.g25.td.model.GameWorld;
 import no.ntnu.tdt4240.g25.td.asset.GameMusic;
+import no.ntnu.tdt4240.g25.td.view.AbstractView;
 import no.ntnu.tdt4240.g25.td.view.GameView;
 
 /**
  * WIP
  */
-public class GameController extends ScreenAdapter {
+public class GameController extends AbstractController {
 
     // Game screen size
     public static int MENU_LOGIC_WIDTH = 720;
     public static int MENU_LOGIC_HEIGHT = 1280;
-    private final TdGame game;
-    private final Screen parent;
     private final GameWorld gameWorld;
     private boolean paused;
     private final GameView view;
 
     public GameController(TdGame game, Screen parent) {
-        this.game = game;
-        this.parent = parent;
+        super(game, parent);
         this.view = new GameView(game.getBatch(), new ViewCallback());
         this.gameWorld = new GameWorld(
                 game.getShapeRenderer(),
@@ -38,10 +36,15 @@ public class GameController extends ScreenAdapter {
     }
 
     @Override
+    protected AbstractView getView() {
+        return view;
+    }
+
+    @Override
     public void show() {
         // Play game music
         Audio.playMusic(GameMusic.GAME);
-        Gdx.input.setInputProcessor(view);
+        super.show();
     }
 
     @Override
@@ -49,40 +52,25 @@ public class GameController extends ScreenAdapter {
         if (!paused) {
             gameWorld.update(delta);
         }
-        view.act(delta);
-        view.draw();
+        super.render(delta);
     }
 
     @Override
     public void resize(int width, int height) {
         gameWorld.resize(width, height);
-        view.resize(width, height);
+        super.resize(width, height);
     }
 
-    @Override
-    public void pause() {
-        super.pause();
-        view.pause();
-    }
-
-    @Override
-    public void resume() {
-        super.resume();
-        view.resume();
-    }
 
     @Override
     public void hide() {
         super.hide();
-        view.hide();
-        Gdx.input.setInputProcessor(null);
         Audio.stopMusic();
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        view.dispose();
         gameWorld.dispose();
     }
 
@@ -100,9 +88,6 @@ public class GameController extends ScreenAdapter {
         public void onResume() {
             paused = false;
         }
-        public GameWorld getWorld() {
-            return gameWorld;
-        }
 
         public void onUpgradeButtonClicked() {
             gameWorld.upgradeSelectedTower();
@@ -115,15 +100,12 @@ public class GameController extends ScreenAdapter {
         public void onBuy2ButtonClicked() {
             gameWorld.createTower2();
         }
-
-        public void onCancelButtonClicked() {
-        }
     }
 
     public class GameWorldCallback {
         public void onGameOver() {
             game.setScreen(new GameOverController(game, GameController.this, gameWorld.getScore()));
+            GameController.this.dispose();
         }
     }
-
 }

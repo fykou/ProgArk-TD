@@ -19,4 +19,28 @@ public abstract class AbstractView extends Stage implements View {
     public boolean touchUp (int screenX, int screenY, int pointer, int button) {
         return super.touchUp(screenX, screenY, pointer, button);
     }
+
+    @Override
+    public void resize(int width, int height) {
+        this.getViewport().update(width, height, true);
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+
+    }
 }

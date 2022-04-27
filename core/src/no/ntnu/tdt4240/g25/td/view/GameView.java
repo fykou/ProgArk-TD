@@ -78,31 +78,6 @@ public class GameView extends AbstractView {
         }
         return false;
     }
-
-    @Override
-    public void show() {
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
     /**
      * Builds the top bar with game stats
      */
