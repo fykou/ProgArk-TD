@@ -46,12 +46,18 @@ public class MapRenderSystem extends BaseSystem {
     protected void processSystem() {
         IntBag towerIds = towerSubscription.getEntities();
         mapRenderer.render();
+
         batch.setProjectionMatrix(cameraSystem.camera.combined);
         batch.begin();
         for (int i = 0; i < towerIds.size(); i++) {
             int towerId = towerIds.get(i);
             PositionComponent position = mPosition.get(towerId);
-            batch.draw(towerBase, position.get().x, position.get().y);
+            batch.draw(towerBase,
+                    position.get().x -.5f, position.get().y -.5f,
+                    position.get().x, position.get().y,
+                    1, 1,
+                    1, 1,
+                    0);
         }
         batch.end();
         renderer.setProjectionMatrix(cameraSystem.camera.combined);

@@ -43,7 +43,7 @@ public class ProjectileFactory extends EntityFactory {
         mPosition.create(newId).get().set(x, y);
         mVelocity.create(newId).get().set(vx, vy);
         mRotation.create(newId).get();
-        mTexture.create(newId);
+        mTexture.create(newId).set(null,0,2);
         mAnimation.create(newId).animations = animationsMap;
         mState.create(newId).set(StateComponent.STATE_IDLE, true);
         mProjectile.create(newId).set(damage, splashRadius);

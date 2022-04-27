@@ -38,7 +38,7 @@ public class TowerFactory extends EntityFactory {
         mRotation.create(newId).get();
         mTower.create(newId).set(type, level);
         mState.create(newId).set(StateComponent.STATE_IDLE, false);
-        mTexture.create(newId).set(null,-90f, 1.2f);
+        mTexture.create(newId).set(null,-90f, 1.5f);
         mAnimation.create(newId).animations = animationsMap;
     }
 
