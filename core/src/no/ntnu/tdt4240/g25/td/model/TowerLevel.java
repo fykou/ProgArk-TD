@@ -11,4 +11,16 @@ public enum TowerLevel {
     TowerLevel(int level) {
         this.level = level;
     }
+
+    public TowerLevel nextLevel() {
+        switch (this) {
+            case MK1:
+                return MK2;
+            case MK2:
+                return MK3;
+            case MK3:
+                return MK4;
+        }
+        return null;
+    }
 }

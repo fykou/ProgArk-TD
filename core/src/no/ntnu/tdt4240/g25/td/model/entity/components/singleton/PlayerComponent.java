@@ -9,8 +9,6 @@ public class PlayerComponent extends Component {
     public int lives = 20;
     public int cash = 50;
 
-    public boolean buying = false;
-
     public void enemyKilledReward() {
         cash += 10;
     }
