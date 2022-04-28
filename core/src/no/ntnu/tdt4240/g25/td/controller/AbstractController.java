@@ -7,7 +7,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import no.ntnu.tdt4240.g25.td.TdGame;
 import no.ntnu.tdt4240.g25.td.view.AbstractView;
 
-public abstract class AbstractController extends ScreenAdapter {
+public abstract class AbstractController implements Screen {
     protected final TdGame game;
     protected final Screen parent;
 
@@ -37,26 +37,23 @@ public abstract class AbstractController extends ScreenAdapter {
 
     @Override
     public void pause() {
-        super.pause();
         getView().pause();
     }
 
     @Override
     public void resume() {
-        super.resume();
         getView().resume();
+        show();
     }
 
     @Override
     public void hide() {
-        super.hide();
         getView().hide();
         Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() {
-        super.dispose();
         getView().dispose();
     }
 
