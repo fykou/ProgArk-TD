@@ -102,10 +102,6 @@ public class MainMenuView extends AbstractView {
         Audio.playMusic(GameMusic.MENU);
         Gdx.input.setInputProcessor(this);
     }
-    @Override
-    public void resize(int width, int height) {
-        this.getViewport().update(width, height, true);
-    }
 
     @Override
     public void pause() {

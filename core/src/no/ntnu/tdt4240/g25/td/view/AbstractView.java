@@ -26,6 +26,12 @@ public abstract class AbstractView extends Stage implements View {
     }
 
     @Override
+    public void render(float delta) {
+        act(delta);
+        draw();
+    }
+
+    @Override
     public void show() {
 
     }

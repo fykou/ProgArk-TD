@@ -26,8 +26,7 @@ public abstract class AbstractController implements Screen {
 
     @Override
     public void render(float delta) {
-        getView().act(delta);
-        getView().draw();
+        getView().render(delta);
     }
 
     @Override
